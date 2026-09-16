@@ -2,7 +2,7 @@ import json
 import requests
 
 # Configuración general
-API_KEY = "AIzaSyDKpfvND6hjPIlNQ7Bbxuh-whR6yM0aQJg"
+API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 # Tu ID de canal o el nombre exacto con el que figuran tus videos para filtrarlos
 # (Reemplaza "Fisiomanía" o pon el ID de tu canal, ej: "UC...")
