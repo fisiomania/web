@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fisiomania.github.io/web/sitemap.xml
