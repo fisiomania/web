@@ -2,11 +2,11 @@ import json
 import requests
 
 # Configuración general
-API_KEY = "TU_API_KEY_DE_YOUTUBE"
+API_KEY = "AIzaSyDKpfvND6hjPIlNQ7Bbxuh-whR6yM0aQJg"
 
 # Tu ID de canal o el nombre exacto con el que figuran tus videos para filtrarlos
 # (Reemplaza "Fisiomanía" o pon el ID de tu canal, ej: "UC...")
-MI_NOMBRE_DE_CANAL = "Fisiomanía" 
+MI_NOMBRE_DE_CANAL = "UCHf85J5ad4OTphK9Aykw3cg" 
 
 # Diccionario con tus listas de reproducción (IDs limpios sin parámetros extra como &si=...)
 PLAYLISTS = {
