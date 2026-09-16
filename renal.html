@@ -36,50 +36,41 @@
         </nav>
 
         <!-- Masthead / Cabecera de la Sección -->
-        <header class="masthead" style="padding-top: 10rem; padding-bottom: 6rem; background-color: #212529;">
-        <div class="container d-flex justify-content-between align-items-center">
-                <div class="text-start">
-            <h1 class="display-5 fw-bold">Fisiología Renal</h1>
-             <p class="text-white-50 mx-auto" style="max-width: 600px;">Filtración, reabsorción, secreción y el mantenimiento del equilibrio hidroelectrolítico explicados paso a paso.</p>
+        <header class="masthead text-white" style="padding-top: 10rem; padding-bottom: 6rem; background-color: #212529;">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div class="text-start pe-3">
+                    <h1 class="display-5 fw-bold mb-3">Fisiología Renal</h1>
+                    <p class="text-white-50 mb-3" style="max-width: 600px;">Filtración, reabsorción, secreción y el mantenimiento del equilibrio hidroelectrolítico explicados paso a paso.</p>
+                    <p class="lead mb-0 text-white">Explora los videos y clases del módulo</p>
+                </div>
+                <div class="text-end d-none d-md-block">
+                    <img src="../assets/img/rana.png" alt="Rana Fisiomanía" class="img-fluid" style="max-height: 120px;">
+                </div>
             </div>
         </header>
 
-            <p class="lead mb-0">Explora los videos y clases del módulo</p>
-        </div>
-                <div>
-            <img src="../assets/img/rana.png" alt="Rana Fisiomanía" class="img-fluid" style="max-height: 100px;">
-        </div>
-    </div>
-</header>
-            <div class="container text-center">
-               
-        <!-- Sección de Videos (Grid Dinámico) -->
-        <section class="page-section bg-light" id="videos-renal">
+        <!-- Sección de Videos (Grid Dinámico con fondo oscuro combinando con el banner) -->
+        <section class="page-section bg-dark text-white py-5" id="videos-renal">
             <div class="container">
                 <!-- Contenedor donde se cargarán los videos desde renal.json -->
-                <div class="container py-4 rounded bg-light shadow-sm">
-    <div class="row" id="video-container">
-        <!-- Los videos se cargan aquí dinámicamente mediante JavaScript -->
-    </div>
-</div>
                 <div class="row" id="contenedor-videos">
                     <div class="text-center py-5">
-                        <div class="spinner-border text-primary" role="status">
+                        <div class="spinner-border text-light" role="status">
                             <span class="visually-hidden">Cargando videos...</span>
                         </div>
-                        <p class="text-muted mt-3">Cargando clases de fisiología renal...</p>
+                        <p class="text-white-50 mt-3">Cargando clases de fisiología renal...</p>
                     </div>
                 </div>
                 
                 <!-- Botón para volver al inicio -->
                 <div class="text-center mt-5">
-                    <a href="index.html#portfolio" class="btn btn-dark btn-lg text-uppercase">← Volver a los catálogos</a>
+                    <a href="index.html#portfolio" class="btn btn-outline-light btn-lg text-uppercase">← Volver a los catálogos</a>
                 </div>
             </div>
         </section>
 
         <!-- Footer-->
-        <footer class="footer py-4">
+        <footer class="footer py-4 bg-black text-white">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-4 text-lg-start">Copyright &copy; Fisiomanía 2026</div>
@@ -87,8 +78,8 @@
                         <a class="btn btn-dark btn-social mx-2" href="https://www.youtube.com/channel/UCHf85J5ad4OTphK9Aykw3cg" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                     </div>
                     <div class="col-lg-4 text-lg-end">
-                        <a class="link-dark text-decoration-none me-3" href="#!">Política de Privacidad</a>
-                        <a class="link-dark text-decoration-none" href="#!">Términos de Uso</a>
+                        <a class="link-light text-decoration-none me-3" href="#!">Política de Privacidad</a>
+                        <a class="link-light text-decoration-none" href="#!">Términos de Uso</a>
                     </div>
                 </div>
             </div>
@@ -102,7 +93,6 @@
         <!-- Script inteligente que detecta la página y carga el JSON correspondiente -->
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                // Detecta automáticamente si estamos en renal.html, medio-interno.html, etc.
                 const paginaActual = window.location.pathname.split("/").pop().replace(".html", "");
                 const archivoJson = (paginaActual && paginaActual !== "") ? `${paginaActual}.json` : "renal.json";
 
@@ -118,14 +108,13 @@
                         contenedor.innerHTML = ""; // Limpiar indicador de carga
 
                         if (videos.length === 0) {
-                            contenedor.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No hay videos disponibles en este momento.</p></div>';
+                            contenedor.innerHTML = '<div class="col-12 text-center"><p class="text-white-50">No hay videos disponibles en este momento.</p></div>';
                             return;
                         }
 
                         videos.forEach(video => {
                             const videoUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
                             
-                            // Acortar descripción si es muy extensa para mantener la prolijidad visual
                             let desc = video.description ? video.description : "Sin descripción disponible.";
                             if (desc.length > 140) {
                                 desc = desc.substring(0, 140) + "...";
@@ -135,7 +124,7 @@
                             col.className = "col-lg-4 col-sm-6 mb-4";
                             
                             col.innerHTML = `
-                                <div class="card h-100 shadow-sm border-0 portfolio-item">
+                                <div class="card h-100 shadow-sm border-0 portfolio-item bg-light text-dark">
                                     <!-- Miniatura como link directo a YouTube -->
                                     <a href="${videoUrl}" target="_blank">
                                         <div class="portfolio-hover">
@@ -151,7 +140,7 @@
                                             <p class="card-text text-muted small mb-0">${desc}</p>
                                         </div>
                                         <div class="mt-3">
-                                            <a href="${videoUrl}" target="_blank" class="btn btn-sm btn-outline-primary text-uppercase fw-bold w-100">
+                                            <a href="${videoUrl}" target="_blank" class="btn btn-sm btn-outline-dark text-uppercase fw-bold w-100">
                                                 Ver en YouTube <i class="fas fa-external-link-alt ms-1"></i>
                                             </a>
                                         </div>
