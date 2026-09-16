@@ -1,0 +1,37 @@
+name: Actualizar Videos de YouTube
+
+on:
+  workflow_dispatch: # Te permite ejecutarlo manualmente con un botón en GitHub
+  schedule:
+    - cron: '0 8 * * *' # Opcional: Se ejecuta automáticamente todos los días a las 8:00 AM
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependencias
+        run: |
+          pip install requests
+
+      - name: Ejecutar script de Python
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: |
+          cd web
+          python actualizar_videos.py
+
+      - name: Guardar cambios en el repositorio
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          cd web
+          git add *.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-actualizar archivos JSON de YouTube en web/" && git push)
