@@ -1,0 +1,428 @@
+
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-sans); }
+  #sim-root { padding: 12px 0; }
+  .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .ctrl-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; border: 0.5px solid var(--color-border-tertiary); }
+  .ctrl-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+  .ctrl-label span { font-weight: 500; color: var(--color-text-primary); }
+  input[type=range] { width: 100%; margin: 2px 0; }
+  .drug-row { display: flex; gap: 6px; margin-top: 6px; }
+  .drug-btn { flex: 1; padding: 5px 4px; font-size: 11px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; transition: all .2s; text-align: center; }
+  .drug-btn.active-vaso { background: #E6F1FB; color: #0C447C; border-color: #378ADD; font-weight: 500; }
+  .drug-btn.active-dilat { background: #EAF3DE; color: #27500A; border-color: #639922; font-weight: 500; }
+  .drug-btn.active-none { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 500; }
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+  .metric { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 10px; text-align: center; }
+  .metric-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 2px; }
+  .metric-val { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
+  .metric-unit { font-size: 10px; color: var(--color-text-secondary); }
+  canvas { border-radius: var(--border-radius-md); display: block; width: 100%; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; font-size: 11px; color: var(--color-text-secondary); }
+  .leg-item { display: flex; align-items: center; gap: 4px; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .info-bar { font-size: 11px; color: var(--color-text-secondary); margin-top: 6px; padding: 6px 10px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); border-left: 3px solid var(--color-border-secondary); }
+</style>
+
+<div id="sim-root">
+  <h2 class="sr-only">Simulación dinámica del gradiente corticomedular renal y efecto de la vasa recta</h2>
+
+  <div class="controls">
+    <div class="ctrl-card">
+      <div class="ctrl-label">Flujo vasa recta <span id="flow-val">--</span></div>
+      <input type="range" id="flow-slider" min="1" max="10" step="1" value="4">
+      <div class="drug-row">
+        <div class="drug-btn" id="btn-ang" onclick="applyDrug('ang')">Ang II<br><span style="font-size:9px;opacity:.7">vasoconst.</span></div>
+        <div class="drug-btn active-none" id="btn-none" onclick="applyDrug('none')">Basal</div>
+        <div class="drug-btn" id="btn-pna" onclick="applyDrug('pna')">PNA<br><span style="font-size:9px;opacity:.7">vasodilatador</span></div>
+      </div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-label">Actividad asa de Henle <span id="henle-val">--</span></div>
+      <input type="range" id="henle-slider" min="1" max="10" step="1" value="7">
+      <div class="ctrl-label" style="margin-top:8px">ADH / Concentración <span id="adh-val">--</span></div>
+      <input type="range" id="adh-slider" min="1" max="10" step="1" value="6">
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-label">Corteza</div><div class="metric-val" id="m-cortex">--</div><div class="metric-unit">mOsm/kg</div></div>
+    <div class="metric"><div class="metric-label">Med. ext.</div><div class="metric-val" id="m-outer">--</div><div class="metric-unit">mOsm/kg</div></div>
+    <div class="metric"><div class="metric-label">Med. int.</div><div class="metric-val" id="m-inner">--</div><div class="metric-unit">mOsm/kg</div></div>
+    <div class="metric"><div class="metric-label">Papila</div><div class="metric-val" id="m-papilla">--</div><div class="metric-unit">mOsm/kg</div></div>
+  </div>
+
+  <canvas id="renal-canvas" height="400"></canvas>
+
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:#4A8FD4"></div> Rama desc. vasa recta</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#E0825A"></div> Rama asc. vasa recta</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#7DB87D"></div> Asa de Henle (desc.)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#B0A0D0"></div> Asa de Henle (asc.)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#888"></div> Túbulo colector</div>
+  </div>
+  <div class="info-bar" id="info-bar">Estado basal: flujo moderado, gradiente bien establecido.</div>
+</div>
+
+<script>
+const canvas = document.getElementById('renal-canvas');
+const ctx = canvas.getContext('2d');
+const W = 680, H = 400;
+canvas.width = W; canvas.height = H;
+
+let state = { flow: 4, henle: 7, adh: 6, drug: 'none', t: 0 };
+let displayGrad = [300, 600, 900, 1200];
+let targetGrad = [300, 600, 900, 1200];
+let flowParticles = [];
+
+const DARK = matchMedia('(prefers-color-scheme: dark)').matches;
+const BG = DARK ? '#1a1a18' : '#ffffff';
+const TEXT = DARK ? '#c2c0b6' : '#2c2c2a';
+const TEXT2 = DARK ? '#888780' : '#73726c';
+const BORDER = DARK ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.10)';
+
+function computeGradient(flow, henle, adh) {
+  const buildUp = henle * 10;
+  const washOut = flow * 8;
+  const net = buildUp - washOut;
+  const maxPapilla = Math.max(400, Math.min(1400, 600 + net * 8 + adh * 20));
+  return [
+    300,
+    Math.round(300 + (maxPapilla - 300) * 0.33),
+    Math.round(300 + (maxPapilla - 300) * 0.66),
+    Math.round(maxPapilla)
+  ];
+}
+
+function getFlowColor(v) {
+  const r = Math.round(255 * Math.min(1, v / 1400));
+  const b = Math.round(255 * Math.max(0, 1 - v / 700));
+  return `rgb(${r},${Math.round(40 + 60*(1-v/1400))},${b})`;
+}
+
+function osmColorHSL(osm) {
+  const t = Math.max(0, Math.min(1, (osm - 280) / 1120));
+  const h = Math.round(240 - t * 240);
+  const s = 65;
+  const l = DARK ? Math.round(25 + t * 25) : Math.round(88 - t * 30);
+  return `hsl(${h},${s}%,${l}%)`;
+}
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function initParticles() {
+  flowParticles = [];
+  for (let i = 0; i < 18; i++) {
+    flowParticles.push({ lane: i % 2, pos: Math.random(), speed: 0 });
+  }
+}
+initParticles();
+
+function updateParticles() {
+  const speedFactor = state.flow / 10;
+  flowParticles.forEach(p => {
+    p.speed = 0.003 + speedFactor * 0.012;
+    p.pos += p.pos < 0.5 ? p.speed : (p.lane === 0 ? p.speed : -p.speed);
+    if (p.pos >= 1) p.pos = 0;
+    if (p.pos < 0) p.pos = 1;
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Gradient zones (background)
+  const zoneX = 20, zoneW = 200, zoneH = H - 60;
+  const zoneY = 30;
+  const zones = 40;
+  for (let i = 0; i < zones; i++) {
+    const f = i / zones;
+    const osm = lerp(displayGrad[0], displayGrad[3], f);
+    ctx.fillStyle = osmColorHSL(osm);
+    ctx.fillRect(zoneX, zoneY + f * zoneH, zoneW, zoneH / zones + 1);
+  }
+  ctx.strokeStyle = BORDER;
+  ctx.lineWidth = 0.5;
+  ctx.strokeRect(zoneX, zoneY, zoneW, zoneH);
+
+  // Zone labels
+  const zLabels = ['Corteza', 'Med. ext.', 'Med. int.', 'Papila'];
+  const zBands = [0, 0.22, 0.55, 0.78, 1.0];
+  ctx.font = '11px var(--font-sans, sans-serif)';
+  ctx.fillStyle = TEXT2;
+  ctx.textAlign = 'left';
+  zLabels.forEach((l, i) => {
+    const y = zoneY + (zBands[i] + zBands[i+1]) / 2 * zoneH;
+    ctx.fillText(l, zoneX + 4, y - 2);
+    const osm = displayGrad[i];
+    ctx.fillStyle = TEXT;
+    ctx.font = '12px var(--font-sans, sans-serif)';
+    ctx.fillText(osm + ' mOsm', zoneX + 4, y + 12);
+    ctx.font = '11px var(--font-sans, sans-serif)';
+    ctx.fillStyle = TEXT2;
+  });
+
+  // Osmolality bar chart
+  const barX = 240, barY = zoneY, barH = zoneH, barW = 80;
+  const maxO = 1400;
+  const barColors = ['#378ADD','#639922','#BA7517','#E24B4A'];
+  const barLabs = ['Corteza','M.ext','M.int','Papila'];
+  displayGrad.forEach((osm, i) => {
+    const bh = (osm / maxO) * barH;
+    const bx = barX + i * 20;
+    const by = barY + barH - bh;
+    ctx.fillStyle = barColors[i];
+    ctx.globalAlpha = 0.7;
+    ctx.fillRect(bx, by, 16, bh);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = TEXT;
+    ctx.font = '10px var(--font-sans, sans-serif)';
+    ctx.textAlign = 'center';
+    ctx.fillText(osm, bx + 8, by - 3);
+    ctx.fillStyle = TEXT2;
+    ctx.save();
+    ctx.translate(bx + 8, barY + barH + 14);
+    ctx.rotate(-Math.PI / 4);
+    ctx.textAlign = 'right';
+    ctx.fillText(barLabs[i], 0, 0);
+    ctx.restore();
+  });
+  ctx.textAlign = 'left';
+
+  // Tubular structures
+  const structX = 340;
+  const structW = 310;
+  const TOP = 30, BOT = H - 30;
+  const cx = structX + structW / 2;
+
+  // ---- Layout ----
+  const vasdX = structX + 10;   // vasa recta desc
+  const vasaX = structX + 40;   // vasa recta asc
+  const henleDescX = structX + 100;
+  const henleAscX = structX + 140;
+  const tubColX = structX + 195;
+  const tubeW = 18;
+  const tubeR = 4;
+  const LOOP_Y = BOT - 20;
+  const CORTEX_Y = TOP + 20;
+
+  function drawTube(x, y1, y2, color, alpha=1) {
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    const w = tubeW;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x - w/2, y1, w, y2 - y1, tubeR)
+                  : ctx.rect(x - w/2, y1, w, y2 - y1);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  function drawCap(x, y, color, flip=false) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    const r = tubeW / 2;
+    if (!flip) ctx.arc(x, y + r, r, Math.PI, 0);
+    else ctx.arc(x, y - r, r, 0, Math.PI);
+    ctx.fill();
+  }
+
+  // vasa recta desc
+  drawTube(vasdX, CORTEX_Y, LOOP_Y, '#4A8FD4', 0.85);
+  drawCap(vasdX, LOOP_Y, '#3A7FC4');
+  // vasa recta asc
+  drawTube(vasaX, CORTEX_Y, LOOP_Y, '#E0825A', 0.85);
+  drawCap(vasaX, LOOP_Y, '#D0724A');
+  // Henle desc
+  drawTube(henleDescX, CORTEX_Y, LOOP_Y, '#7DB87D', 0.85);
+  drawCap(henleDescX, LOOP_Y, '#6DA86D');
+  // Henle asc
+  drawTube(henleAscX, CORTEX_Y, LOOP_Y, '#B0A0D0', 0.85);
+  drawCap(henleAscX, LOOP_Y, '#A090C0');
+  // Túbulo colector
+  drawTube(tubColX, CORTEX_Y, LOOP_Y - 30, '#888', 0.7);
+
+  // Connections at top (cortex level)
+  ctx.strokeStyle = '#4A8FD4';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(vasdX, CORTEX_Y); ctx.lineTo(vasdX, CORTEX_Y - 10); ctx.stroke();
+  ctx.strokeStyle = '#E0825A';
+  ctx.beginPath(); ctx.moveTo(vasaX, CORTEX_Y); ctx.lineTo(vasaX, CORTEX_Y - 10); ctx.stroke();
+
+  // Osmolality arrows (horizontal) showing equilibration
+  const arrowPositions = [0.25, 0.55, 0.82];
+  arrowPositions.forEach(f => {
+    const y = CORTEX_Y + f * (LOOP_Y - CORTEX_Y - 20);
+    const osm = Math.round(lerp(displayGrad[0], displayGrad[3], f));
+    ctx.strokeStyle = DARK ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.10)';
+    ctx.lineWidth = 0.5;
+    ctx.setLineDash([3, 4]);
+    ctx.beginPath(); ctx.moveTo(zoneX + zoneW, y); ctx.lineTo(structX + 5, y); ctx.stroke();
+    ctx.setLineDash([]);
+    // osmolality tag next to henle
+    const tagX = henleAscX + tubeW / 2 + 4;
+    ctx.font = '10px var(--font-sans, sans-serif)';
+    ctx.fillStyle = TEXT2;
+    ctx.textAlign = 'left';
+    ctx.fillText(osm + ' mOsm', tagX, y + 4);
+  });
+
+  // Flow particles on vasa recta
+  const flowSpeed = state.flow;
+  flowParticles.forEach((p, i) => {
+    const lane = i % 2;
+    const px = lane === 0 ? vasdX : vasaX;
+    let py;
+    if (lane === 0) { py = CORTEX_Y + p.pos * (LOOP_Y - CORTEX_Y); }
+    else { py = CORTEX_Y + (1 - p.pos) * (LOOP_Y - CORTEX_Y); }
+    const frac = lane === 0 ? p.pos : 1 - p.pos;
+    const osm = lerp(displayGrad[0], displayGrad[3], frac);
+    ctx.fillStyle = lane === 0
+      ? `rgba(74,143,212,${0.6 + 0.4 * (1 - frac)})`
+      : `rgba(224,130,90,${0.6 + 0.4 * frac})`;
+    ctx.beginPath();
+    ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  // Labels for structures
+  const labelY = CORTEX_Y - 18;
+  ctx.font = '10px var(--font-sans, sans-serif)';
+  ctx.textAlign = 'center';
+  const lbls = [
+    [vasdX, '#4A8FD4', 'V.R.↓'],
+    [vasaX, '#E0825A', 'V.R.↑'],
+    [henleDescX, '#7DB87D', 'H↓'],
+    [henleAscX, '#B0A0D0', 'H↑'],
+    [tubColX, '#888', 'T.Col.'],
+  ];
+  lbls.forEach(([x, c, l]) => {
+    ctx.fillStyle = c;
+    ctx.fillText(l, x, labelY);
+  });
+
+  // Wash-out indicator
+  const washPct = Math.min(100, Math.round((state.flow / 10) * 100));
+  const gradPct = Math.max(0, Math.min(100, Math.round(((displayGrad[3] - 300) / 1100) * 100)));
+
+  ctx.textAlign = 'right';
+  ctx.font = '11px var(--font-sans, sans-serif)';
+  ctx.fillStyle = TEXT2;
+  ctx.fillText('Gradiente: ' + gradPct + '%', W - 10, H - 40);
+  ctx.fillText('Lavado: ' + washPct + '%', W - 10, H - 26);
+
+  // Title
+  ctx.textAlign = 'left';
+  ctx.font = '500 13px var(--font-sans, sans-serif)';
+  ctx.fillStyle = TEXT;
+  ctx.fillText('Gradiente corticomedular', zoneX, zoneY - 10);
+  ctx.fillText('Estructuras renales', structX, zoneY - 10);
+}
+
+function updateMetrics() {
+  const g = displayGrad;
+  document.getElementById('m-cortex').textContent = g[0];
+  document.getElementById('m-outer').textContent = g[1];
+  document.getElementById('m-inner').textContent = g[2];
+  document.getElementById('m-papilla').textContent = g[3];
+}
+
+function updateFlowLabel() {
+  const v = state.flow;
+  const labels = ['','Muy bajo','Bajo','Bajo','Moderado','Moderado','Normal','Normal','Alto','Alto','Muy alto'];
+  document.getElementById('flow-val').textContent = labels[v] + ' (' + v + ')';
+  const hv = state.henle;
+  document.getElementById('henle-val').textContent = (hv <= 3 ? 'Baja' : hv <= 6 ? 'Moderada' : 'Alta') + ' (' + hv + ')';
+  const av = state.adh;
+  document.getElementById('adh-val').textContent = (av <= 3 ? 'Baja' : av <= 6 ? 'Moderada' : 'Alta') + ' (' + av + ')';
+}
+
+function updateInfoBar() {
+  const g = displayGrad[3];
+  let msg = '';
+  if (state.drug === 'ang') msg = '⚠ Angiotensina II: vasoconstricción → flujo ↓ → menor lavado medular → gradiente ↑.';
+  else if (state.drug === 'pna') msg = '⚠ PNA: vasodilatación → flujo ↑ → mayor lavado medular → gradiente ↓.';
+  else if (state.flow <= 2) msg = 'Flujo muy bajo: mínimo lavado, gradiente muy pronunciado (' + g + ' mOsm).';
+  else if (state.flow >= 9) msg = 'Flujo alto: lavado medular intenso, gradiente colapsado (' + g + ' mOsm).';
+  else if (g >= 1100) msg = 'Gradiente muy alto: máxima capacidad concentradora. Papila a ' + g + ' mOsm.';
+  else if (g <= 450) msg = 'Gradiente colapsado: el riñón no puede concentrar orina eficientemente.';
+  else msg = 'Estado normal: gradiente bien conservado, concentración urinaria efectiva. Papila ' + g + ' mOsm.';
+  document.getElementById('info-bar').textContent = msg;
+}
+
+function applyDrug(d) {
+  state.drug = d;
+  ['ang','none','pna'].forEach(x => {
+    const btn = document.getElementById('btn-' + x);
+    btn.className = 'drug-btn' + (x === d ? (x === 'ang' ? ' active-vaso' : x === 'pna' ? ' active-dilat' : ' active-none') : '');
+  });
+  if (d === 'ang') {
+    document.getElementById('flow-slider').value = 2;
+    state.flow = 2;
+  } else if (d === 'pna') {
+    document.getElementById('flow-slider').value = 9;
+    state.flow = 9;
+  } else {
+    document.getElementById('flow-slider').value = 4;
+    state.flow = 4;
+  }
+  updateFlowLabel();
+  recompute();
+}
+
+function recompute() {
+  targetGrad = computeGradient(state.flow, state.henle, state.adh);
+  updateMetrics();
+  updateInfoBar();
+}
+
+document.getElementById('flow-slider').oninput = e => {
+  state.flow = +e.target.value;
+  state.drug = 'none';
+  ['ang','none','pna'].forEach(x => {
+    const btn = document.getElementById('btn-' + x);
+    btn.className = 'drug-btn' + (x === 'none' ? ' active-none' : '');
+  });
+  updateFlowLabel();
+  recompute();
+};
+document.getElementById('henle-slider').oninput = e => {
+  state.henle = +e.target.value;
+  updateFlowLabel();
+  recompute();
+};
+document.getElementById('adh-slider').oninput = e => {
+  state.adh = +e.target.value;
+  updateFlowLabel();
+  recompute();
+};
+
+// Init
+state.flow = 4; state.henle = 7; state.adh = 6;
+recompute();
+displayGrad = [...targetGrad];
+updateFlowLabel();
+draw();
+
+function loop() {
+  // Smooth gradient transition
+  let changed = false;
+  for (let i = 0; i < 4; i++) {
+    const diff = targetGrad[i] - displayGrad[i];
+    if (Math.abs(diff) > 1) {
+      displayGrad[i] = Math.round(displayGrad[i] + diff * 0.04);
+      changed = true;
+    }
+  }
+  if (changed) {
+    document.getElementById('m-cortex').textContent = displayGrad[0];
+    document.getElementById('m-outer').textContent = displayGrad[1];
+    document.getElementById('m-inner').textContent = displayGrad[2];
+    document.getElementById('m-papilla').textContent = displayGrad[3];
+  }
+  updateParticles();
+  draw();
+  requestAnimationFrame(loop);
+}
+loop();
+</script>

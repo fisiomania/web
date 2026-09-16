@@ -1,0 +1,261 @@
+
+<style>
+* { box-sizing: border-box; }
+.wrap { font-family: var(--font-sans); padding: 1rem 0; }
+canvas { display: block; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); margin-bottom: 12px; width: 100%; }
+.ctrl { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px; color: var(--color-text-secondary); }
+.ctrl input[type=range] { flex: 1; }
+.ctrl .val { min-width: 52px; text-align: right; font-weight: 500; color: var(--color-text-primary); }
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.card { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 12px 16px; }
+.card-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 2px; }
+.card-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.card-sub { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+.insight { font-size: 13px; color: var(--color-text-secondary); background: var(--color-background-secondary); border-left: 2px solid var(--color-border-info); border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 8px 12px; margin-bottom: 14px; }
+.btns { display: flex; gap: 8px; flex-wrap: wrap; }
+button { font-size: 13px; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); cursor: pointer; }
+button:hover { background: var(--color-background-secondary); }
+.legend { display: flex; gap: 16px; margin-bottom: 12px; }
+.leg { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--color-text-secondary); }
+.leg-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+</style>
+<h2 class="sr-only">Comparador interactivo de difusión en gases versus líquidos según temperatura</h2>
+<div class="wrap">
+  <div class="ctrl">
+    <label>Temperatura (K)</label>
+    <input type="range" id="sl-T" min="250" max="600" value="300" step="10" oninput="update()">
+    <span class="val" id="v-T">300 K</span>
+  </div>
+
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:#E85D24"></div>Gas (ej. O₂ en aire)</div>
+    <div class="leg"><div class="leg-dot" style="background:#185FA5"></div>Líquido (ej. glucosa en agua)</div>
+  </div>
+
+  <canvas id="c-chart" height="200"></canvas>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-label">D gas a esta T</div>
+      <div class="card-val" id="dgas">—</div>
+      <div class="card-sub">× 10⁻⁵ m²/s</div>
+    </div>
+    <div class="card">
+      <div class="card-label">D líquido a esta T</div>
+      <div class="card-val" id="dliq">—</div>
+      <div class="card-sub">× 10⁻⁹ m²/s</div>
+    </div>
+    <div class="card">
+      <div class="card-label">D gas / D líquido</div>
+      <div class="card-val" id="ratio">—</div>
+      <div class="card-sub">veces más rápido</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Sensibilidad a T</div>
+      <div class="card-val" id="sensit">—</div>
+      <div class="card-sub" id="sensit-sub">—</div>
+    </div>
+  </div>
+
+  <div class="insight" id="insight-box">Mové el slider para explorar.</div>
+
+  <canvas id="c-micro" height="160"></canvas>
+
+  <div class="btns">
+    <button onclick="sendPrompt('¿Qué es la ecuación de Chapman-Enskog para difusión en gases?')">Chapman-Enskog ↗</button>
+    <button onclick="sendPrompt('¿Qué es la ecuación de Stokes-Einstein para difusión en líquidos?')">Stokes-Einstein ↗</button>
+    <button onclick="sendPrompt('¿Cómo afecta la presión a la difusión en gases?')">Efecto de la presión ↗</button>
+  </div>
+</div>
+
+<script>
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+
+function Dgas(T) {
+  return 1.8e-5 * Math.pow(T / 300, 1.75);
+}
+function Dliq(T) {
+  const Tref = 298, Dref = 6.7e-10, Ea_R = 2000;
+  return Dref * Math.exp(-Ea_R * (1/T - 1/Tref));
+}
+
+function getW(id) { return document.getElementById(id).parentElement.offsetWidth; }
+
+function drawChart(T) {
+  const canvas = document.getElementById('c-chart');
+  canvas.width = getW('c-chart'); canvas.height = 200;
+  const W = canvas.width, H = 200;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+
+  const padL = 48, padR = 20, padT = 16, padB = 32;
+  const pW = W - padL - padR, pH = H - padT - padB;
+
+  const Tmin = 250, Tmax = 600;
+  const gasMax = Dgas(Tmax), liqMax = Dliq(Tmax);
+
+  const toXp = t => padL + (t - Tmin) / (Tmax - Tmin) * pW;
+  const toYgas = d => padT + pH - (d / gasMax) * pH * 0.88;
+  const toYliq = d => padT + pH - (d / liqMax) * pH * 0.88;
+
+  ctx.strokeStyle = isDark ? 'rgba(200,200,200,0.15)' : 'rgba(0,0,0,0.1)';
+  ctx.lineWidth = 0.5;
+  [0.25, 0.5, 0.75, 1].forEach(f => {
+    const y = padT + pH * (1 - f * 0.88);
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + pW, y); ctx.stroke();
+  });
+
+  ctx.strokeStyle = isDark ? 'rgba(200,200,200,0.2)' : 'rgba(0,0,0,0.12)';
+  ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + pH); ctx.lineTo(padL + pW, padT + pH); ctx.stroke();
+
+  ctx.font = '10px sans-serif'; ctx.fillStyle = isDark ? 'rgba(180,180,180,0.6)' : 'rgba(80,80,80,0.7)';
+  ctx.textAlign = 'center';
+  [300, 400, 500, 600].forEach(t => {
+    ctx.fillText(t + 'K', toXp(t), H - 6);
+  });
+
+  const N = 120;
+  [
+    { fn: Dgas, norm: gasMax, color: '#E85D24', width: 2 },
+    { fn: Dliq, norm: liqMax, color: '#185FA5', width: 2 }
+  ].forEach(({ fn, norm, color, width }) => {
+    ctx.strokeStyle = color; ctx.lineWidth = width; ctx.beginPath();
+    for (let i = 0; i <= N; i++) {
+      const t = Tmin + (Tmax - Tmin) * i / N;
+      const y = padT + pH - (fn(t) / norm) * pH * 0.88;
+      if (i === 0) ctx.moveTo(toXp(t), y); else ctx.lineTo(toXp(t), y);
+    }
+    ctx.stroke();
+  });
+
+  const xT = toXp(T);
+  ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.18)';
+  ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(xT, padT); ctx.lineTo(xT, padT + pH); ctx.stroke();
+  ctx.setLineDash([]);
+
+  const yG = padT + pH - (Dgas(T) / gasMax) * pH * 0.88;
+  const yL = padT + pH - (Dliq(T) / liqMax) * pH * 0.88;
+  ctx.fillStyle = '#E85D24'; ctx.beginPath(); ctx.arc(xT, yG, 5, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#185FA5'; ctx.beginPath(); ctx.arc(xT, yL, 5, 0, Math.PI * 2); ctx.fill();
+
+  ctx.fillStyle = isDark ? 'rgba(180,180,180,0.5)' : 'rgba(80,80,80,0.5)';
+  ctx.font = '10px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('D normalizado', padL + 2, padT + 10);
+}
+
+function drawMicro(T) {
+  const canvas = document.getElementById('c-micro');
+  canvas.width = getW('c-micro'); canvas.height = 160;
+  const W = canvas.width, H = 160;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+
+  const halfW = W / 2 - 10;
+  const speed = 0.3 + (T - 250) / 350 * 0.7;
+  const liqViscosity = Math.max(0.15, 1 - (T - 250) / 350 * 0.7);
+
+  ctx.strokeStyle = isDark ? 'rgba(200,200,200,0.1)' : 'rgba(0,0,0,0.07)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(W/2, 0); ctx.lineTo(W/2, H); ctx.stroke();
+
+  ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillStyle = isDark ? '#E8A080' : '#993C1D';
+  ctx.fillText('Gas', halfW / 2 + 10, 14);
+  ctx.fillStyle = isDark ? '#85B7EB' : '#0C447C';
+  ctx.fillText('Líquido', W/2 + halfW/2 + 10, 14);
+
+  const seed = Math.round(T / 10);
+  function pseudoRand(i, s) { return ((Math.sin(i * 127.1 + s * 311.7) * 43758.5453) % 1 + 1) % 1; }
+
+  for (let i = 0; i < 18; i++) {
+    const bx = 12 + pseudoRand(i, seed) * (halfW - 8);
+    const by = 24 + pseudoRand(i, seed + 1) * (H - 36);
+    const tailLen = speed * (28 + pseudoRand(i, seed + 2) * 18);
+    const angle = pseudoRand(i, seed + 3) * Math.PI * 2;
+    const r = 5 + speed * 2;
+    ctx.strokeStyle = isDark ? 'rgba(232,93,36,0.35)' : 'rgba(220,75,20,0.25)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(bx, by);
+    ctx.lineTo(bx - Math.cos(angle) * tailLen, by - Math.sin(angle) * tailLen);
+    ctx.stroke();
+    ctx.fillStyle = isDark ? '#E85D24' : '#D85A30';
+    ctx.beginPath(); ctx.arc(bx, by, r, 0, Math.PI * 2); ctx.fill();
+  }
+
+  for (let i = 0; i < 26; i++) {
+    const bx = W/2 + 10 + pseudoRand(i + 50, seed) * (halfW - 12);
+    const by = 24 + pseudoRand(i + 50, seed + 1) * (H - 36);
+    const tailLen = liqViscosity < 0.5 ? speed * (6 + pseudoRand(i, seed + 2) * 6) : speed * (3 + pseudoRand(i, seed + 2) * 4);
+    const angle = pseudoRand(i + 50, seed + 3) * Math.PI * 2;
+
+    const neighborDist = 14 + liqViscosity * 4;
+    for (let j = i + 1; j < 26; j++) {
+      const bx2 = W/2 + 10 + pseudoRand(j + 50, seed) * (halfW - 12);
+      const by2 = 24 + pseudoRand(j + 50, seed + 1) * (H - 36);
+      const dist = Math.sqrt((bx - bx2) ** 2 + (by - by2) ** 2);
+      if (dist < neighborDist) {
+        ctx.strokeStyle = isDark ? 'rgba(59,139,212,0.2)' : 'rgba(24,95,165,0.15)';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx2, by2); ctx.stroke();
+      }
+    }
+
+    ctx.strokeStyle = isDark ? 'rgba(59,139,212,0.4)' : 'rgba(24,95,165,0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(bx, by);
+    ctx.lineTo(bx - Math.cos(angle) * tailLen, by - Math.sin(angle) * tailLen);
+    ctx.stroke();
+
+    ctx.fillStyle = isDark ? '#3B8BD4' : '#185FA5';
+    ctx.beginPath(); ctx.arc(bx, by, 5, 0, Math.PI * 2); ctx.fill();
+  }
+
+  ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillStyle = isDark ? 'rgba(232,93,36,0.7)' : 'rgba(153,60,29,0.7)';
+  ctx.fillText('trayectoria larga, pocas colisiones', halfW / 2 + 10, H - 6);
+  ctx.fillStyle = isDark ? 'rgba(59,139,212,0.7)' : 'rgba(12,68,124,0.7)';
+  ctx.fillText('movimiento corto, cage effect', W/2 + halfW/2 + 10, H - 6);
+}
+
+function update() {
+  const T = parseInt(document.getElementById('sl-T').value);
+  document.getElementById('v-T').textContent = T + ' K (' + Math.round(T - 273) + ' °C)';
+
+  const dg = Dgas(T), dl = Dliq(T);
+  document.getElementById('dgas').textContent = (dg * 1e5).toFixed(2);
+  document.getElementById('dliq').textContent = (dl * 1e9).toFixed(2);
+  document.getElementById('ratio').textContent = Math.round(dg / dl / 1000) + '×10³';
+
+  const dT = 10;
+  const sensG = ((Dgas(T + dT) - Dgas(T - dT)) / (2 * dT)) * T / Dgas(T);
+  const sensL = ((Dliq(T + dT) - Dliq(T - dT)) / (2 * dT)) * T / Dliq(T);
+  if (sensL > sensG) {
+    document.getElementById('sensit').textContent = 'Líquido';
+    document.getElementById('sensit-sub').textContent = 'más sensible a T';
+  } else {
+    document.getElementById('sensit').textContent = 'Similares';
+    document.getElementById('sensit-sub').textContent = 'a alta temperatura';
+  }
+
+  let insight;
+  if (T < 300) {
+    insight = 'Temperatura baja: el líquido es muy viscoso, la difusión es lenta. El gas, en cambio, todavía se mueve libremente — las moléculas siguen volando a ~400 m/s.';
+  } else if (T < 370) {
+    insight = 'Temperatura moderada. El D del gas crece suavemente ∝ T¹·⁷⁵ (Chapman-Enskog). El D del líquido crece más abruptamente porque cada kelvin reduce la viscosidad del agua notablemente.';
+  } else if (T < 500) {
+    insight = 'Temperatura alta: la viscosidad del líquido cae bastante. La difusión en el líquido se acelera con más fuerza relativa, siguiendo Stokes-Einstein: D = kT / (6πηr).';
+  } else {
+    insight = 'Temperatura muy alta. Los dos regímenes convergen en su sensibilidad relativa. El gas sigue siendo ~10.000× más difusivo que el líquido en valores absolutos.';
+  }
+  document.getElementById('insight-box').textContent = insight;
+
+  drawChart(T);
+  drawMicro(T);
+}
+
+update();
+window.addEventListener('resize', update);
+</script>

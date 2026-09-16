@@ -1,0 +1,279 @@
+
+<style>
+* { box-sizing: border-box; }
+.fick-wrap { font-family: var(--font-sans); padding: 1rem 0; }
+.tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+.tab { font-size: 13px; padding: 6px 18px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; transition: all .15s; }
+.tab.on { background: var(--color-background-info); color: var(--color-text-info); border-color: var(--color-border-info); font-weight: 500; }
+.panel { display: none; } .panel.on { display: block; }
+.formula-card { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1rem; text-align: center; }
+.formula { font-family: var(--font-mono); font-size: 20px; font-weight: 500; color: var(--color-text-primary); letter-spacing: 1px; }
+.legend-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; justify-content: center; }
+.leg { font-size: 12px; color: var(--color-text-secondary); background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 3px 10px; border: 0.5px solid var(--color-border-tertiary); }
+.leg b { color: var(--color-text-primary); font-weight: 500; }
+canvas { display: block; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); width: 100%; margin-bottom: 1rem; }
+.ctrl { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px; color: var(--color-text-secondary); }
+.ctrl input { flex: 1; }
+.ctrl span { min-width: 48px; text-align: right; font-weight: 500; color: var(--color-text-primary); }
+.insight { font-size: 13px; color: var(--color-text-secondary); background: var(--color-background-secondary); border-left: 2px solid var(--color-border-info); border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; padding: 8px 12px; margin-top: 8px; }
+</style>
+<h2 class="sr-only">Visualización interactiva de la Primera y Segunda Ley de Fick sobre difusión</h2>
+<div class="fick-wrap">
+  <div class="tabs">
+    <button class="tab on" onclick="showTab('f1',this)">Primera ley de Fick</button>
+    <button class="tab" onclick="showTab('f2',this)">Segunda ley de Fick</button>
+  </div>
+
+  <div id="f1" class="panel on">
+    <div class="formula-card">
+      <div class="formula">J = −D · (dC/dx)</div>
+      <div class="legend-row">
+        <span class="leg"><b>J</b> = flujo de difusión [mol/m²·s]</span>
+        <span class="leg"><b>D</b> = coeficiente de difusión [m²/s]</span>
+        <span class="leg"><b>dC/dx</b> = gradiente de concentración</span>
+        <span class="leg"><b>−</b> flujo va de mayor a menor C</span>
+      </div>
+    </div>
+    <canvas id="c1" height="200"></canvas>
+    <div class="ctrl">
+      <label>Gradiente (ΔC)</label>
+      <input type="range" id="sl-grad" min="1" max="10" value="5" step="1" oninput="drawF1()">
+      <span id="v-grad">5</span>
+    </div>
+    <div class="ctrl">
+      <label>Difusividad (D)</label>
+      <input type="range" id="sl-D" min="1" max="10" value="5" step="1" oninput="drawF1()">
+      <span id="v-D">5</span>
+    </div>
+    <div class="insight" id="insight1">El flujo neto depende de cuán empinado es el gradiente y cuán "permeable" es el medio.</div>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+      <button onclick="sendPrompt('¿Qué unidades tiene el coeficiente de difusión D y de qué depende?')">¿Qué es D? ↗</button>
+      <button onclick="sendPrompt('¿Por qué la ley de Fick tiene un signo negativo?')">¿Por qué el signo −? ↗</button>
+    </div>
+  </div>
+
+  <div id="f2" class="panel">
+    <div class="formula-card">
+      <div class="formula">∂C/∂t = D · ∂²C/∂x²</div>
+      <div class="legend-row">
+        <span class="leg"><b>∂C/∂t</b> = cómo cambia C con el tiempo</span>
+        <span class="leg"><b>∂²C/∂x²</b> = curvatura del perfil de C</span>
+        <span class="leg"><b>D</b> = coeficiente de difusión</span>
+      </div>
+    </div>
+    <canvas id="c2" height="220"></canvas>
+    <div class="ctrl">
+      <label>Tiempo (t)</label>
+      <input type="range" id="sl-t" min="1" max="60" value="1" step="1" oninput="drawF2()">
+      <span id="v-t">t = 1</span>
+    </div>
+    <div class="ctrl">
+      <label>Difusividad (D)</label>
+      <input type="range" id="sl-D2" min="1" max="5" value="2" step="1" oninput="drawF2()">
+      <span id="v-D2">2</span>
+    </div>
+    <div class="insight" id="insight2">La segunda ley describe la evolución temporal: el perfil se "aplana" con el tiempo hasta alcanzar el equilibrio.</div>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+      <button onclick="sendPrompt('¿Cuál es la relación entre la primera y la segunda ley de Fick?')">Relación entre ambas leyes ↗</button>
+      <button onclick="sendPrompt('¿Cómo se aplica la segunda ley de Fick en biología o medicina?')">Aplicaciones en biología ↗</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  if (id === 'f1') drawF1(); else drawF2();
+}
+
+function getW(id) { return document.getElementById(id).parentElement.offsetWidth; }
+
+function drawF1() {
+  const grad = parseInt(document.getElementById('sl-grad').value);
+  const D = parseInt(document.getElementById('sl-D').value);
+  document.getElementById('v-grad').textContent = grad;
+  document.getElementById('v-D').textContent = D;
+  const J = D * grad;
+
+  const canvas = document.getElementById('c1');
+  canvas.width = getW('c1'); canvas.height = 200;
+  const W = canvas.width, H = 200;
+  const ctx = canvas.getContext('2d');
+  const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  ctx.clearRect(0, 0, W, H);
+
+  const padL = 60, padR = 40, padT = 24, padB = 36;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+
+  // axes
+  ctx.strokeStyle = isDark ? 'rgba(200,200,200,0.2)' : 'rgba(0,0,0,0.15)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT+plotH); ctx.lineTo(padL+plotW, padT+plotH); ctx.stroke();
+
+  // axis labels
+  ctx.fillStyle = isDark ? 'rgba(180,180,180,0.7)' : 'rgba(60,60,60,0.7)';
+  ctx.font = '11px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('x (posición)', padL + plotW/2, H - 4);
+  ctx.save(); ctx.translate(14, padT + plotH/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('C (concentración)', 0, 0); ctx.restore();
+
+  // concentration profile: linear from high to low
+  const cHigh = 20 + grad * 6;
+  const cLow = 20;
+  const toY = c => padT + plotH - (c - cLow) / (cHigh - cLow) * plotH * 0.85 - 10;
+  const toX = frac => padL + frac * plotW;
+
+  // gradient fill under curve
+  const grd = ctx.createLinearGradient(toX(0), 0, toX(1), 0);
+  grd.addColorStop(0, isDark ? 'rgba(232,93,36,0.3)' : 'rgba(220,75,20,0.18)');
+  grd.addColorStop(1, isDark ? 'rgba(59,139,212,0.3)' : 'rgba(24,95,165,0.18)');
+  ctx.fillStyle = grd;
+  ctx.beginPath();
+  ctx.moveTo(toX(0), toY(cHigh));
+  ctx.lineTo(toX(1), toY(cLow));
+  ctx.lineTo(toX(1), padT + plotH);
+  ctx.lineTo(toX(0), padT + plotH);
+  ctx.closePath(); ctx.fill();
+
+  // concentration line
+  ctx.strokeStyle = isDark ? '#85B7EB' : '#185FA5';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(toX(0), toY(cHigh)); ctx.lineTo(toX(1), toY(cLow)); ctx.stroke();
+
+  // flux arrow (in the middle, size proportional to J)
+  const arrowY = padT + plotH * 0.4;
+  const arrowLen = Math.min(plotW * 0.55, J * 8);
+  const arrowX = padL + plotW/2 - arrowLen/2;
+  ctx.strokeStyle = isDark ? '#EF9F27' : '#BA7517';
+  ctx.lineWidth = 2 + J/30;
+  ctx.beginPath(); ctx.moveTo(arrowX, arrowY); ctx.lineTo(arrowX + arrowLen, arrowY); ctx.stroke();
+  ctx.fillStyle = isDark ? '#EF9F27' : '#BA7517';
+  ctx.beginPath(); ctx.moveTo(arrowX+arrowLen, arrowY); ctx.lineTo(arrowX+arrowLen-8, arrowY-5); ctx.lineTo(arrowX+arrowLen-8, arrowY+5); ctx.closePath(); ctx.fill();
+  ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('J = ' + J, arrowX + arrowLen/2, arrowY - 9);
+
+  // high / low labels
+  ctx.fillStyle = isDark ? '#E85D24' : '#993C1D';
+  ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('Alta C', padL + 4, toY(cHigh) - 6);
+  ctx.fillStyle = isDark ? '#3B8BD4' : '#0C447C';
+  ctx.textAlign = 'right';
+  ctx.fillText('Baja C', padL + plotW - 2, toY(cLow) - 6);
+
+  const insightEl = document.getElementById('insight1');
+  if (grad >= 8 && D >= 8) insightEl.textContent = 'Gradiente alto + D alto = flujo máximo. El material difunde muy rápido.';
+  else if (grad <= 2) insightEl.textContent = 'Gradiente pequeño → flujo casi nulo, aunque D sea grande.';
+  else if (D <= 2) insightEl.textContent = 'D pequeño → el medio es muy resistente, el flujo es bajo aunque el gradiente sea alto.';
+  else insightEl.textContent = 'El flujo neto J depende de cuán empinado es el gradiente y cuán "permeable" es el medio.';
+}
+
+function drawF2() {
+  const t = parseInt(document.getElementById('sl-t').value);
+  const D = parseInt(document.getElementById('sl-D2').value);
+  document.getElementById('v-t').textContent = 't = ' + t;
+  document.getElementById('v-D2').textContent = D;
+
+  const canvas = document.getElementById('c2');
+  canvas.width = getW('c2'); canvas.height = 220;
+  const W = canvas.width, H = 220;
+  const ctx = canvas.getContext('2d');
+  const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  ctx.clearRect(0, 0, W, H);
+
+  const padL = 60, padR = 30, padT = 24, padB = 36;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const N = 300;
+  const sigma = Math.sqrt(2 * D * t);
+
+  // axes
+  ctx.strokeStyle = isDark ? 'rgba(200,200,200,0.2)' : 'rgba(0,0,0,0.15)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT+plotH); ctx.lineTo(padL+plotW, padT+plotH); ctx.stroke();
+
+  ctx.fillStyle = isDark ? 'rgba(180,180,180,0.7)' : 'rgba(60,60,60,0.7)';
+  ctx.font = '11px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('x (posición)', padL + plotW/2, H - 4);
+  ctx.save(); ctx.translate(14, padT + plotH/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('C (concentración)', 0, 0); ctx.restore();
+
+  // draw a few ghost profiles for early times
+  const ghostTimes = [1, 5, 15];
+  ghostTimes.forEach((gt, i) => {
+    if (gt >= t) return;
+    const gs = Math.sqrt(2 * D * gt);
+    const alpha = 0.12 + i * 0.06;
+    ctx.strokeStyle = isDark ? `rgba(140,140,140,${alpha})` : `rgba(100,100,100,${alpha})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let k = 0; k <= N; k++) {
+      const xFrac = k / N;
+      const xVal = (xFrac - 0.5) * 10;
+      const c = Math.exp(-xVal*xVal / (2*gs*gs)) / (gs * Math.sqrt(2*Math.PI));
+      const px = padL + xFrac * plotW;
+      const py = padT + plotH - c * plotH * 2.2 * Math.max(0.3, gs);
+      if (k === 0) ctx.moveTo(px, Math.max(padT, py)); else ctx.lineTo(px, Math.max(padT, py));
+    }
+    ctx.stroke();
+  });
+
+  // main profile
+  const points = [];
+  let maxC = 0;
+  for (let k = 0; k <= N; k++) {
+    const xFrac = k / N;
+    const xVal = (xFrac - 0.5) * 10;
+    const c = Math.exp(-xVal*xVal / (2*sigma*sigma)) / (sigma * Math.sqrt(2*Math.PI));
+    if (c > maxC) maxC = c;
+    points.push({ px: padL + xFrac * plotW, c });
+  }
+  const scale = plotH * 0.88 / maxC;
+
+  // fill
+  const grd = ctx.createLinearGradient(0, padT, 0, padT + plotH);
+  grd.addColorStop(0, isDark ? 'rgba(59,139,212,0.35)' : 'rgba(24,95,165,0.18)');
+  grd.addColorStop(1, isDark ? 'rgba(59,139,212,0.02)' : 'rgba(24,95,165,0.02)');
+  ctx.fillStyle = grd;
+  ctx.beginPath();
+  points.forEach((p, k) => {
+    const py = padT + plotH - p.c * scale;
+    if (k === 0) ctx.moveTo(p.px, Math.max(padT, py)); else ctx.lineTo(p.px, Math.max(padT, py));
+  });
+  ctx.lineTo(points[points.length-1].px, padT+plotH);
+  ctx.lineTo(points[0].px, padT+plotH);
+  ctx.closePath(); ctx.fill();
+
+  ctx.strokeStyle = isDark ? '#85B7EB' : '#185FA5';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  points.forEach((p, k) => {
+    const py = padT + plotH - p.c * scale;
+    if (k === 0) ctx.moveTo(p.px, Math.max(padT, py)); else ctx.lineTo(p.px, Math.max(padT, py));
+  });
+  ctx.stroke();
+
+  // sigma annotation
+  const midX = padL + plotW/2;
+  const halfSigmaX = (sigma/10) * plotW;
+  ctx.strokeStyle = isDark ? 'rgba(239,159,39,0.6)' : 'rgba(186,117,23,0.6)';
+  ctx.lineWidth = 0.5; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(midX - halfSigmaX, padT+10); ctx.lineTo(midX - halfSigmaX, padT+plotH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(midX + halfSigmaX, padT+10); ctx.lineTo(midX + halfSigmaX, padT+plotH); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = isDark ? '#EF9F27' : '#854F0B';
+  ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('σ = √(2Dt)', midX, padT + 14);
+
+  const insightEl = document.getElementById('insight2');
+  if (t <= 3) insightEl.textContent = 'Tiempo inicial: el pulso de concentración es estrecho y alto.';
+  else if (t >= 45) insightEl.textContent = 'Tiempo largo: el perfil se ha aplanado mucho. El equilibrio se acerca.';
+  else insightEl.textContent = 'El ancho del perfil crece como √(2Dt). Mayor D o mayor t → difusión más extendida.';
+}
+
+drawF1();
+window.addEventListener('resize', () => { drawF1(); drawF2(); });
+</script>

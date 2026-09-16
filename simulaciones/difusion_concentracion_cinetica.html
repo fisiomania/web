@@ -1,0 +1,254 @@
+
+<style>
+  * { box-sizing: border-box; }
+  .sim-wrap { font-family: var(--font-sans); padding: 1rem 0; }
+  canvas { display: block; border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); width: 100%; }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1rem; align-items: center; }
+  .ctrl-group { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 140px; }
+  .ctrl-label { font-size: 12px; color: var(--color-text-secondary); }
+  .ctrl-val { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .stats-row { display: flex; gap: 12px; margin-top: 12px; }
+  .stat-card { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 8px 14px; flex: 1; }
+  .stat-label { font-size: 11px; color: var(--color-text-secondary); }
+  .stat-val { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin-top: 2px; }
+  .btn-row { display: flex; gap: 8px; margin-top: 12px; }
+  button { font-size: 13px; padding: 6px 16px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); cursor: pointer; }
+  button:hover { background: var(--color-background-secondary); }
+  button.active { background: var(--color-background-info); color: var(--color-text-info); border-color: var(--color-border-info); }
+  .legend { display: flex; gap: 16px; margin-top: 8px; }
+  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--color-text-secondary); }
+  .leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .phase-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 6px; min-height: 18px; }
+</style>
+<h2 class="sr-only">Simulador interactivo de difusión: relación entre concentración y cinética de partículas</h2>
+<div class="sim-wrap">
+  <canvas id="c" height="240"></canvas>
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:#E85D24"></div>Zona de alta concentración</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#3B8BD4"></div>Zona de baja concentración</div>
+    <div class="leg-item"><div class="leg-dot" style="background:rgba(120,120,120,0.5)"></div>Partícula en movimiento</div>
+  </div>
+  <div class="phase-label" id="phase-label">Fase: Alta diferencia de concentración → flujo neto rápido</div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Flujo neto (partículas/s)</div>
+      <div class="stat-val" id="stat-flux">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Concentración izquierda</div>
+      <div class="stat-val" id="stat-left">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Concentración derecha</div>
+      <div class="stat-val" id="stat-right">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Gradiente</div>
+      <div class="stat-val" id="stat-grad">—</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-group">
+      <span class="ctrl-label">Temperatura (velocidad cinética) <span class="ctrl-val" id="val-temp">50</span></span>
+      <input type="range" id="sl-temp" min="10" max="100" value="50">
+    </div>
+    <div class="ctrl-group">
+      <span class="ctrl-label">N° de partículas <span class="ctrl-val" id="val-n">80</span></span>
+      <input type="range" id="sl-n" min="20" max="180" value="80" step="10">
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button id="btn-reset" onclick="resetSim()">Reiniciar</button>
+    <button id="btn-pause" onclick="togglePause()">Pausar</button>
+    <button onclick="sendPrompt('¿Qué dice la ley de Fick sobre el flujo de difusión?')">Ley de Fick ↗</button>
+    <button onclick="sendPrompt('¿Cómo afecta la temperatura a la difusión en gases vs líquidos?')">Temperatura y difusión ↗</button>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+
+let W, H, particles = [], paused = false, frame = 0;
+let fluxHistory = [], lastCrossings = 0, crossingCount = 0;
+
+function resize() {
+  W = canvas.parentElement.offsetWidth;
+  canvas.width = W;
+  H = canvas.height = 240;
+}
+
+function getTemp() { return parseInt(document.getElementById('sl-temp').value); }
+function getN()    { return parseInt(document.getElementById('sl-n').value); }
+
+function makeParticle(xMin, xMax) {
+  return {
+    x: xMin + Math.random() * (xMax - xMin),
+    y: 20 + Math.random() * (H - 40),
+    vx: (Math.random() - 0.5),
+    vy: (Math.random() - 0.5),
+    r: 5,
+    side: xMax <= W/2 ? 'L' : 'R'
+  };
+}
+
+function resetSim() {
+  const n = getN();
+  particles = [];
+  const nLeft = Math.round(n * 0.8);
+  const nRight = n - nLeft;
+  for (let i = 0; i < nLeft; i++) particles.push(makeParticle(10, W/2 - 10));
+  for (let i = 0; i < nRight; i++) particles.push(makeParticle(W/2 + 10, W - 10));
+  fluxHistory = [];
+  crossingCount = 0;
+  frame = 0;
+}
+
+function togglePause() {
+  paused = !paused;
+  document.getElementById('btn-pause').textContent = paused ? 'Reanudar' : 'Pausar';
+  document.getElementById('btn-pause').classList.toggle('active', paused);
+  if (!paused) loop();
+}
+
+function getColor(p, alpha) {
+  const onLeft = p.x < W/2;
+  if (isDark) return onLeft ? `rgba(232,93,36,${alpha})` : `rgba(59,139,212,${alpha})`;
+  return onLeft ? `rgba(220,75,20,${alpha})` : `rgba(24,95,165,${alpha})`;
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  const nLeft = particles.filter(p => p.x < W/2).length;
+  const nRight = particles.length - nLeft;
+  const leftConc = nLeft / (W/2 * H);
+  const rightConc = nRight / (W/2 * H);
+  const maxConc = particles.length / (W/2 * H);
+
+  // background gradient zones
+  const leftAlpha = 0.08 + 0.22 * (nLeft / particles.length);
+  const rightAlpha = 0.08 + 0.22 * (nRight / particles.length);
+  ctx.fillStyle = isDark ? `rgba(232,93,36,${leftAlpha})` : `rgba(220,75,20,${leftAlpha})`;
+  ctx.beginPath(); ctx.roundRect(0, 0, W/2, H, [var_radius(), 0, 0, var_radius()]); ctx.fill();
+  ctx.fillStyle = isDark ? `rgba(59,139,212,${rightAlpha})` : `rgba(24,95,165,${rightAlpha})`;
+  ctx.beginPath(); ctx.roundRect(W/2, 0, W/2, H, [0, var_radius(), var_radius(), 0]); ctx.fill();
+
+  // membrane line
+  ctx.strokeStyle = isDark ? 'rgba(200,200,200,0.25)' : 'rgba(60,60,60,0.2)';
+  ctx.lineWidth = 1; ctx.setLineDash([6, 5]);
+  ctx.beginPath(); ctx.moveTo(W/2, 0); ctx.lineTo(W/2, H); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // concentration bar charts (top)
+  const barW = 60, barMaxH = 30;
+  const lH = Math.min(barMaxH, barMaxH * nLeft / particles.length * 2);
+  const rH = Math.min(barMaxH, barMaxH * nRight / particles.length * 2);
+  ctx.fillStyle = isDark ? 'rgba(232,93,36,0.7)' : 'rgba(220,75,20,0.7)';
+  ctx.fillRect(W/4 - barW/2, 6, barW, lH);
+  ctx.fillStyle = isDark ? 'rgba(59,139,212,0.7)' : 'rgba(24,95,165,0.7)';
+  ctx.fillRect(3*W/4 - barW/2, 6, barW, rH);
+
+  // particles
+  for (const p of particles) {
+    const onLeft = p.x < W/2;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = onLeft
+      ? (isDark ? 'rgba(232,93,36,0.85)' : 'rgba(220,75,20,0.82)')
+      : (isDark ? 'rgba(59,139,212,0.85)' : 'rgba(24,95,165,0.82)');
+    ctx.fill();
+    // speed indicator (tail)
+    const speed = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+    ctx.strokeStyle = onLeft
+      ? (isDark ? 'rgba(232,93,36,0.3)' : 'rgba(220,75,20,0.25)')
+      : (isDark ? 'rgba(59,139,212,0.3)' : 'rgba(24,95,165,0.25)');
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+    ctx.lineTo(p.x - p.vx * 4, p.y - p.vy * 4);
+    ctx.stroke();
+  }
+
+  // labels
+  ctx.font = '11px sans-serif';
+  ctx.fillStyle = isDark ? 'rgba(232,93,36,0.9)' : 'rgba(180,55,10,0.9)';
+  ctx.textAlign = 'center';
+  ctx.fillText('Alta concentración', W/4, H - 8);
+  ctx.fillStyle = isDark ? 'rgba(59,139,212,0.9)' : 'rgba(20,80,150,0.9)';
+  ctx.fillText('Baja concentración', 3*W/4, H - 8);
+
+  // stats
+  document.getElementById('stat-left').textContent = nLeft;
+  document.getElementById('stat-right').textContent = nRight;
+  const grad = nLeft - nRight;
+  document.getElementById('stat-grad').textContent = (grad > 0 ? '+' : '') + grad;
+
+  // flux (rolling average of crossings per 60 frames)
+  if (frame % 60 === 0 && frame > 0) {
+    fluxHistory.push(crossingCount);
+    if (fluxHistory.length > 5) fluxHistory.shift();
+    crossingCount = 0;
+  }
+  const avgFlux = fluxHistory.length ? Math.round(fluxHistory.reduce((a,b)=>a+b,0)/fluxHistory.length) : 0;
+  document.getElementById('stat-flux').textContent = avgFlux;
+
+  // phase label
+  const gradAbs = Math.abs(grad);
+  let phase;
+  if (gradAbs > particles.length * 0.3) phase = 'Gradiente alto → flujo neto rápido';
+  else if (gradAbs > particles.length * 0.1) phase = 'Gradiente moderado → flujo neto medio';
+  else if (gradAbs > particles.length * 0.03) phase = 'Casi equilibrio → flujo neto mínimo';
+  else phase = 'Equilibrio dinámico: movimiento continuo, flujo neto ≈ 0';
+  document.getElementById('phase-label').textContent = 'Fase: ' + phase;
+}
+
+function var_radius() { return 12; }
+
+function update() {
+  const temp = getTemp();
+  const speed = 0.8 + temp * 0.06;
+  for (const p of particles) {
+    const prevX = p.x;
+    // random walk scaled by temperature
+    p.vx += (Math.random() - 0.5) * 0.6;
+    p.vy += (Math.random() - 0.5) * 0.6;
+    // normalize speed
+    const mag = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+    if (mag > 0) { p.vx = p.vx/mag * speed; p.vy = p.vy/mag * speed; }
+    p.x += p.vx; p.y += p.vy;
+    // walls
+    if (p.x < p.r) { p.x = p.r; p.vx *= -1; }
+    if (p.x > W - p.r) { p.x = W - p.r; p.vx *= -1; }
+    if (p.y < p.r) { p.y = p.r; p.vy *= -1; }
+    if (p.y > H - p.r) { p.y = H - p.r; p.vy *= -1; }
+    // detect membrane crossing
+    if ((prevX < W/2 && p.x >= W/2) || (prevX >= W/2 && p.x < W/2)) crossingCount++;
+  }
+}
+
+function loop() {
+  if (paused) return;
+  frame++;
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+document.getElementById('sl-temp').addEventListener('input', function() {
+  document.getElementById('val-temp').textContent = this.value;
+});
+document.getElementById('sl-n').addEventListener('input', function() {
+  document.getElementById('val-n').textContent = this.value;
+  resetSim();
+});
+
+resize();
+resetSim();
+loop();
+window.addEventListener('resize', () => { resize(); resetSim(); });
+</script>

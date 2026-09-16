@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hemodinamia del capilar glomerular</title>
+<style>
+  :root{
+    --bg: #0d1720;
+    --bg-panel: #142331;
+    --bg-panel-2: #182a3b;
+    --line: #29435a;
+    --text: #e9f0f6;
+    --text-dim: #8fa7bd;
+    --text-faint: #5d7488;
+    --hydro: #e2624f;
+    --onco: #4fc3bf;
+    --peuf: #e8b355;
+    --good: #6fbf8b;
+    --warn: #e2624f;
+    --serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: radial-gradient(circle at 15% 0%, #132234 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: var(--sans);
+    padding: 28px 20px 60px;
+    line-height: 1.5;
+  }
+  .wrap{max-width: 1180px; margin: 0 auto;}
+
+  header{margin-bottom: 26px; border-bottom: 1px solid var(--line); padding-bottom: 20px;}
+  .kicker{color: var(--text-faint); font-size: 12.5px; letter-spacing: 0.02em; margin-bottom: 6px;}
+  h1{
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 30px;
+    margin: 0 0 8px;
+    color: #f4f8fb;
+  }
+  header p{color: var(--text-dim); max-width: 640px; margin: 0; font-size: 15px;}
+
+  .layout{
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  @media (max-width: 880px){
+    .layout{grid-template-columns: 1fr;}
+  }
+
+  .panel{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .panel + .panel{margin-top: 18px;}
+
+  h2{
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    margin: 0 0 4px;
+    color: #f4f8fb;
+  }
+  .subtle{color: var(--text-faint); font-size: 12.5px; margin: 0 0 16px;}
+
+  .slider-block{margin-bottom: 20px;}
+  .slider-block:last-child{margin-bottom: 4px;}
+  .slider-label{
+    display:flex; justify-content: space-between; align-items: baseline;
+    font-size: 13.5px; margin-bottom: 8px; color: var(--text);
+  }
+  .slider-label span.val{color: var(--text-dim); font-variant-numeric: tabular-nums; font-size: 12.5px;}
+  input[type=range]{
+    -webkit-appearance:none; appearance:none;
+    width: 100%; height: 4px; border-radius: 2px;
+    background: linear-gradient(90deg, #3a5674, #3a5674);
+    outline:none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: #f4f8fb; border: 3px solid #4fc3bf;
+    cursor:pointer; margin-top:-1px;
+  }
+  input[type=range]::-moz-range-thumb{
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #f4f8fb; border: 3px solid #4fc3bf; cursor:pointer;
+  }
+  .slider-ends{display:flex; justify-content: space-between; font-size: 10.5px; color: var(--text-faint); margin-top:4px;}
+
+  .presets{display:flex; flex-direction:column; gap:8px;}
+  .preset-btn{
+    text-align:left;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 9px 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .preset-btn:hover{border-color:#4fc3bf;}
+  .preset-btn.active{
+    border-color:#4fc3bf;
+    background: #16323a;
+  }
+  .preset-btn .pname{font-weight:600; display:block; margin-bottom: 2px;}
+  .preset-btn .pdesc{color: var(--text-faint); font-size: 11.5px;}
+
+  .reset-link{
+    display:inline-block; margin-top: 14px; font-size: 12.5px; color: var(--text-dim);
+    cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+  }
+  .reset-link:hover{color:#fff;}
+
+  .chart-card{padding: 22px 22px 10px;}
+  .chart-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 6px; flex-wrap: wrap; gap: 10px;}
+  .legend{display:flex; gap:16px; flex-wrap: wrap;}
+  .legend-item{display:flex; align-items:center; gap:6px; font-size:12.5px; color: var(--text-dim);}
+  .swatch{width:12px; height:3px; border-radius:2px; display:inline-block;}
+
+  svg text{font-family: var(--sans);}
+
+  .axis-caption{
+    display:flex; justify-content:space-between; font-size: 11.5px; color: var(--text-faint);
+    margin-top: -4px; padding: 0 4px;
+  }
+
+  .metrics-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 18px;
+  }
+  @media (max-width: 720px){
+    .metrics-grid{grid-template-columns: repeat(2, 1fr);}
+  }
+  .metric{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--text-faint);
+    border-radius: 8px;
+    padding: 13px 14px;
+  }
+  .metric .mlabel{font-size: 11.5px; color: var(--text-faint); margin-bottom: 6px;}
+  .metric .mvalue{font-family: var(--serif); font-size: 22px; color: #f4f8fb;}
+  .metric .munit{font-size: 12px; color: var(--text-dim); margin-left: 3px;}
+  .metric .mdelta{font-size: 11.5px; margin-top: 5px;}
+  .mdelta.up{color: var(--warn);}
+  .mdelta.down{color: #6fa8ce;}
+  .mdelta.flat{color: var(--text-faint);}
+
+  .m-pgc{border-left-color: var(--hydro);}
+  .m-onco{border-left-color: var(--onco);}
+  .m-peuf{border-left-color: var(--peuf);}
+  .m-vfg{border-left-color: var(--good);}
+  .m-fpre{border-left-color: #6fa8ce;}
+  .m-ff{border-left-color: #b58ae2;}
+
+  .explain{
+    margin-top: 18px;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13.5px;
+    color: #d7e3ee;
+  }
+  .explain b{color:#fff;}
+
+  .rules{
+    margin-top: 18px;
+  }
+  .rules table{width:100%; border-collapse: collapse; font-size: 12.8px;}
+  .rules th{text-align:left; color: var(--text-faint); font-weight: 500; padding: 6px 8px; border-bottom: 1px solid var(--line);}
+  .rules td{padding: 7px 8px; border-bottom: 1px solid #1b2c3c; color: var(--text-dim); vertical-align: top;}
+  .rules td.factor{color: var(--text); font-weight: 600;}
+  .arrow-up{color: var(--warn);}
+  .arrow-down{color: #6fa8ce;}
+
+  footer{margin-top: 30px; color: var(--text-faint); font-size: 11.5px; text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Fisiología renal — filtración glomerular</div>
+    <h1>Hemodinamia del capilar glomerular</h1>
+    <p>Ajustá la resistencia de las arteriolas aferente y eferente, o probá un escenario hormonal/nervioso, y observá cómo cambian la presión hidrostática, la presión oncótica y la PEUF a lo largo del capilar — y qué pasa con el VFG, el FPRE y la FF.</p>
+  </header>
+
+  <div class="layout">
+
+    <!-- CONTROLS -->
+    <aside>
+      <div class="panel">
+        <h2>Resistencias arteriolares</h2>
+        <p class="subtle">Movés el tono de cada arteriola en forma independiente.</p>
+
+        <div class="slider-block">
+          <div class="slider-label">
+            <span>Arteriola aferente</span>
+            <span class="val" id="raVal">normal</span>
+          </div>
+          <input type="range" id="raSlider" min="-100" max="100" value="0" step="1">
+          <div class="slider-ends"><span>dilatada</span><span>constreñida</span></div>
+        </div>
+
+        <div class="slider-block">
+          <div class="slider-label">
+            <span>Arteriola eferente</span>
+            <span class="val" id="reVal">normal</span>
+          </div>
+          <input type="range" id="reSlider" min="-100" max="100" value="0" step="1">
+          <div class="slider-ends"><span>dilatada</span><span>constreñida</span></div>
+        </div>
+
+        <span class="reset-link" id="resetBtn">Restablecer a valores normales</span>
+      </div>
+
+      <div class="panel">
+        <h2>Escenarios fisiológicos</h2>
+        <p class="subtle">Hormonas y sistema nervioso simpático, según su efecto predominante sobre cada arteriola.</p>
+        <div class="presets" id="presetList"></div>
+      </div>
+    </aside>
+
+    <!-- VIZ -->
+    <main>
+      <div class="panel chart-card">
+        <div class="chart-top">
+          <h2>Presiones a lo largo del capilar glomerular</h2>
+          <div class="legend">
+            <div class="legend-item"><span class="swatch" style="background:var(--hydro)"></span>P. hidrostática (Pcg)</div>
+            <div class="legend-item"><span class="swatch" style="background:var(--onco)"></span>P. oncótica (π)</div>
+            <div class="legend-item"><span class="swatch" style="background:var(--peuf)"></span>PEUF neta</div>
+          </div>
+        </div>
+        <svg id="chart" viewBox="0 0 720 380" style="width:100%; height:auto;"></svg>
+        <div class="axis-caption">
+          <span>← Extremo aferente</span>
+          <span>Posición a lo largo del ovillo capilar</span>
+          <span>Extremo eferente →</span>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric m-vfg">
+          <div class="mlabel">VFG (filtrado glomerular)</div>
+          <div><span class="mvalue" id="mVFG">–</span><span class="munit">ml/min</span></div>
+          <div class="mdelta" id="dVFG"></div>
+        </div>
+        <div class="metric m-fpre">
+          <div class="mlabel">FPRE (flujo plasmático renal)</div>
+          <div><span class="mvalue" id="mFPRE">–</span><span class="munit">ml/min</span></div>
+          <div class="mdelta" id="dFPRE"></div>
+        </div>
+        <div class="metric m-ff">
+          <div class="mlabel">FF (fracción de filtración)</div>
+          <div><span class="mvalue" id="mFF">–</span><span class="munit">%</span></div>
+          <div class="mdelta" id="dFF"></div>
+        </div>
+        <div class="metric m-pgc">
+          <div class="mlabel">Pcg promedio</div>
+          <div><span class="mvalue" id="mPGC">–</span><span class="munit">mmHg</span></div>
+          <div class="mdelta" id="dPGC"></div>
+        </div>
+        <div class="metric m-onco">
+          <div class="mlabel">π extremo aferente</div>
+          <div><span class="mvalue" id="mPIaf">–</span><span class="munit">mmHg</span></div>
+        </div>
+        <div class="metric m-onco">
+          <div class="mlabel">π extremo eferente</div>
+          <div><span class="mvalue" id="mPIef">–</span><span class="munit">mmHg</span></div>
+        </div>
+        <div class="metric m-peuf">
+          <div class="mlabel">PEUF extremo aferente</div>
+          <div><span class="mvalue" id="mPEUFaf">–</span><span class="munit">mmHg</span></div>
+        </div>
+        <div class="metric m-peuf">
+          <div class="mlabel">PEUF extremo eferente</div>
+          <div><span class="mvalue" id="mPEUFef">–</span><span class="munit">mmHg</span></div>
+        </div>
+      </div>
+
+      <div class="explain" id="explainBox"></div>
+
+      <div class="panel rules">
+        <h2>Reglas generales para recordar</h2>
+        <p class="subtle">Dirección de los cambios frente a cada estímulo, resistencias por fuera de rangos extremos.</p>
+        <table>
+          <thead><tr><th>Estímulo</th><th>Pcg</th><th>FPRE</th><th>VFG</th><th>FF</th></tr></thead>
+          <tbody>
+            <tr><td class="factor">↑ Resistencia aferente (constricción)</td><td class="arrow-down">↓</td><td class="arrow-down">↓</td><td class="arrow-down">↓</td><td>≈ sin cambios</td></tr>
+            <tr><td class="factor">↓ Resistencia aferente (dilatación)</td><td class="arrow-up">↑</td><td class="arrow-up">↑</td><td class="arrow-up">↑</td><td>≈ sin cambios</td></tr>
+            <tr><td class="factor">↑ Resistencia eferente moderada (constricción)</td><td class="arrow-up">↑</td><td class="arrow-down">↓</td><td class="arrow-up">↑</td><td class="arrow-up">↑</td></tr>
+            <tr><td class="factor">↑ Resistencia eferente severa</td><td class="arrow-up">↑</td><td class="arrow-down">↓↓</td><td>↑ y luego ↓</td><td class="arrow-up">↑↑</td></tr>
+            <tr><td class="factor">↓ Resistencia eferente (dilatación)</td><td class="arrow-down">↓</td><td class="arrow-up">↑</td><td class="arrow-down">↓</td><td class="arrow-down">↓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <footer>Modelo simplificado con fines didácticos — los valores absolutos son aproximados y no deben usarse con fines clínicos.</footer>
+</div>
+
+<script>
+(function(){
+
+  // ---------- Physiological constants (baseline / normal) ----------
+  const PGC0   = 60;    // mmHg, presión hidrostática capilar glomerular basal
+  const PBS    = 18;    // mmHg, presión en cápsula de Bowman (constante)
+  const PI_AF  = 28;    // mmHg, presión oncótica plasmática al ingresar (extremo aferente)
+  const RPF0   = 650;   // ml/min, flujo plasmático renal basal
+  const KF     = 12.5;  // ml/min/mmHg, coeficiente de ultrafiltración
+
+  // ---------- Presets ----------
+  // ra, re expressed as slider values (-100 dilatada .. 100 constreñida)
+  const PRESETS = [
+    {
+      id: 'normal', name: 'Normal', ra: 0, re: 0,
+      desc: 'Tono basal en ambas arteriolas.',
+      text: 'Estado basal: la resistencia aferente y eferente están en equilibrio, generando una Pcg de referencia y un VFG normal cercano a 125 ml/min con una FF de aproximadamente 20%.'
+    },
+    {
+      id: 'angio2', name: 'Angiotensina II ↑', ra: 12, re: 55,
+      desc: 'Constricción predominante eferente.',
+      text: '<b>Angiotensina II:</b> constriñe ambas arteriolas, pero predomina el efecto sobre la <b>eferente</b>. La resistencia poscapilar aumentada eleva la Pcg y sostiene (o incluso aumenta) el VFG a pesar de la caída del FPRE. Como el VFG se mantiene y el FPRE cae, la <b>FF aumenta</b> — es el mecanismo clásico por el que la angiotensina II protege el filtrado en estados de hipoperfusión.'
+    },
+    {
+      id: 'pg', name: 'Prostaglandinas (PGE₂, PGI₂)', ra: -55, re: -5,
+      desc: 'Vasodilatación predominante aferente.',
+      text: '<b>Prostaglandinas vasodilatadoras:</b> actúan sobre todo dilatando la arteriola <b>aferente</b>, contrarrestando la vasoconstricción simpática o de angiotensina II. Aumentan el FPRE y sostienen la Pcg y el VFG. Su bloqueo (p. ej. por AINEs) en estados de hipoperfusión renal puede desenmascarar una caída marcada del VFG.'
+    },
+    {
+      id: 'anp', name: 'Péptido natriurético (PNA/ANP)', ra: -40, re: 30,
+      desc: 'Dilata aferente y constriñe eferente.',
+      text: '<b>Péptido natriurético atrial (PNA):</b> dilata la arteriola <b>aferente</b> y constriñe levemente la <b>eferente</b>, una combinación que aumenta la Pcg por ambos mecanismos a la vez. El resultado es un aumento marcado del VFG con FPRE conservado o aumentado, lo que incrementa la FF y favorece la natriuresis.'
+    },
+    {
+      id: 'sns_leve', name: 'SNS ↑ leve (p. ej. bipedestación)', ra: 20, re: 18,
+      desc: 'Constricción balanceada, autorregulación activa.',
+      text: '<b>Activación simpática leve:</b> constriñe ambas arteriolas en grado similar. El FPRE cae algo, pero la autorregulación mantiene la Pcg y el VFG relativamente estables, por lo que la FF cambia poco.'
+    },
+    {
+      id: 'sns_severo', name: 'SNS ↑↑ severo (shock, hemorragia)', ra: 85, re: 30,
+      desc: 'Constricción intensa y predominantemente aferente.',
+      text: '<b>Activación simpática intensa:</b> predomina la constricción de la arteriola <b>aferente</b>, que cae por fuera de lo que la autorregulación puede compensar. La Pcg desciende, el FPRE cae de forma marcada y el VFG se reduce significativamente — la respuesta protectora de "centralizar" el flujo se paga con hipoperfusión renal.'
+    }
+  ];
+
+  const raSlider = document.getElementById('raSlider');
+  const reSlider = document.getElementById('reSlider');
+  const raVal = document.getElementById('raVal');
+  const reVal = document.getElementById('reVal');
+  const explainBox = document.getElementById('explainBox');
+  const presetList = document.getElementById('presetList');
+
+  let activePreset = 'normal';
+
+  // build preset buttons
+  PRESETS.forEach(p => {
+    const btn = document.createElement('div');
+    btn.className = 'preset-btn';
+    btn.dataset.id = p.id;
+    btn.innerHTML = '<span class="pname">' + p.name + '</span><span class="pdesc">' + p.desc + '</span>';
+    btn.addEventListener('click', () => {
+      raSlider.value = p.ra;
+      reSlider.value = p.re;
+      activePreset = p.id;
+      update();
+    });
+    presetList.appendChild(btn);
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    raSlider.value = 0; reSlider.value = 0; activePreset = 'normal'; update();
+  });
+
+  raSlider.addEventListener('input', () => { activePreset = null; update(); });
+  reSlider.addEventListener('input', () => { activePreset = null; update(); });
+
+  // slider value (-100..100) -> resistance factor (0.4x .. 2.4x)
+  function sliderToFactor(v){
+    v = parseFloat(v);
+    if (v >= 0) return 1 + (v/100) * 1.4;   // up to 2.4x
+    return 1 + (v/100) * 0.6;               // down to 0.4x
+  }
+
+  function sliderLabel(v){
+    v = parseFloat(v);
+    if (Math.abs(v) < 4) return 'normal';
+    const mag = Math.abs(v);
+    let word = mag < 35 ? 'leve' : (mag < 70 ? 'moderada' : 'intensa');
+    return (v > 0 ? 'constricción ' : 'dilatación ') + word;
+  }
+
+  // ---------- Core physiology model ----------
+  function computeState(raSliderVal, reSliderVal){
+    const Ra = sliderToFactor(raSliderVal);
+    const Re = sliderToFactor(reSliderVal);
+
+    let Pgc = PGC0 * Math.pow(Re/Ra, 0.45);
+    Pgc = Math.max(20, Math.min(92, Pgc));
+
+    let RPF = RPF0 * (2 / (Ra + Re));
+    RPF = Math.max(60, Math.min(1600, RPF));
+
+    // iterative solve for GFR (Starling forces, protein mass balance)
+    let GFR = 100;
+    for (let i = 0; i < 60; i++){
+      let FF = GFR / RPF;
+      if (FF > 0.92) FF = 0.92;
+      if (FF < 0) FF = 0;
+      const PIef = PI_AF / (1 - FF);
+      const PImean = (PI_AF + PIef) / 2;
+      const PEUFmean = Pgc - PBS - PImean;
+      let newGFR = KF * PEUFmean;
+      if (newGFR < 0) newGFR = 0;
+      GFR = newGFR;
+    }
+    let FF = GFR / RPF;
+    if (FF > 0.92) FF = 0.92;
+    const PIef = PI_AF / (1 - FF);
+
+    // build curve along capillary position x=0..1
+    const points = [];
+    const n = 48;
+    for (let i = 0; i <= n; i++){
+      const x = i / n;
+      const pgcX = Pgc - 2 * x; // slight axial drop, mostly flat
+      const piX = PI_AF / (1 - FF * x);
+      const peufX = pgcX - PBS - piX;
+      points.push({x, pgc: pgcX, pi: piX, peuf: peufX});
+    }
+
+    return {
+      Ra, Re, Pgc, RPF, GFR, FF, PIaf: PI_AF, PIef,
+      PEUFaf: points[0].peuf, PEUFef: points[points.length-1].peuf,
+      points
+    };
+  }
+
+  // baseline for delta comparisons
+  const BASELINE = computeState(0, 0);
+
+  function fmt(n, d){ return n.toFixed(d===undefined?0:d); }
+
+  function deltaTag(id, current, base, higherIsWarn){
+    const el = document.getElementById(id);
+    const diffPct = ((current - base) / base) * 100;
+    if (Math.abs(diffPct) < 2){
+      el.textContent = '= valor normal';
+      el.className = 'mdelta flat';
+      return;
+    }
+    const up = diffPct > 0;
+    el.textContent = (up ? '↑ ' : '↓ ') + Math.abs(diffPct).toFixed(0) + '% vs. normal';
+    el.className = 'mdelta ' + (up ? 'up' : 'down');
+  }
+
+  // ---------- Chart ----------
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const chart = document.getElementById('chart');
+  const PAD = {l: 46, r: 20, t: 16, b: 34};
+  const W = 720, H = 380;
+  const plotW = W - PAD.l - PAD.r;
+  const plotH = H - PAD.t - PAD.b;
+  const yMin = -5, yMax = 90;
+
+  function xPix(x){ return PAD.l + x * plotW; }
+  function yPix(y){ return PAD.t + (1 - (y - yMin) / (yMax - yMin)) * plotH; }
+
+  function el(tag, attrs){
+    const e = document.createElementNS(svgNS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  function pathFor(points, key){
+    return points.map((p, i) => (i===0?'M':'L') + xPix(p.x).toFixed(1) + ',' + yPix(p[key]).toFixed(1)).join(' ');
+  }
+
+  function drawChart(state){
+    chart.innerHTML = '';
+
+    // gridlines
+    for (let g = 0; g <= 90; g += 15){
+      const y = yPix(g);
+      chart.appendChild(el('line', {x1: PAD.l, x2: W-PAD.r, y1: y, y2: y, stroke:'#1c2f40', 'stroke-width':1}));
+      const t = el('text', {x: PAD.l - 8, y: y+4, fill:'#5d7488', 'font-size':11, 'text-anchor':'end'});
+      t.textContent = g;
+      chart.appendChild(t);
+    }
+    // zero line emphasized
+    const zy = yPix(0);
+    chart.appendChild(el('line', {x1: PAD.l, x2: W-PAD.r, y1: zy, y2: zy, stroke:'#2c4256', 'stroke-width':1.4}));
+
+    // x ticks
+    [0, 0.25, 0.5, 0.75, 1].forEach(fx => {
+      const x = xPix(fx);
+      chart.appendChild(el('line', {x1:x, x2:x, y1:PAD.t, y2:H-PAD.b, stroke:'#152332', 'stroke-width':1}));
+    });
+
+    // PBS reference dashed line
+    const pbsY = yPix(PBS);
+    chart.appendChild(el('line', {x1:PAD.l, x2:W-PAD.r, y1:pbsY, y2:pbsY, stroke:'#5d7488', 'stroke-width':1.2, 'stroke-dasharray':'4 4'}));
+    const pbsLabel = el('text', {x: W-PAD.r, y: pbsY - 6, fill:'#8fa7bd', 'font-size':11, 'text-anchor':'end'});
+    pbsLabel.textContent = 'P. cápsula de Bowman (' + PBS + ' mmHg)';
+    chart.appendChild(pbsLabel);
+
+    // PEUF area fill (down to 0) — subtle
+    const areaPts = state.points.map(p => xPix(p.x) + ',' + yPix(Math.max(p.peuf,0)));
+    const areaPath = 'M' + xPix(0) + ',' + zy + ' L' + areaPts.join(' L') + ' L' + xPix(1) + ',' + zy + ' Z';
+    chart.appendChild(el('path', {d: areaPath, fill:'#e8b355', opacity:0.10}));
+
+    // lines
+    chart.appendChild(el('path', {d: pathFor(state.points,'pgc'), fill:'none', stroke:'#e2624f', 'stroke-width':2.6}));
+    chart.appendChild(el('path', {d: pathFor(state.points,'pi'), fill:'none', stroke:'#4fc3bf', 'stroke-width':2.6}));
+    chart.appendChild(el('path', {d: pathFor(state.points,'peuf'), fill:'none', stroke:'#e8b355', 'stroke-width':2.6}));
+
+    // filtration equilibrium marker
+    let eqX = null;
+    for (let i=1;i<state.points.length;i++){
+      const a = state.points[i-1], b = state.points[i];
+      if (a.peuf > 0 && b.peuf <= 0){
+        eqX = a.x + (b.x - a.x) * (a.peuf / (a.peuf - b.peuf));
+        break;
+      }
+    }
+    if (eqX !== null){
+      const ex = xPix(eqX);
+      chart.appendChild(el('line', {x1:ex, x2:ex, y1:PAD.t, y2:H-PAD.b, stroke:'#e8b355', 'stroke-width':1, 'stroke-dasharray':'3 3', opacity:0.6}));
+      const lbl = el('text', {x: ex+6, y: PAD.t+14, fill:'#e8b355', 'font-size':11});
+      lbl.textContent = 'equilibrio de filtración';
+      chart.appendChild(lbl);
+    }
+
+    // end-point dots + value labels
+    function dot(x, yVal, color){
+      chart.appendChild(el('circle', {cx: xPix(x), cy: yPix(yVal), r:4, fill: color, stroke:'#0d1720', 'stroke-width':1.5}));
+    }
+    ['pgc','pi','peuf'].forEach((k, idx) => {
+      const colors = {pgc:'#e2624f', pi:'#4fc3bf', peuf:'#e8b355'};
+      dot(0, state.points[0][k], colors[k]);
+      dot(1, state.points[state.points.length-1][k], colors[k]);
+    });
+
+    // axis baseline
+    chart.appendChild(el('line', {x1:PAD.l, x2:W-PAD.r, y1:H-PAD.b, y2:H-PAD.b, stroke:'#29435a', 'stroke-width':1}));
+  }
+
+  function update(){
+    raVal.textContent = sliderLabel(raSlider.value);
+    reVal.textContent = sliderLabel(reSlider.value);
+
+    const state = computeState(raSlider.value, reSlider.value);
+    drawChart(state);
+
+    document.getElementById('mVFG').textContent = fmt(state.GFR);
+    document.getElementById('mFPRE').textContent = fmt(state.RPF);
+    document.getElementById('mFF').textContent = fmt(state.FF*100, 1);
+    document.getElementById('mPGC').textContent = fmt(state.Pgc);
+    document.getElementById('mPIaf').textContent = fmt(state.PIaf);
+    document.getElementById('mPIef').textContent = fmt(state.PIef);
+    document.getElementById('mPEUFaf').textContent = fmt(state.PEUFaf);
+    document.getElementById('mPEUFef').textContent = fmt(state.PEUFef);
+
+    deltaTag('dVFG', state.GFR, BASELINE.GFR);
+    deltaTag('dFPRE', state.RPF, BASELINE.RPF);
+    deltaTag('dFF', state.FF, BASELINE.FF);
+    deltaTag('dPGC', state.Pgc, BASELINE.Pgc);
+
+    // active preset highlight
+    document.querySelectorAll('.preset-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.id === activePreset);
+    });
+
+    // explanation text
+    if (activePreset){
+      const p = PRESETS.find(pp => pp.id === activePreset);
+      explainBox.innerHTML = p.text;
+    } else {
+      explainBox.innerHTML = '<b>Modo manual.</b> Estás ajustando las resistencias directamente: aferente en modo "' +
+        sliderLabel(raSlider.value) + '", eferente en modo "' + sliderLabel(reSlider.value) +
+        '". Compará estos valores con la tabla de reglas generales más abajo.';
+    }
+  }
+
+  update();
+})();
+</script>
+</body>
+</html>
