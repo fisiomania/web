@@ -35,21 +35,16 @@
             </div>
         </nav>
 
-        <!-- Masthead / Cabecera de la Sección -->
-        <header class="masthead text-white" style="padding-top: 10rem; padding-bottom: 6rem; background-color: #212529;">
-            <div class="container d-flex justify-content-between align-items-center">
-                <div class="text-start pe-3">
-                    <h1 class="display-5 fw-bold mb-3">Fisiología Renal</h1>
-                    <p class="text-white-50 mb-3" style="max-width: 600px;">Filtración, reabsorción, secreción y el mantenimiento del equilibrio hidroelectrolítico explicados paso a paso.</p>
-                    <p class="lead mb-0 text-white">Explora los videos y clases del módulo</p>
-                </div>
-                <div class="text-end d-none d-md-block">
-                    <img src="../assets/img/rana.png" alt="Rana Fisiomanía" class="img-fluid" style="max-height: 120px;">
-                </div>
+        <!-- Masthead / Cabecera de la Sección (Sin rana, limpio y alineado) -->
+        <header class="masthead text-white text-center" style="padding-top: 10rem; padding-bottom: 5rem; background-color: #212529;">
+            <div class="container">
+                <h1 class="display-4 fw-bold mb-3">Fisiología Renal</h1>
+                <p class="text-white-50 mx-auto mb-3" style="max-width: 600px;">Filtración, reabsorción, secreción y el mantenimiento del equilibrio hidroelectrolítico explicados paso a paso.</p>
+                <p class="lead text-white mb-0">Explora los videos y clases del módulo</p>
             </div>
         </header>
 
-        <!-- Sección de Videos (Grid Dinámico con fondo oscuro combinando con el banner) -->
+        <!-- Sección de Videos (Grid Dinámico con tono oscuro integrado) -->
         <section class="page-section bg-dark text-white py-5" id="videos-renal">
             <div class="container">
                 <!-- Contenedor donde se cargarán los videos desde renal.json -->
@@ -123,8 +118,9 @@
                             const col = document.createElement('div');
                             col.className = "col-lg-4 col-sm-6 mb-4";
                             
+                            // Tarjetas con fondo oscuro sutil (bg-secondary o bg-dark con bordes) para que no desentonen
                             col.innerHTML = `
-                                <div class="card h-100 shadow-sm border-0 portfolio-item bg-light text-dark">
+                                <div class="card h-100 shadow border-secondary bg-secondary text-white portfolio-item">
                                     <!-- Miniatura como link directo a YouTube -->
                                     <a href="${videoUrl}" target="_blank">
                                         <div class="portfolio-hover">
@@ -132,15 +128,15 @@
                                         </div>
                                         <img src="${video.thumbnail}" class="card-img-top" alt="${video.title}" style="height: 200px; object-fit: cover;">
                                     </a>
-                                    <!-- Cuerpo de la tarjeta -->
+                                    <!-- Cuerpo de la tarjeta con estilo oscuro -->
                                     <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title fw-bold text-dark fs-6 mb-2">${video.title}</h5>
-                                        <!-- Tarjeta flotante con la descripción -->
-                                        <div class="p-3 bg-white rounded shadow-sm mt-2 border-start border-primary border-4 flex-grow-1">
-                                            <p class="card-text text-muted small mb-0">${desc}</p>
+                                        <h5 class="card-title fw-bold text-white fs-6 mb-2">${video.title}</h5>
+                                        <!-- Caja interna para la descripción con fondo oscuro suave -->
+                                        <div class="p-3 bg-dark rounded shadow-sm mt-2 border-start border-primary border-4 flex-grow-1">
+                                            <p class="card-text text-light small mb-0">${desc}</p>
                                         </div>
                                         <div class="mt-3">
-                                            <a href="${videoUrl}" target="_blank" class="btn btn-sm btn-outline-dark text-uppercase fw-bold w-100">
+                                            <a href="${videoUrl}" target="_blank" class="btn btn-sm btn-light text-uppercase fw-bold w-100">
                                                 Ver en YouTube <i class="fas fa-external-link-alt ms-1"></i>
                                             </a>
                                         </div>
