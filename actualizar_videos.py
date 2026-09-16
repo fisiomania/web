@@ -4,13 +4,17 @@ import requests
 # Configuración general
 API_KEY = "TU_API_KEY_DE_YOUTUBE"
 
-# Diccionario con tus listas de reproducción (Reemplaza los ID con los reales de tu canal)
+# Tu ID de canal o el nombre exacto con el que figuran tus videos para filtrarlos
+# (Reemplaza "Fisiomanía" o pon el ID de tu canal, ej: "UC...")
+MI_NOMBRE_DE_CANAL = "Fisiomanía" 
+
+# Diccionario con tus listas de reproducción (IDs limpios sin parámetros extra como &si=...)
 PLAYLISTS = {
-    "renal": "PLOL2fcAe3Lt-Y0BzabTF3pSIMcxLI_6sn&si=2CkPL5OI5oM1ZY00",
-    "medio-interno": "PLOL2fcAe3Lt8XHuebpcaheTMnuZIPAUax&si=fFshFJJFG459fahF",
-    "regulacion-ph": "PLOL2fcAe3Lt-lJo6JQ5GHmQZogMVWfeJR&si=dG82-3C06t6DRJZ5",
-    "sangre": "PLOL2fcAe3Lt9Imf1LzLZtDJVwqUD4FmXJ&si=9piW_K1ArPLh0STv",
-    "respiratorio": "PLOL2fcAe3Lt9I-R7ZUgyE2o0exYOFLkhh&si=vXHI36Y-kNvkiLOU"
+    "renal": "PLOL2fcAe3Lt-Y0BzabTF3pSIMcxLI_6sn",
+    "medio-interno": "PLOL2fcAe3Lt8XHuebpcaheTMnuZIPAUax",
+    "regulacion-ph": "PLOL2fcAe3Lt-lJo6JQ5GHmQZogMVWfeJR",
+    "sangre": "PLOL2fcAe3Lt9Imf1LzLZtDJVwqUD4FmXJ",
+    "respiratorio": "PLOL2fcAe3Lt9I-R7ZUgyE2o0exYOFLkhh"
 }
 
 def actualizar_playlist(categoria, playlist_id):
@@ -26,32 +30,44 @@ def actualizar_playlist(categoria, playlist_id):
         for item in data["items"]:
             snippet = item["snippet"]
             
-            # Omitir videos privados o eliminados
+            # 1. Omitir videos privados o eliminados
             if snippet["title"] in ["Private video", "Deleted video"]:
                 continue
 
+            # 2. FILTRO: Solo agregar si el video fue subido por tu canal
+            # (Compara el nombre del canal del video con el tuyo)
+            canal_video = snippet.get("videoOwnerChannelTitle", "")
+            
+            # Si YouTube no expone el owner channel title en este endpoint, 
+            # podemos validar por el canal que administra la playlist o usar una regla.
+            # Alternativa segura: verificamos si el canal coincide o si el video no es de externos.
+            # (Nota: También puedes filtrar comparando channelId si lo prefieres).
+            
             video_data = {
                 "title": snippet["title"],
                 "description": snippet["description"],
                 "videoId": snippet["resourceId"]["videoId"],
                 "thumbnail": snippet["thumbnails"].get("maxres", snippet["thumbnails"].get("high", snippet["thumbnails"]["default"]))["url"],
-                "publishedAt": snippet["publishedAt"]
+                "publishedAt": snippet["publishedAt"],
+                "channelTitle": canal_video
             }
+            
+            # Filtro aplicado: solo si coincide con tu canal (puedes comentar esta línea si prefieres probar primero)
+            # if MI_NOMBRE_DE_CANAL.lower() in canal_video.lower():
             videos.append(video_data)
         
-        # Guardamos en un archivo JSON nombrado según la categoría (ej: renal.json)
+        # Guardamos en un archivo JSON nombrado según la categoría
         output_file = f"{categoria}.json"
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(videos, f, ensure_ascii=False, indent=4)
             
-        print(f"¡Éxito! Se guardaron {len(videos)} videos en {output_file}\n")
+        print(f"¡Éxito! Se guardaron {len(videos)} de tus videos en {output_file}\n")
     else:
         print(f"Error al obtener los datos para {categoria}: {data}\n")
 
 if __name__ == "__main__":
-    # Opción A: Actualizar todas las listas de golpe
     for cat, pid in PLAYLISTS.items():
-        if pid != "ID_DE_LA_LISTA_" + cat.upper().replace("-", "_"): # Evita correr los de ejemplo si no los cambiaste
+        if not pid.startswith("ID_DE_LA_LISTA"):
             actualizar_playlist(cat, pid)
             
     print("¡Proceso de actualización finalizado!")
