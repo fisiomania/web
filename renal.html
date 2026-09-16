@@ -15,6 +15,10 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <!-- Estilo personalizado para quitar cualquier elemento flotante o flecha superior en las tarjetas -->
+        <style>
+            .portfolio-item .portfolio-hover { display: none !important; } /* Elimina la capa con la flecha o icono flotante */
+        </style>
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -35,16 +39,20 @@
             </div>
         </nav>
 
-        <!-- Masthead / Cabecera de la Sección (Sin rana, limpio y alineado) -->
-        <header class="masthead text-white text-center" style="padding-top: 10rem; padding-bottom: 5rem; background-color: #212529;">
+        <!-- Masthead / Cabecera con alineación a la izquierda -->
+        <header class="masthead text-white" style="padding-top: 10rem; padding-bottom: 5rem; background-color: #212529;">
             <div class="container">
-                <h1 class="display-4 fw-bold mb-3">Fisiología Renal</h1>
-                <p class="text-white-50 mx-auto mb-3" style="max-width: 600px;">Filtración, reabsorción, secreción y el mantenimiento del equilibrio hidroelectrolítico explicados paso a paso.</p>
-                <p class="lead text-white mb-0">Explora los videos y clases del módulo</p>
+                <div class="row align-items-center">
+                    <div class="col-lg-8 text-start">
+                        <h1 class="display-4 fw-bold mb-3">Fisiología Renal</h1>
+                        <p class="text-white-50 mb-3" style="max-width: 600px;">Filtración, reabsorción, secreción y el mantenimiento del equilibrio hidroelectrolítico explicados paso a paso.</p>
+                        <p class="lead text-white mb-0">Explora los videos y clases del módulo</p>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <!-- Sección de Videos (Grid Dinámico con tono oscuro integrado) -->
+        <!-- Sección de Videos (Grid Dinámico con fondo oscuro) -->
         <section class="page-section bg-dark text-white py-5" id="videos-renal">
             <div class="container">
                 <!-- Contenedor donde se cargarán los videos desde renal.json -->
@@ -118,20 +126,15 @@
                             const col = document.createElement('div');
                             col.className = "col-lg-4 col-sm-6 mb-4";
                             
-                            // Tarjetas con fondo oscuro sutil (bg-secondary o bg-dark con bordes) para que no desentonen
                             col.innerHTML = `
-                                <div class="card h-100 shadow border-secondary bg-secondary text-white portfolio-item">
-                                    <!-- Miniatura como link directo a YouTube -->
+                                <div class="card h-100 shadow border-secondary bg-secondary text-white">
+                                    <!-- Miniatura como link directo a YouTube (sin flechas ni capas molestas) -->
                                     <a href="${videoUrl}" target="_blank">
-                                        <div class="portfolio-hover">
-                                            <div class="portfolio-hover-content"><i class="fas fa-play fa-3x text-white"></i></div>
-                                        </div>
                                         <img src="${video.thumbnail}" class="card-img-top" alt="${video.title}" style="height: 200px; object-fit: cover;">
                                     </a>
-                                    <!-- Cuerpo de la tarjeta con estilo oscuro -->
+                                    <!-- Cuerpo de la tarjeta -->
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title fw-bold text-white fs-6 mb-2">${video.title}</h5>
-                                        <!-- Caja interna para la descripción con fondo oscuro suave -->
                                         <div class="p-3 bg-dark rounded shadow-sm mt-2 border-start border-primary border-4 flex-grow-1">
                                             <p class="card-text text-light small mb-0">${desc}</p>
                                         </div>
