@@ -15,10 +15,58 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <!-- Estilos personalizados para el modo oscuro y tarjetas grises -->
+        <style>
+            body {
+                background-color: #121212;
+                color: #e0e0e0;
+            }
+            .bg-light, .page-section.bg-light {
+                background-color: #121212 !important;
+            }
+            /* Secciones alternas en gris muy oscuro para contraste */
+            .page-section:nth-of-type(even) {
+                background-color: #18181a !important;
+            }
+            /* Tarjetas de portafolio y cajas de contenido en gris */
+            .portfolio-item, .bg-light.rounded, .p-4.bg-light {
+                background-color: #212124 !important;
+                border: 1px solid #2c2c30;
+                border-radius: 8px;
+            }
+            .portfolio-caption {
+                background-color: #212124 !important;
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+            .portfolio-caption-heading {
+                color: #ffffff !important;
+            }
+            .section-heading {
+                color: #ffffff !important;
+            }
+            .section-subheading, .text-muted {
+                color: #a0a0a5 !important;
+            }
+            h3, h4, p, span {
+                color: #e0e0e0;
+            }
+            /* Footer oscuro */
+            footer.footer {
+                background-color: #0d0d0e;
+                color: #a0a0a5;
+            }
+            footer a.link-dark {
+                color: #a0a0a5 !important;
+            }
+            footer a.link-dark:hover {
+                color: #ffffff !important;
+            }
+        </style>
     </head>
     <body id="page-top">
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark" id="mainNav">
             <div class="container">
                 <a class="navbar-brand text-uppercase font-weight-bold" href="#page-top">Fisiomanía</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +97,7 @@
         </header>
 
         <!-- Portfolio Grid (Minicatálogos de Videos / Listas de Reproducción)-->
-        <section class="page-section bg-light" id="portfolio">
+        <section class="page-section" id="portfolio">
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">Listas de Reproducción</h2>
@@ -135,7 +183,7 @@
             </div>
         </section>
 
-        <!-- About (Texto justificado) -->
+        <!-- About -->
         <section class="page-section" id="about">
             <div class="container">
                 <div class="text-center">
@@ -143,7 +191,6 @@
                     <h3 class="section-subheading text-muted">Fisiología, ciencia y docencia con la Dra. Valeria Rivarola.</h3>
                 </div>
                 <div class="row">
-                    <!-- Usamos text-justify para justificar los párrafos -->
                     <div class="col-lg-10 mx-auto text-justify">
                         <p class="large text-muted mb-4" style="text-align: justify;">
                             Inicié Fisiomanía con una misión muy simple: <strong>sobrevivir enseñando fisiología... y ayudar a otros a sobrevivir en el intento</strong>. 
@@ -194,7 +241,7 @@
                             </div>
                             <h4 class="my-3">Correo Electrónico</h4>
                             <p class="text-muted">¿Tienes dudas o propuestas? Escríbenos directamente a:</p>
-                            <a href="mailto:doubtless11@gmail.com" class="text-decoration-none fw-bold fs-5">doubtless11@gmail.com</a>
+                            <a href="mailto:doubtless11@gmail.com" class="text-decoration-none fw-bold fs-5 text-primary">doubtless11@gmail.com</a>
                         </div>
                     </div>
                     <!-- Tarjeta de YouTube -->
