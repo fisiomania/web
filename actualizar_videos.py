@@ -6,11 +6,11 @@ API_KEY = "TU_API_KEY_DE_YOUTUBE"
 
 # Diccionario con tus listas de reproducción (Reemplaza los ID con los reales de tu canal)
 PLAYLISTS = {
-    "renal": "ID_DE_LA_LISTA_RENAL",
-    "medio-interno": "ID_DE_LA_LISTA_MEDIO_INTERNO",
-    "regulacion-ph": "ID_DE_LA_LISTA_PH",
-    "sangre": "ID_DE_LA_LISTA_SANGRE",
-    "respiratorio": "ID_DE_LA_LISTA_RESPIRATORIO"
+    "renal": "PLOL2fcAe3Lt-Y0BzabTF3pSIMcxLI_6sn&si=2CkPL5OI5oM1ZY00",
+    "medio-interno": "PLOL2fcAe3Lt8XHuebpcaheTMnuZIPAUax&si=fFshFJJFG459fahF",
+    "regulacion-ph": "PLOL2fcAe3Lt-lJo6JQ5GHmQZogMVWfeJR&si=dG82-3C06t6DRJZ5",
+    "sangre": "PLOL2fcAe3Lt9Imf1LzLZtDJVwqUD4FmXJ&si=9piW_K1ArPLh0STv",
+    "respiratorio": "PLOL2fcAe3Lt9I-R7ZUgyE2o0exYOFLkhh&si=vXHI36Y-kNvkiLOU"
 }
 
 def actualizar_playlist(categoria, playlist_id):
