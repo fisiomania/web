@@ -14,11 +14,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         
         <!-- SEO Principal & Metadatos -->
-        <title>Simulaciones - Fisiomanía</title>
-        <meta name="description" content="Explora las simulaciones interactivas de fisiología humana de Fisiomanía con la Dra. Valeria Rivarola." />
+        <title>Simulaciones Interactivas | Fisiomanía</title>
+        <meta name="description" content="Explora las simulaciones interactivas de fisiología humana desarrolladas por la Dra. Valeria Rivarola: difusión, leyes de Fick, vasa recta y hemodinamia glomerular." />
+        <meta name="keywords" content="simulaciones fisiologia, ley de fick interactivas, vasa recta renal, hemodinamia glomerular, difusion celular" />
         <meta name="author" content="Dra. Valeria Rivarola" />
         
         <link rel="canonical" href="https://fisiomania.github.io/web/simulaciones.html" />
+
+        <!-- Open Graph / Redes Sociales -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Simulaciones Interactivas de Fisiología | Fisiomanía" />
+        <meta property="og:description" content="Aprende fisiología de forma práctica con nuestras simulaciones interactivas de difusión, función renal y hemodinamia." />
+        <meta property="og:url" content="https://fisiomania.github.io/web/simulaciones.html" />
+        <meta property="og:image" content="https://fisiomania.github.io/web/assets/img/simulaciones/Fick 1.png" />
+        <meta property="og:locale" content="es_ES" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Simulaciones Interactivas | Fisiomanía" />
+        <meta name="twitter:description" content="Herramientas interactivas para comprender procesos fisiológicos complejos." />
+        <meta name="twitter:image" content="https://fisiomania.github.io/web/assets/img/simulaciones/Fick 1.png" />
+
+        <!-- Schema.org Datos Estructurados -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Simulaciones Interactivas de Fisiología - Fisiomanía",
+          "description": "Herramientas de simulación médica e interactiva para la enseñanza de fisiología humana.",
+          "url": "https://fisiomania.github.io/web/simulaciones.html",
+          "isPartOf": {
+            "@type": "EducationalOrganization",
+            "name": "Fisiomanía",
+            "url": "https://fisiomania.github.io/web/index.html"
+          }
+        }
+        </script>
 
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
@@ -27,17 +57,17 @@
         <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
-        <!-- Core theme CSS (includes Bootstrap)-->
+        <!-- Core theme CSS -->
         <link href="css/styles.css" rel="stylesheet" />
         
-        <!-- Estilos personalizados para mantener el modo oscuro idéntico a tu index -->
+        <!-- Estilos personalizados -->
         <style>
             body {
                 background-color: #121212;
                 color: #e0e0e0;
             }
             .page-section {
-                padding: 10.5rem 0;
+                padding: 7rem 0 4rem 0;
             }
             .page-section:nth-of-type(even) {
                 background-color: #18181a !important;
@@ -46,6 +76,11 @@
                 background-color: #212124 !important;
                 border: 1px solid #2c2c30;
                 border-radius: 8px;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            .portfolio-item:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.5);
             }
             .portfolio-caption {
                 background-color: #212124 !important;
@@ -74,8 +109,6 @@
             footer a.link-dark:hover {
                 color: #ffffff !important;
             }
-            
-            /* --- ESTO OCULTA LA CABEZA DE FLECHA / ICONO DE PLAY AL PASAR EL MOUSE --- */
             .portfolio-item .portfolio-link .portfolio-hover {
                 display: none !important;
             }
@@ -103,88 +136,93 @@
         <!-- Simulaciones Grid -->
         <section class="page-section" id="simulaciones">
             <div class="container">
-                <div class="text-center">
+                <div class="text-center mb-5">
                     <h2 class="section-heading text-uppercase">Simulaciones Interactivas</h2>
-                    <h3 class="section-subheading text-muted">Explora y prueba nuestras 5 herramientas de simulación cargadas.</h3>
+                    <h3 class="section-subheading text-muted">Explora nuestras herramientas interactivas para comprender los modelos fisiológicos.</h3>
                 </div>
                 <div class="row">
-                    <!-- Fick  1 -->
+                    <!-- Fick 1 -->
                     <div class="col-lg-4 col-sm-6 mb-4">
-                        <div class="portfolio-item">
+                        <div class="portfolio-item h-100 d-flex flex-column">
                             <a class="portfolio-link" href="simulaciones/difusion_concentracion_cinetica.html">
-                                <img class="img-fluid" src="assets/img/simulaciones/Fick 1.png" alt="Fick 1" />
+                                <img class="img-fluid w-100" src="assets/img/simulaciones/Fick 1.png" alt="Simulación Difusión y Cinética" />
                             </a>
-                            <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Fick 1</div>
-                                <div class="portfolio-caption-subheading text-muted">Descubre como cambia la distribución de partículas al cambiar temperatura y concentración</div>
+                            <div class="portfolio-caption d-flex flex-column flex-grow-1">
+                                <div class="portfolio-caption-heading">Difusión y Cinética</div>
+                                <div class="portfolio-caption-subheading text-muted mb-3">Descubre cómo cambia la distribución de partículas al modificar la temperatura y la concentración.</div>
+                                <a href="simulaciones/difusion_concentracion_cinetica.html" class="btn btn-sm btn-outline-light mt-auto">Abrir simulación <i class="fas fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Fick 2 -->
                     <div class="col-lg-4 col-sm-6 mb-4">
-                        <div class="portfolio-item">
+                        <div class="portfolio-item h-100 d-flex flex-column">
                             <a class="portfolio-link" href="simulaciones/difusion_gases_vs_liquidos_temperatura.html">
-                                <img class="img-fluid" src="assets/img/simulaciones/Fick 2.png" alt="Fick 2" />
+                                <img class="img-fluid w-100" src="assets/img/simulaciones/Fick 2.png" alt="Simulación Gases vs Líquidos" />
                             </a>
-                            <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Fick 2</div>
-                                <div class="portfolio-caption-subheading text-muted">Descubre las diferencias entre gases y liquidos</div>
+                            <div class="portfolio-caption d-flex flex-column flex-grow-1">
+                                <div class="portfolio-caption-heading">Gases vs. Líquidos</div>
+                                <div class="portfolio-caption-subheading text-muted mb-3">Analiza las diferencias físicas y cinéticas en la difusión de fases gaseosas y líquidas.</div>
+                                <a href="simulaciones/difusion_gases_vs_liquidos_temperatura.html" class="btn btn-sm btn-outline-light mt-auto">Abrir simulación <i class="fas fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
                     </div>
 
                     <!-- Fick 3 -->
                     <div class="col-lg-4 col-sm-6 mb-4">
-                        <div class="portfolio-item">
+                        <div class="portfolio-item h-100 d-flex flex-column">
                             <a class="portfolio-link" href="simulaciones/ley_de_fick_primera_segunda.html">
-                                <img class="img-fluid" src="assets/img/simulaciones/Fick 3.png" alt="Fick 3" />
+                                <img class="img-fluid w-100" src="assets/img/simulaciones/Fick 3.png" alt="Leyes de Fick" />
                             </a>
-                            <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Fick 3</div>
-                                <div class="portfolio-caption-subheading text-muted">Descubre interactivamente la primer y segunda ley de Fick</div>
+                            <div class="portfolio-caption d-flex flex-column flex-grow-1">
+                                <div class="portfolio-caption-heading">Leyes de Fick</div>
+                                <div class="portfolio-caption-subheading text-muted mb-3">Experimenta de forma interactiva con la 1.ª y 2.ª ley de Fick sobre gradientes de difusión.</div>
+                                <a href="simulaciones/ley_de_fick_primera_segunda.html" class="btn btn-sm btn-outline-light mt-auto">Abrir simulación <i class="fas fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
                     </div>
 
                     <!-- Vasa Recta Renal -->
-                    <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
-                        <div class="portfolio-item">
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <div class="portfolio-item h-100 d-flex flex-column">
                             <a class="portfolio-link" href="simulaciones/vasa_recta_medullary_gradient_simulation.html">
-                                <img class="img-fluid" src="assets/img/simulaciones/Vasa Recta.png" alt="Vasa Recta" />
+                                <img class="img-fluid w-100" src="assets/img/simulaciones/Vasa Recta.png" alt="Simulación Vasa Recta" />
                             </a>
-                            <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Vasa Recta</div>
-                                <div class="portfolio-caption-subheading text-muted">¿Cómo afecta la vasa recta al gradiente corticomedular renal?</div>
+                            <div class="portfolio-caption d-flex flex-column flex-grow-1">
+                                <div class="portfolio-caption-heading">Vasa Recta Renal</div>
+                                <div class="portfolio-caption-subheading text-muted mb-3">¿Cómo afecta el flujo de la vasa recta al mantenimiento del gradiente corticomedular renal?</div>
+                                <a href="simulaciones/vasa_recta_medullary_gradient_simulation.html" class="btn btn-sm btn-outline-light mt-auto">Abrir simulación <i class="fas fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Capilar Glomerular -->
-                    <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
-                        <div class="portfolio-item">
+                    <!-- Hemodinamia Glomerular -->
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <div class="portfolio-item h-100 d-flex flex-column">
                             <a class="portfolio-link" href="simulaciones/simulacion_hemodinamia_glomerular.html">
-                                <img class="img-fluid" src="assets/img/simulaciones/Capilar Glomerular.png" alt="Capilar Glomerular" />
+                                <img class="img-fluid w-100" src="assets/img/simulaciones/Capilar Glomerular.png" alt="Hemodinamia Glomerular" />
                             </a>
-                            <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Simulación 5</div>
-                                <div class="portfolio-caption-subheading text-muted">Descubre cómo actúan las distintas regulaciones del capilar glomerular</div>
+                            <div class="portfolio-caption d-flex flex-column flex-grow-1">
+                                <div class="portfolio-caption-heading">Hemodinamia Glomerular</div>
+                                <div class="portfolio-caption-subheading text-muted mb-3">Descubre cómo actúan las autorregulaciones sobre presiones y filtrado del capilar glomerular.</div>
+                                <a href="simulaciones/simulacion_hemodinamia_glomerular.html" class="btn btn-sm btn-outline-light mt-auto">Abrir simulación <i class="fas fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Feedback Tally -->
+                <div class="row justify-content-center mt-5">
+                    <div class="col-lg-6 text-center">
+                        <iframe data-tally-src="https://tally.so/embed/RGO5Vj?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1&source=simulaciones" loading="lazy" width="100%" height="10" frameborder="0" marginheight="0" marginwidth="0" title="Feedback Fisio Mania"></iframe>
+                        <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
                     </div>
                 </div>
             </div>
         </section>
-
-                <!-- Formulario de Tally (Afuera del contenedor que se borra, para que quede fijo abajo) -->
-                <div class="row justify-content-center mt-5">
-                    <div class="col-lg-6 text-center">
-                        <iframe data-tally-src="https://tally.so/embed/RGO5Vj?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1&source=simulaciones" loading="lazy" width="100%" height="10" frameborder="0" marginheight="0" marginwidth="0" title="Fedback Fisio Mania"></iframe>
-                        <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
-                    </div>
-                </div>
                 
-        <!-- Footer unificado -->
+        <!-- Footer -->
         <footer class="footer py-4">
             <div class="container">
                 <div class="row align-items-center">
@@ -202,9 +240,8 @@
             </div>
         </footer>
 
-        <!-- Bootstrap core JS-->
+        <!-- Scripts Bootstrap & Personalizados -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
     </body>
 </html>
