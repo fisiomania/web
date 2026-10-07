@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fisio Manía: fisiología humana explicada fácil. Clases, simulaciones interactivas y recursos para estudiantes de Medicina y Ciencias de la Salud.">
+    <meta name="theme-color" content="#0a2e35">
+    <link rel="canonical" href="https://fisiomania.github.io/web/index.html">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <title>Fisio Manía | Fisiología Humana Fácil</title>
+
+    <style>
+        :root {
+            --teal-950: #061f24;
+            --teal-900: #0a2e35;
+            --teal-800: #10434b;
+            --teal-700: #17616a;
+            --teal-100: #dceff0;
+            --cream: #f7f8f5;
+            --white: #ffffff;
+            --ink: #173238;
+            --muted: #607276;
+            --line: #dbe5e6;
+            --accent: #d8a83e;
+            --accent-soft: #f6e8bf;
+            --radius: 22px;
+            --shadow: 0 16px 45px rgba(6,31,36,.10);
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--ink);
+            background: var(--cream);
+            line-height: 1.6;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: min(1160px, calc(100% - 40px));
+            margin-inline: auto;
+        }
+
+        /* NAV */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10,46,53,.96);
+            border-bottom: 1px solid rgba(255,255,255,.10);
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-inner {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .brand {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -.03em;
+        }
+
+        .brand span { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            color: rgba(255,255,255,.82);
+            font-size: .92rem;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover { color: white; }
+
+        .nav-cta {
+            padding: 10px 17px;
+            border-radius: 999px;
+            background: white;
+            color: var(--teal-900) !important;
+        }
+
+        .nav-toggle {
+            display: none;
+            border: 1px solid rgba(255,255,255,.25);
+            background: transparent;
+            color: white;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            color: white;
+            background:
+                radial-gradient(circle at 82% 25%, rgba(216,168,62,.18), transparent 25%),
+                radial-gradient(circle at 15% 90%, rgba(23,97,106,.55), transparent 30%),
+                var(--teal-900);
+            padding: 92px 0 86px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 50%;
+            right: -120px;
+            bottom: -250px;
+        }
+
+        .hero-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            align-items: center;
+            gap: 70px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: #f4d98f;
+            font-size: .82rem;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 28px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        h1 {
+            margin: 0 0 22px;
+            max-width: 720px;
+            font-size: clamp(2.7rem, 6vw, 5.2rem);
+            line-height: .98;
+            letter-spacing: -.055em;
+        }
+
+        .hero-lead {
+            max-width: 650px;
+            margin: 0 0 32px;
+            color: rgba(255,255,255,.80);
+            font-size: clamp(1.05rem, 2vw, 1.28rem);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 48px;
+            padding: 12px 21px;
+            border-radius: 12px;
+            font-weight: 800;
+            transition: transform .2s ease, background .2s ease, border-color .2s ease;
+        }
+
+        .btn:hover { transform: translateY(-2px); }
+
+        .btn-primary {
+            background: white;
+            color: var(--teal-900);
+        }
+
+        .btn-secondary {
+            color: white;
+            border: 1px solid rgba(255,255,255,.30);
+        }
+
+        .hero-note {
+            margin-top: 25px;
+            color: rgba(255,255,255,.58);
+            font-size: .88rem;
+        }
+
+        .hero-visual {
+            min-height: 310px;
+            display: grid;
+            place-items: center;
+        }
+
+        .hero-orbit {
+            width: 280px;
+            height: 280px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,.16);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+        }
+
+        .hero-orbit::before,
+        .hero-orbit::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 50%;
+        }
+
+        .hero-orbit::before { inset: 32px; }
+        .hero-orbit::after { inset: 65px; }
+
+        .hero-core {
+            width: 128px;
+            height: 128px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.18);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 35px rgba(216,168,62,.10);
+        }
+
+        .hero-core img {
+            width: 112px;
+            height: 112px;
+            object-fit: contain;
+            object-position: 50% 42%;
+            filter: drop-shadow(0 5px 12px rgba(0,0,0,.20));
+        }
+
+        .dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 7px rgba(216,168,62,.12);
+        }
+
+        .dot-1 { top: 28px; left: 120px; }
+        .dot-2 { right: 28px; top: 128px; }
+        .dot-3 { bottom: 38px; left: 72px; }
+
+        /* SECTIONS */
+        .section { padding: 88px 0; }
+
+        .section-alt { background: white; }
+
+        .section-head {
+            max-width: 700px;
+            margin-bottom: 42px;
+        }
+
+        .section-kicker {
+            color: var(--teal-700);
+            font-size: .78rem;
+            font-weight: 900;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin: 0 0 12px;
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.08;
+            letter-spacing: -.04em;
+        }
+
+        .section-intro {
+            margin: 0;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        /* THREE PATHS */
+        .paths {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .path {
+            padding: 28px;
+            border: 1px solid var(--line);
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: 0 8px 28px rgba(6,31,36,.04);
+        }
+
+        .path-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 22px;
+            background: var(--teal-100);
+            color: var(--teal-900);
+            font-size: 1.25rem;
+        }
+
+        .path h3 {
+            margin: 0 0 8px;
+            font-size: 1.3rem;
+        }
+
+        .path p {
+            margin: 0 0 18px;
+            color: var(--muted);
+        }
+
+        .text-link {
+            color: var(--teal-700);
+            font-weight: 800;
+        }
+
+        .text-link::after { content: "  →"; }
+
+        /* TOPICS */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+        }
+
+        .topic {
+            min-height: 170px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            border-radius: 18px;
+            border: 1px solid var(--line);
+            background: var(--cream);
+            transition: transform .2s ease, border-color .2s ease;
+        }
+
+        .topic:hover {
+            transform: translateY(-4px);
+            border-color: var(--teal-700);
+        }
+
+        .topic-symbol {
+            font-size: 1.7rem;
+            margin-bottom: auto;
+        }
+
+        .topic h3 {
+            margin: 0 0 5px;
+            font-size: 1.08rem;
+        }
+
+        .topic p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .84rem;
+        }
+
+        /* SIMULATIONS */
+        .sim-section {
+            color: white;
+            background: var(--teal-900);
+        }
+
+        .sim-section .section-kicker { color: #f4d98f; }
+        .sim-section .section-intro { color: rgba(255,255,255,.68); }
+
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .sim-panel {
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: var(--radius);
+            background: rgba(255,255,255,.055);
+        }
+
+        .sim-label {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(216,168,62,.15);
+            color: #f4d98f;
+            font-size: .72rem;
+            font-weight: 900;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .sim-panel h3 { margin: 0 0 9px; font-size: 1.4rem; }
+
+        .sim-panel p {
+            color: rgba(255,255,255,.68);
+            margin: 0 0 20px;
+        }
+
+        .sim-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .sim-item {
+            padding: 7px 10px;
+            border-radius: 8px;
+            background: rgba(255,255,255,.08);
+            color: rgba(255,255,255,.78);
+            font-size: .8rem;
+        }
+
+        .sim-btn {
+            display: inline-flex;
+            padding: 11px 16px;
+            border: 1px solid rgba(255,255,255,.22);
+            border-radius: 10px;
+            color: white;
+            font-weight: 800;
+        }
+
+        .sim-btn:hover { background: rgba(255,255,255,.08); }
+
+        .live-box {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,.10);
+            color: rgba(255,255,255,.62);
+            font-size: .88rem;
+        }
+
+        .live-box strong { color: #f4d98f; }
+
+        /* YOUTUBE */
+        .youtube {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 30px;
+            padding: 36px;
+            border-radius: var(--radius);
+            background: #f3e8e5;
+        }
+
+        .youtube h2 { margin-bottom: 8px; }
+
+        .youtube p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .yt-btn {
+            background: #b51f24;
+            color: white;
+            white-space: nowrap;
+        }
+
+        /* ABOUT */
+        .about-grid {
+            display: grid;
+            grid-template-columns: .7fr 1.3fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .about-title {
+            position: sticky;
+            top: 110px;
+        }
+
+        .quote {
+            margin: 0 0 22px;
+            padding-left: 20px;
+            border-left: 3px solid var(--accent);
+            font-size: 1.22rem;
+            font-weight: 700;
+            color: var(--teal-900);
+        }
+
+        .about-copy p {
+            color: var(--muted);
+            margin: 0 0 17px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .stat {
+            padding: 18px;
+            border-radius: 15px;
+            background: var(--cream);
+            border: 1px solid var(--line);
+        }
+
+        .stat strong {
+            display: block;
+            color: var(--teal-800);
+            font-size: 1.55rem;
+            line-height: 1.1;
+        }
+
+        .stat span {
+            color: var(--muted);
+            font-size: .82rem;
+        }
+
+        /* FINAL CTA */
+        .final-cta {
+            padding: 82px 0;
+            color: white;
+            background: var(--teal-950);
+            text-align: center;
+        }
+
+        .final-cta h2 { max-width: 720px; margin: 0 auto 14px; }
+
+        .final-cta p {
+            max-width: 600px;
+            margin: 0 auto 26px;
+            color: rgba(255,255,255,.64);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 30px 0;
+            color: rgba(255,255,255,.60);
+            background: #04181c;
+            font-size: .86rem;
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 22px;
+        }
+
+        .footer-links a:hover { color: white; }
+
+        @media (max-width: 950px) {
+            .hero-grid { grid-template-columns: 1fr; gap: 30px; }
+            .hero-visual { display: none; }
+            .topic-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-grid { grid-template-columns: 1fr; gap: 30px; }
+            .about-title { position: static; }
+        }
+
+        @media (max-width: 760px) {
+            .container { width: min(100% - 28px, 1160px); }
+            .nav-toggle { display: block; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                top: 68px;
+                padding: 16px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 4px;
+                border-radius: 16px;
+                background: var(--teal-950);
+                box-shadow: var(--shadow);
+            }
+            .nav-links.open { display: flex; }
+            .nav-links a { padding: 12px; }
+            .nav-cta { text-align: center; }
+            .hero { padding: 68px 0; }
+            .section { padding: 62px 0; }
+            .paths, .sim-grid { grid-template-columns: 1fr; }
+            .topic-grid { grid-template-columns: 1fr 1fr; }
+            .youtube { grid-template-columns: 1fr; padding: 26px; }
+            .stats { grid-template-columns: 1fr; }
+            .footer-inner { flex-direction: column; text-align: center; }
+            .footer-links { flex-wrap: wrap; justify-content: center; }
+        }
+
+        @media (max-width: 440px) {
+            h1 { font-size: 2.65rem; }
+            .topic-grid { grid-template-columns: 1fr; }
+            .hero-actions { flex-direction: column; }
+            .hero-actions .btn { width: 100%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .btn, .topic { transition: none; }
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a class="brand" href="#page-top">Fisio<span>Manía</span></a>
+
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="navLinks">
+                Menú
+            </button>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#aprender">Aprender</a>
+                <a href="#simulaciones">Simulaciones</a>
+                <a href="#sobre-fisio">Sobre Fisio Manía</a>
+                <a href="https://www.youtube.com/channel/UCHf85J5ad4OTphK9Aykw3cg" target="_blank" rel="noopener" class="nav-cta">YouTube ↗</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container hero-grid">
+            <div>
+                <div class="eyebrow">Fisiología humana · Medicina · Ciencias de la Salud</div>
+                <h1>Fisiología humana, explicada fácil.</h1>
+                <p class="hero-lead">
+                    Clases, simulaciones y herramientas interactivas para dejar de memorizar mecanismos
+                    aislados y empezar a entender cómo funciona el cuerpo.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#aprender">Empezar a aprender</a>
+                    <a class="btn btn-secondary" href="simulaciones.html">Explorar simulaciones</a>
+                </div>
+
+                <div class="hero-note">Para estudiantes de Medicina y Ciencias de la Salud.</div>
+            </div>
+
+            <div class="hero-visual" aria-hidden="true">
+                <div class="hero-orbit">
+                    <span class="dot dot-1"></span>
+                    <span class="dot dot-2"></span>
+                    <span class="dot dot-3"></span>
+                    <div class="hero-core"><img src="assets/img/logo-rana-sin-fondo.png" alt="Rana de Fisio Manía"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="section section-alt" id="aprender">
+            <div class="container">
+                <div class="section-head">
+                    <div class="section-kicker">Elegí cómo aprender</div>
+                    <h2>Mirá. Experimentá. Entendé.</h2>
+                    <p class="section-intro">
+                        Fisio Manía combina explicación, interacción y razonamiento para que la fisiología
+                        deje de sentirse como una lista de cosas para memorizar.
+                    </p>
+                </div>
+
+                <div class="paths">
+                    <article class="path">
+                        <div class="path-icon">▶</div>
+                        <h3>Aprendé</h3>
+                        <p>Clases de fisiología explicadas paso a paso, con foco en los mecanismos que realmente necesitás entender.</p>
+                        <a class="text-link" href="#clases">Ver clases</a>
+                    </article>
+
+                    <article class="path">
+                        <div class="path-icon">⌁</div>
+                        <h3>Experimentá</h3>
+                        <p>Manipulá variables en simulaciones interactivas y observá cómo responde el sistema fisiológico.</p>
+                        <a class="text-link" href="simulaciones.html">Explorar simulaciones</a>
+                    </article>
+
+                    <article class="path">
+                        <div class="path-icon">?</div>
+                        <h3>Razoná</h3>
+                        <p>En los modelos más complejos, la idea es ir un paso más allá: usarlos para discutir preguntas y resolver problemas juntos.</p>
+                        <a class="text-link" href="#interactivas">Conocer la propuesta</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="temas">
+            <div class="container">
+                <div class="section-head">
+                    <div class="section-kicker">Fisiología por sistemas</div>
+                    <h2>¿Qué querés estudiar?</h2>
+                    <p class="section-intro">Entrá directamente al tema que necesitás repasar.</p>
+                </div>
+
+                <div class="topic-grid">
+                    <a class="topic" href="renal.html">
+                        <div class="topic-symbol">🫘</div>
+                        <h3>Renal</h3>
+                        <p>Filtración, reabsorción, sodio y concentración.</p>
+                    </a>
+
+                    <a class="topic" href="respiratorio.html">
+                        <div class="topic-symbol">🫁</div>
+                        <h3>Respiratorio</h3>
+                        <p>Ventilación, perfusión, V/Q e intercambio gaseoso.</p>
+                    </a>
+
+                    <a class="topic" href="regulacion-ph.html">
+                        <div class="topic-symbol">⚗</div>
+                        <h3>Ácido-base</h3>
+                        <p>Bicarbonato, buffers y excreción de ácidos.</p>
+                    </a>
+
+                    <a class="topic" href="medio-interno.html">
+                        <div class="topic-symbol">💧</div>
+                        <h3>Medio interno</h3>
+                        <p>Agua corporal y compartimentos.</p>
+                    </a>
+
+                    <a class="topic" href="sangre.html">
+                        <div class="topic-symbol">🩸</div>
+                        <h3>Sangre</h3>
+                        <p>Hematopoyesis, eritrocitos y parámetros.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section sim-section" id="simulaciones">
+            <div class="container">
+                <div class="section-head">
+                    <div class="section-kicker">El diferencial de Fisio Manía</div>
+                    <h2>Experimentá con la fisiología.</h2>
+                    <p class="section-intro">
+                        No te limites a mirar qué sucede. Cambiá las variables y descubrí qué pasa con el sistema.
+                    </p>
+                </div>
+
+                <div class="sim-grid">
+                    <article class="sim-panel">
+                        <span class="sim-label">Exploración directa</span>
+                        <h3>⚡ Conceptos que podés probar en minutos</h3>
+                        <p>Simulaciones simples y visuales para jugar con las variables y ver el efecto inmediatamente.</p>
+
+                        <div class="sim-items">
+                            <span class="sim-item">Difusión</span>
+                            <span class="sim-item">Cinética</span>
+                            <span class="sim-item">Ley de Fick</span>
+                            <span class="sim-item">Gases y líquidos</span>
+                        </div>
+
+                        <a class="sim-btn" href="simulaciones.html">Explorar simulaciones →</a>
+                    </article>
+
+                    <article class="sim-panel" id="interactivas">
+                        <span class="sim-label">Experiencias guiadas</span>
+                        <h3>🧠 Modelos para pensar juntos</h3>
+                        <p>Las simulaciones más complejas pueden convertirse en experiencias de razonamiento y discusión con alumnos.</p>
+
+                        <div class="sim-items">
+                            <span class="sim-item">Vasa recta</span>
+                            <span class="sim-item">Hemodinamia glomerular</span>
+                        </div>
+
+                        <div class="live-box">
+                            <strong>Clases interactivas · próximamente</strong><br>
+                            Una simulación, una pregunta y varias posibilidades para descubrir juntos qué está pasando.
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="clases">
+            <div class="container">
+                <div class="youtube">
+                    <div>
+                        <div class="section-kicker">Fisio Manía en YouTube</div>
+                        <h2>Aprendé fisiología con las clases.</h2>
+                        <p>Explicaciones visuales y directas para entender los mecanismos paso a paso.</p>
+                    </div>
+                    <a class="btn yt-btn" href="https://www.youtube.com/channel/UCHf85J5ad4OTphK9Aykw3cg" target="_blank" rel="noopener">
+                        Ver canal de YouTube ↗
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-alt" id="sobre-fisio">
+            <div class="container about-grid">
+                <div class="about-title">
+                    <div class="section-kicker">Quién está detrás</div>
+                    <h2>Fisiología, ciencia y docencia.</h2>
+                </div>
+
+                <div class="about-copy">
+                    <p class="quote">
+                        “Sobrevivir enseñando fisiología... y ayudar a otros a sobrevivir en el intento.”
+                    </p>
+
+                    <p>
+                        Inicié Fisio Manía con una misión muy simple: hacer que el transporte de iones,
+                        la regulación del pH y los mecanismos renales dejen de sentirse como una tortura abstracta
+                        y puedan cobrar sentido real.
+                    </p>
+
+                    <p>
+                        Detrás de este espacio está la <strong>Dra. Valeria Rivarola</strong>, investigadora
+                        en el <em>Instituto de Fisiología y Biofísica Bernardo Houssay (IFIBIO)</em> y docente
+                        de fisiología en la Facultad de Medicina de la Universidad de Buenos Aires (UBA),
+                        con más de 20 años de experiencia en el área.
+                    </p>
+
+                    <p>
+                        Desde 1996, la docencia ha sido una parte central de mi trabajo, formando a estudiantes
+                        de medicina, enfermería y ciencias de la salud.
+                    </p>
+
+                    <div class="stats" aria-label="Fisio Manía en números">
+                        <div class="stat">
+                            <strong>+66</strong>
+                            <span>clases originales</span>
+                        </div>
+                        <div class="stat">
+                            <strong>+1.750</strong>
+                            <span>suscriptores</span>
+                        </div>
+                        <div class="stat">
+                            <strong>+99.000</strong>
+                            <span>visualizaciones</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="final-cta">
+            <div class="container">
+                <h2>¿Listo para dejar de sufrir con fisiología?</h2>
+                <p>Empezá con una clase, probá una simulación y descubrí que entender fisiología puede ser mucho más fácil.</p>
+                <div class="hero-actions" style="justify-content:center;">
+                    <a class="btn btn-primary" href="#temas">Elegir un tema</a>
+                    <a class="btn btn-secondary" href="simulaciones.html">Explorar simulaciones</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <div>© Fisio Manía 2026 · Fisiología Humana Fácil</div>
+            <div class="footer-links">
+                <a href="https://www.youtube.com/channel/UCHf85J5ad4OTphK9Aykw3cg" target="_blank" rel="noopener">YouTube</a>
+                <a href="#sobre-fisio">Sobre Fisio Manía</a>
+                <a href="mailto:mariv@fmed.uba.ar">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const toggle = document.querySelector('.nav-toggle');
+        const links = document.querySelector('#navLinks');
+
+        toggle.addEventListener('click', () => {
+            const open = links.classList.toggle('open');
+            toggle.setAttribute('aria-expanded', String(open));
+        });
+
+        links.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                links.classList.remove('open');
+                toggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    </script>
+
+</body>
+</html>
