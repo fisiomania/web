@@ -7,345 +7,532 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6X1NQJZHP"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
 
         gtag('config', 'G-X6X1NQJZHP');
     </script>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta charset="UTF-8">
 
-    <!-- =========================================================
-         SEO
-    ========================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- SEO -->
     <title>pH y Equilibrio Ácido-Base: Fisiología y Regulación | Fisiomanía</title>
 
     <meta name="description"
-        content="Aprendé fisiología del pH y equilibrio ácido-base: ácidos y bases, buffers, bicarbonato, Henderson-Hasselbalch y regulación renal explicados fácil." />
+        content="Aprendé fisiología del pH y equilibrio ácido-base: ácidos y bases, buffers, bicarbonato, Henderson-Hasselbalch, regulación renal y compensación respiratoria explicados fácil.">
 
     <meta name="keywords"
-        content="pH fisiología, equilibrio ácido base, fisiología ácido base, regulación del pH, ácido fuerte y débil, buffers fisiológicos, sistemas tampón, bicarbonato, Henderson Hasselbalch, acidosis, alcalosis, compensación respiratoria, compensación renal, riñón y pH, fisiología renal, ácido base medicina, fisiología medicina" />
+        content="pH fisiologia, equilibrio acido base, regulacion del pH, fisiologia acido base, acidosis, alcalosis, buffers, sistemas tampon, bicarbonato, Henderson Hasselbalch, compensacion respiratoria, compensacion renal, fisiologia renal, fisiologia medica, fisiologia UBA, estudiantes de medicina, fisiomania">
 
-    <meta name="author" content="Dra. Valeria Rivarola" />
+    <meta name="author" content="Fisio Manía">
 
-    <link rel="canonical" href="https://fisiomania.com.ar/regulacion-ph.html" />
+    <!-- Canonical -->
+    <link rel="canonical" href="https://fisiomania.com.ar/regulacion-ph.html">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-
-    <!-- =========================================================
-         OPEN GRAPH
-    ========================================================== -->
-
-    <meta property="og:type" content="website" />
+    <!-- Open Graph -->
     <meta property="og:title"
-        content="pH y Equilibrio Ácido-Base: Fisiología y Regulación | Fisiomanía" />
+        content="pH y Equilibrio Ácido-Base: Fisiología y Regulación | Fisiomanía">
 
     <meta property="og:description"
-        content="Ácidos y bases, buffers, bicarbonato y regulación renal del pH explicados de forma clara y fácil." />
+        content="Aprendé fisiología del pH, buffers, bicarbonato y equilibrio ácido-base con explicaciones fáciles y paso a paso.">
+
+    <meta property="og:type" content="website">
 
     <meta property="og:url"
-        content="https://fisiomania.com.ar/regulacion-ph.html" />
+        content="https://fisiomania.com.ar/regulacion-ph.html">
 
     <meta property="og:image"
-        content="https://fisiomania.com.ar/assets/img/Fisiologia%20pH.png" />
+        content="https://fisiomania.com.ar/assets/img/Fisiologia%20pH.png">
 
-    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content="Fisio Manía">
 
-    <!-- =========================================================
-         TWITTER / X
-    ========================================================== -->
-
-    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
 
     <meta name="twitter:title"
-        content="pH y Equilibrio Ácido-Base | Fisiomanía" />
+        content="pH y Equilibrio Ácido-Base | Fisio Manía">
 
     <meta name="twitter:description"
-        content="Fisiología del pH, buffers, bicarbonato y regulación renal explicada fácil." />
+        content="Fisiología del pH, buffers, bicarbonato y equilibrio ácido-base explicados fácil.">
 
     <meta name="twitter:image"
-        content="https://fisiomania.com.ar/assets/img/Fisiologia%20pH.png" />
+        content="https://fisiomania.com.ar/assets/img/Fisiologia%20pH.png">
 
 
-    <!-- =========================================================
-         SCHEMA.ORG
-    ========================================================== -->
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto+Slab:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+
+    <!-- Schema.org -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "pH y Equilibrio Ácido-Base - Fisiomanía",
-        "description": "Videos de fisiología sobre pH, ácidos y bases, buffers, bicarbonato y regulación renal del equilibrio ácido-base.",
+        "name": "pH y Equilibrio Ácido-Base",
+        "description": "Fisiología del pH, equilibrio ácido-base, buffers, bicarbonato y regulación renal explicados de forma fácil.",
         "url": "https://fisiomania.com.ar/regulacion-ph.html",
-        "isPartOf": {
-            "@type": "EducationalOrganization",
-            "name": "Fisiomanía",
-            "url": "https://fisiomania.com.ar/index.html"
-        },
-        "about": [
-            {
-                "@type": "Thing",
-                "name": "pH"
-            },
-            {
-                "@type": "Thing",
-                "name": "Equilibrio ácido-base"
-            },
-            {
-                "@type": "Thing",
-                "name": "Buffers fisiológicos"
-            },
-            {
-                "@type": "Thing",
-                "name": "Bicarbonato"
-            },
-            {
-                "@type": "Thing",
-                "name": "Fisiología renal"
-            }
-        ]
+        "publisher": {
+            "@type": "Organization",
+            "name": "Fisio Manía",
+            "url": "https://fisiomania.com.ar/"
+        }
     }
     </script>
 
 
-    <!-- =========================================================
-         FUENTES Y ESTILOS
-    ========================================================== -->
-
-    <!-- Font Awesome -->
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
-        crossorigin="anonymous"></script>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700"
-        rel="stylesheet" type="text/css" />
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700"
-        rel="stylesheet" type="text/css" />
-
-    <!-- Bootstrap -->
-    <link href="css/styles.css" rel="stylesheet" />
-
-
-    <!-- =========================================================
-         ESTILOS ESPECÍFICOS DE ESTA PÁGINA
-    ========================================================== -->
-
     <style>
 
-        /* ---------------------------------------------
+        :root {
+            --teal-dark: #0a2e35;
+            --teal: #124a54;
+            --teal-light: #1d6875;
+            --cream: #f5f3ed;
+            --white: #ffffff;
+            --text: #243238;
+            --muted: #65757b;
+            --border: #dce5e7;
+        }
+
+
+        body {
+            margin: 0;
+            background: var(--cream);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            background: var(--teal-dark) !important;
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
+            font-family: 'Roboto Slab', serif;
+            font-weight: 700;
+            color: white !important;
+            font-size: 1.35rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255,255,255,.85) !important;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+        }
+
+
+        /* =========================
            HERO
-        --------------------------------------------- */
+        ========================= */
 
-        .ph-hero {
+        .hero {
             background:
-                radial-gradient(circle at 80% 20%, rgba(32, 120, 130, 0.20), transparent 35%),
-                linear-gradient(135deg, #0a2e35 0%, #102f35 50%, #071f25 100%);
+                linear-gradient(
+                    135deg,
+                    rgba(10,46,53,.98),
+                    rgba(18,74,84,.94)
+                );
+
+            color: white;
+            padding: 75px 20px 70px;
+            text-align: center;
         }
 
-        .ph-hero h1 {
-            letter-spacing: -0.5px;
+        .hero-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 22px;
+
+            background: rgba(255,255,255,.10);
+            border: 1px solid rgba(255,255,255,.20);
+
+            font-size: 30px;
         }
 
-        .ph-hero-subtitle {
-            max-width: 760px;
-            line-height: 1.7;
-            font-size: 1.08rem;
+        .hero h1 {
+            font-family: 'Roboto Slab', serif;
+            font-size: clamp(2rem, 5vw, 3.1rem);
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .hero p {
+            max-width: 850px;
+            margin: auto;
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: rgba(255,255,255,.88);
         }
 
 
-        /* ---------------------------------------------
+        /* =========================
+           CONTENEDOR PRINCIPAL
+        ========================= */
+
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 65px 20px 80px;
+        }
+
+
+        /* =========================
            SECCIONES DE TEMAS
-        --------------------------------------------- */
+        ========================= */
 
         .topic-section {
-            padding-top: 4rem;
-            padding-bottom: 1rem;
+            margin-bottom: 65px;
         }
 
-        .topic-section + .topic-section {
-            padding-top: 3rem;
+
+        .topic-header {
+            margin-bottom: 28px;
         }
 
-        .topic-heading {
+
+        .topic-title {
             display: flex;
             align-items: center;
             gap: 14px;
-            margin-bottom: 2rem;
-        }
 
-        .topic-icon {
-            width: 48px;
-            height: 48px;
-            min-width: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #0a2e35;
-            color: white;
-            font-size: 1.15rem;
-        }
-
-        .topic-heading h2 {
-            margin: 0;
-            font-size: 1.55rem;
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.7rem;
             font-weight: 700;
+
+            color: var(--teal-dark);
+
+            margin-bottom: 10px;
         }
+
+
+        .topic-title i {
+            color: var(--teal-light);
+            font-size: 1.35rem;
+        }
+
 
         .topic-description {
-            color: rgba(255,255,255,0.65);
-            margin-top: 4px;
-            margin-bottom: 0;
-            font-size: 0.95rem;
+            max-width: 850px;
+            color: var(--muted);
+            line-height: 1.7;
+            margin: 0;
         }
 
 
-        /* ---------------------------------------------
-           TARJETAS DE VIDEOS
-        --------------------------------------------- */
+        /* =========================
+           GRID DE VIDEOS
+        ========================= */
+
+        .videos-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 28px;
+        }
+
+
+        /* =========================
+           TARJETA VIDEO
+        ========================= */
 
         .video-card {
-            background: #343a40;
-            border: 1px solid rgba(255,255,255,0.10);
-            border-radius: 10px;
+            background: var(--white);
+
+            border-radius: 15px;
+
             overflow: hidden;
-            height: 100%;
-            transition: transform 0.2s ease,
-                        box-shadow 0.2s ease,
-                        border-color 0.2s ease;
+
+            border: 1px solid var(--border);
+
+            box-shadow:
+                0 5px 18px rgba(10,46,53,.06);
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
         }
+
 
         .video-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 28px rgba(0,0,0,0.30);
-            border-color: rgba(255,255,255,0.22);
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 12px 28px rgba(10,46,53,.12);
         }
 
-        .video-thumbnail {
+
+        /* =========================
+           MINIATURA
+        ========================= */
+
+        .thumbnail-container {
             position: relative;
-            overflow: hidden;
-            background: #212529;
-        }
 
-        .video-thumbnail img {
             width: 100%;
-            height: 200px;
+
+            aspect-ratio: 16 / 9;
+
+            overflow: hidden;
+
+            background: #e9eeee;
+        }
+
+
+        .thumbnail-container img {
+            width: 100%;
+            height: 100%;
+
             object-fit: cover;
+
             display: block;
-            transition: transform 0.3s ease;
+
+            transition: transform .3s ease;
         }
 
-        .video-card:hover .video-thumbnail img {
-            transform: scale(1.025);
+
+        .video-card:hover
+        .thumbnail-container img {
+            transform: scale(1.035);
         }
 
-        .video-play {
+
+        /* =========================
+           PLAY
+        ========================= */
+
+        .play-button {
             position: absolute;
+
             left: 50%;
             top: 50%;
+
             transform: translate(-50%, -50%);
+
             width: 52px;
             height: 52px;
+
             border-radius: 50%;
-            background: rgba(0,0,0,0.72);
+
+            background: rgba(10,46,53,.90);
+
             color: white;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
+            font-size: 19px;
+
             opacity: 0;
-            transition: opacity 0.2s ease;
+
+            transition: opacity .2s ease;
         }
 
-        .video-card:hover .video-play {
+
+        .video-card:hover .play-button {
             opacity: 1;
         }
 
-        .video-play i {
-            margin-left: 3px;
+
+        /* =========================
+           CONTENIDO TARJETA
+        ========================= */
+
+        .video-content {
+            padding: 20px;
         }
 
-        .video-body {
-            padding: 1.15rem;
-            display: flex;
-            flex-direction: column;
-            height: calc(100% - 200px);
-        }
 
         .video-title {
-            color: white;
-            font-size: 1rem;
+            font-family: 'Roboto Slab', serif;
+
+            font-size: 1.05rem;
+
             line-height: 1.4;
+
             font-weight: 700;
-            margin-bottom: 0.75rem;
+
+            color: var(--teal-dark);
+
+            margin-bottom: 10px;
         }
+
 
         .video-description {
-            color: rgba(255,255,255,0.72);
-            font-size: 0.88rem;
-            line-height: 1.55;
-            margin-bottom: 1rem;
-            flex-grow: 1;
-        }
+            color: var(--muted);
 
-        .video-button {
-            width: 100%;
-            font-size: 0.78rem;
-            letter-spacing: 0.3px;
-            font-weight: 700;
-        }
+            font-size: .88rem;
 
+            line-height: 1.6;
 
-        /* ---------------------------------------------
-           CONTENEDOR GENERAL
-        --------------------------------------------- */
+            margin-bottom: 18px;
 
-        .videos-area {
-            background: #212529;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
         }
 
 
-        /* ---------------------------------------------
-           BOTÓN VOLVER
-        --------------------------------------------- */
+        .watch-button {
+            display: inline-flex;
 
-        .back-button {
-            margin-top: 3rem;
-            margin-bottom: 1rem;
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 9px 14px;
+
+            border-radius: 8px;
+
+            background: var(--teal-dark);
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: .82rem;
+
+            font-weight: 600;
+
+            transition:
+                background .2s ease,
+                transform .2s ease;
         }
 
 
-        /* ---------------------------------------------
-           MOBILE
-        --------------------------------------------- */
+        .watch-button:hover {
+            background: var(--teal-light);
 
-        @media (max-width: 576px) {
+            color: white;
 
-            .ph-hero h1 {
-                font-size: 2.25rem;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================
+           MENSAJES
+        ========================= */
+
+        .loading {
+            text-align: center;
+
+            padding: 50px 20px;
+
+            color: var(--muted);
+        }
+
+
+        .error-message {
+            background: white;
+
+            border: 1px solid #ead7d7;
+
+            border-radius: 12px;
+
+            padding: 30px;
+
+            text-align: center;
+
+            color: #8a4b4b;
+        }
+
+
+        .empty-category {
+            color: var(--muted);
+
+            font-style: italic;
+
+            padding: 10px 0;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: var(--teal-dark);
+
+            color: rgba(255,255,255,.75);
+
+            text-align: center;
+
+            padding: 35px 20px;
+        }
+
+
+        footer p {
+            margin: 0;
+
+            font-size: .9rem;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 992px) {
+
+            .videos-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
             }
 
-            .ph-hero-subtitle {
-                font-size: 1rem;
+        }
+
+
+        @media (max-width: 650px) {
+
+            .hero {
+                padding: 55px 18px;
             }
 
-            .topic-heading h2 {
-                font-size: 1.3rem;
+            .content {
+                padding:
+                    45px 15px 60px;
             }
 
-            .topic-icon {
-                width: 42px;
-                height: 42px;
-                min-width: 42px;
+            .videos-grid {
+                grid-template-columns: 1fr;
             }
 
-            .video-thumbnail img {
-                height: 190px;
+            .topic-title {
+                font-size: 1.45rem;
             }
+
         }
 
     </style>
@@ -353,59 +540,63 @@
 </head>
 
 
-<body id="page-top">
+<body>
 
 
-    <!-- =========================================================
+    <!-- =========================
          NAVBAR
-    ========================================================== -->
+    ========================= -->
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
-        id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-dark">
 
         <div class="container">
 
-            <a class="navbar-brand text-uppercase font-weight-bold"
-                href="index.html">
-                Fisiomanía
+            <a class="navbar-brand"
+               href="index.html">
+
+                Fisio Manía
+
             </a>
 
-            <button class="navbar-toggler"
+
+            <button
+                class="navbar-toggler"
                 type="button"
                 data-bs-toggle="collapse"
-                data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
                 aria-expanded="false"
-                aria-label="Menu">
+                aria-label="Abrir navegación">
 
-                Menu
-                <i class="fas fa-bars ms-1"></i>
+                <span class="navbar-toggler-icon"></span>
 
             </button>
 
-            <div class="collapse navbar-collapse"
-                id="navbarResponsive">
 
-                <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+            <div
+                class="collapse navbar-collapse"
+                id="navbarNav">
+
+                <ul class="navbar-nav ms-auto">
 
                     <li class="nav-item">
                         <a class="nav-link"
-                            href="index.html#portfolio">
-                            Catálogos
+                           href="index.html">
+                            Inicio
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link"
-                            href="index.html#about">
-                            Acerca de
+                           href="fundamentos.html">
+                            Fundamentos
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link"
-                            href="index.html#contact">
-                            Contacto
+                           href="medio-interno.html">
+                            Medio Interno
                         </a>
                     </li>
 
@@ -418,85 +609,51 @@
     </nav>
 
 
-    <!-- =========================================================
+
+    <!-- =========================
          HERO
-    ========================================================== -->
+    ========================= -->
 
-    <header class="masthead text-white ph-hero"
-        style="padding-top: 10rem; padding-bottom: 5rem;">
+    <header class="hero">
 
-        <div class="container">
+        <div class="hero-icon">
 
-            <div class="row align-items-center">
-
-                <div class="col-lg-9 text-start">
-
-                    <h1 class="display-4 fw-bold mb-3">
-                        Fisiología del pH y Equilibrio Ácido-Base
-                    </h1>
-
-                    <p class="ph-hero-subtitle text-white-50 mb-3">
-                        Entendé por qué el pH es fundamental para el funcionamiento
-                        del organismo, cómo actúan los buffers y cómo el cuerpo
-                        mantiene el equilibrio ácido-base.
-                    </p>
-
-                    <p class="lead text-white mb-0">
-                        Ácidos y bases · Buffers · Bicarbonato · Riñón · Equilibrio ácido-base
-                    </p>
-
-                </div>
-
-            </div>
+            <i class="fa-solid fa-flask"></i>
 
         </div>
+
+
+        <h1>
+            Fisiología del pH y Equilibrio Ácido-Base
+        </h1>
+
+
+        <p>
+            Entendé por qué el pH es fundamental para el funcionamiento
+            del organismo, cómo actúan los buffers y cómo el cuerpo
+            mantiene el equilibrio ácido-base mediante los pulmones
+            y los riñones.
+        </p>
 
     </header>
 
 
-    <!-- =========================================================
-         VIDEOS
-    ========================================================== -->
 
-    <main class="videos-area text-white py-4">
+    <!-- =========================
+         CONTENIDO
+    ========================= -->
 
-        <div class="container">
+    <main class="content">
 
-            <!-- El contenido se genera dinámicamente -->
-            <div id="contenedor-videos">
+        <div id="videos-container">
 
-                <div class="text-center py-5">
+            <div class="loading">
 
-                    <div class="spinner-border text-light"
-                        role="status">
+                <i class="fa-solid fa-spinner fa-spin"></i>
 
-                        <span class="visually-hidden">
-                            Cargando videos...
-                        </span>
-
-                    </div>
-
-                    <p class="text-white-50 mt-3">
-                        Cargando clases de pH y equilibrio ácido-base...
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 BOTÓN VOLVER
-            ================================================== -->
-
-            <div class="text-center back-button">
-
-                <a href="index.html#portfolio"
-                    class="btn btn-outline-light btn-lg text-uppercase">
-
-                    ← Volver a los catálogos
-
-                </a>
+                <p class="mt-3 mb-0">
+                    Cargando videos...
+                </p>
 
             </div>
 
@@ -505,635 +662,635 @@
     </main>
 
 
-    <!-- =========================================================
+
+    <!-- =========================
          FOOTER
-    ========================================================== -->
+    ========================= -->
 
-    <footer class="footer py-4 bg-black text-white">
+    <footer>
 
-        <div class="container">
-
-            <div class="row align-items-center">
-
-                <div class="col-lg-4 text-lg-start">
-                    Copyright &copy; Fisiomanía 2026
-                </div>
-
-                <div class="col-lg-4 my-3 my-lg-0 text-center">
-
-                    <a class="btn btn-dark btn-social mx-2"
-                        href="https://www.youtube.com/channel/UCHf85J5ad4OTphK9Aykw3cg"
-                        target="_blank"
-                        aria-label="YouTube">
-
-                        <i class="fab fa-youtube"></i>
-
-                    </a>
-
-                </div>
-
-                <div class="col-lg-4 text-lg-end">
-
-                    <a class="link-light text-decoration-none me-3"
-                        href="#!">
-                        Política de Privacidad
-                    </a>
-
-                    <a class="link-light text-decoration-none"
-                        href="#!">
-                        Términos de Uso
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
+        <p>
+            © <span id="current-year"></span>
+            Fisio Manía · Fisiología explicada fácil
+        </p>
 
     </footer>
 
 
-    <!-- =========================================================
-         SCRIPTS
-    ========================================================== -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
 
-    <script src="js/scripts.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 
-    <!-- =========================================================
-         CARGA Y AGRUPACIÓN DE VIDEOS
-    ========================================================== -->
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
 
     <script>
 
-        document.addEventListener("DOMContentLoaded", function () {
+        /*
+        ============================================================
+        CONFIGURACIÓN DE CATEGORÍAS
+
+        IMPORTANTE:
+
+        El HTML NO conoce los videoId.
+
+        La categoría de cada video viene desde:
+
+            regulacion-ph.json
+
+        mediante:
+
+            "categoria": "renal"
+
+        Si agregás un video nuevo al JSON y le asignás una
+        categoría, aparecerá automáticamente en esa sección.
+        ============================================================
+        */
+
+
+        const categorias = {
+
+            "ph-acidos-bases": {
+
+                titulo: "pH, ácidos y bases",
+
+                icono: "fa-solid fa-flask",
+
+                descripcion:
+                    "Los conceptos fundamentales para entender qué es el pH, cómo se comportan los ácidos y las bases y por qué los cambios de pH afectan al organismo."
+
+            },
+
+
+            "buffers": {
+
+                titulo: "Buffers y equilibrio ácido-base",
+
+                icono: "fa-solid fa-shield-halved",
+
+                descripcion:
+                    "Cómo funcionan los sistemas tampón y cómo ayudan a mantener estable el pH frente a la producción continua de ácidos."
+
+            },
+
+
+            "renal": {
+
+                titulo: "Regulación renal del pH",
+
+                icono: "fa-solid fa-kidneys",
+
+                descripcion:
+                    "Cómo el riñón participa en el equilibrio ácido-base mediante el bicarbonato, la excreción de ácidos y los buffers urinarios."
+
+            },
+
+
+            "integracion": {
+
+                titulo: "El pH y otros sistemas",
+
+                icono: "fa-solid fa-arrows-to-circle",
+
+                descripcion:
+                    "La relación entre el equilibrio ácido-base y otros componentes de la fisiología, como el potasio y la hemoglobina."
+
+            },
+
+
+            "alimentacion": {
+
+                titulo: "pH y alimentación",
+
+                icono: "fa-solid fa-utensils",
+
+                descripcion:
+                    "Qué relación existe entre la alimentación y el equilibrio ácido-base y qué hay detrás de conceptos como la dieta alcalina."
+
+            },
+
+
+            "practica": {
+
+                titulo: "El pH en la práctica",
+
+                icono: "fa-solid fa-vial",
+
+                descripcion:
+                    "Experimentos y herramientas para entender cómo se mide el pH y cómo funcionan los indicadores de pH."
+
+            }
+
+        };
+
+
+        /*
+        ============================================================
+        ORDEN DE LAS CATEGORÍAS
+
+        Esto permite controlar el orden pedagógico sin tocar
+        ningún video ni depender del orden del JSON.
+        ============================================================
+        */
+
+        const ordenCategorias = [
+
+            "ph-acidos-bases",
+
+            "buffers",
+
+            "renal",
+
+            "integracion",
+
+            "alimentacion",
+
+            "practica"
+
+        ];
+
+
+
+        /*
+        ============================================================
+        FUNCIÓN PARA ESCAPAR HTML
+
+        Evita problemas si un título o descripción contiene
+        caracteres especiales.
+        ============================================================
+        */
+
+        function escapeHTML(texto) {
+
+            if (texto === null || texto === undefined) {
+                return "";
+            }
+
+            return String(texto)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+
+        /*
+        ============================================================
+        CREA UNA TARJETA DE VIDEO
+        ============================================================
+        */
+
+        function crearVideoCard(video) {
+
+            const videoId = video.videoId || "";
+
+            const titulo =
+                video.title ||
+                "Video de Fisio Manía";
+
+            const descripcion =
+                video.description ||
+                "Video educativo de fisiología.";
 
             /*
-             * ----------------------------------------------------
-             * Detectar automáticamente el JSON correspondiente
-             * ----------------------------------------------------
-             */
+            Si el JSON ya tiene thumbnail, lo usamos.
 
-            const paginaActual =
-                window.location.pathname
-                    .split("/")
-                    .pop()
-                    .replace(".html", "");
+            Si no, usamos directamente la miniatura de YouTube.
+            */
 
-            const archivoJson =
-                (paginaActual && paginaActual !== "")
-                    ? `${paginaActual}.json`
-                    : "regulacion-ph.json";
+            const thumbnail =
+                video.thumbnail ||
+                `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
 
 
-            /*
-             * ----------------------------------------------------
-             * Configuración de grupos
-             *
-             * La clasificación se hace mediante videoId.
-             * De esta forma no dependemos del orden del JSON.
-             * ----------------------------------------------------
-             */
+            const youtubeUrl =
+                `https://www.youtube.com/watch?v=${videoId}`;
 
-            const grupos = [
 
-                {
-                    id: "ph-acidos-bases",
-                    titulo: "pH, ácidos y bases",
-                    icono: "fa-flask",
-                    descripcion:
-                        "Conceptos fundamentales para entender qué es el pH y por qué es tan importante en fisiología.",
-                    videos: [
-                        "k1DHwxyR7gM",
-                        "N8-39_0aXcA",
-                        "ixWO8Pz94FA"
-                    ]
-                },
+            return `
 
-                {
-                    id: "buffers",
-                    titulo: "Buffers y equilibrio ácido-base",
-                    icono: "fa-shield-halved",
-                    descripcion:
-                        "Cómo el organismo amortigua los cambios de pH y mantiene estable el medio interno.",
-                    videos: [
-                        "4UvL6Jnqor0",
-                        "raqv3A-uON8",
-                        "xik26mIKoZ4"
-                    ]
-                },
+                <article class="video-card">
 
-                {
-                    id: "regulacion-renal",
-                    titulo: "Regulación renal del pH",
-                    icono: "fa-kidneys",
-                    descripcion:
-                        "Bicarbonato, buffers urinarios y excreción de ácidos: cómo participa el riñón en el equilibrio ácido-base.",
-                    videos: [
-                        "X3LQVYFVwfM",
-                        "b-Zn5LnN1Ic",
-                        "5cgH8YUt4eE",
-                        "WybJsjGO_Ro",
-                        "haqNNhif7NA"
-                    ]
-                },
+                    <a
+                        href="${youtubeUrl}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Ver ${escapeHTML(titulo)} en YouTube"
+                    >
 
-                {
-                    id: "integracion",
-                    titulo: "El pH y otros sistemas",
-                    icono: "fa-arrows-rotate",
-                    descripcion:
-                        "Relaciones entre el equilibrio ácido-base, el potasio y otras proteínas importantes del organismo.",
-                    videos: [
-                        "RJOsSR2hB8E",
-                        "uf5b6QMLD0w"
-                    ]
-                },
+                        <div class="thumbnail-container">
 
-                {
-                    id: "alimentacion",
-                    titulo: "pH y alimentación",
-                    icono: "fa-apple-whole",
-                    descripcion:
-                        "Qué hay detrás de la llamada dieta alcalina y qué dice la fisiología.",
-                    videos: [
-                        "67tZbUzM0iI"
-                    ]
-                },
-
-                {
-                    id: "practica",
-                    titulo: "El pH en la práctica",
-                    icono: "fa-vial",
-                    descripcion:
-                        "Experimentos y herramientas para entender cómo podemos medir el pH.",
-                    videos: [
-                        "I5a3_YIf690",
-                        "K5H4-o7TxF4"
-                    ]
-                }
-
-            ];
-
-
-            /*
-             * ----------------------------------------------------
-             * Cargar JSON
-             * ----------------------------------------------------
-             */
-
-            fetch(archivoJson)
-
-                .then(response => {
-
-                    if (!response.ok) {
-
-                        throw new Error(
-                            `No se pudo cargar el archivo ${archivoJson}.`
-                        );
-
-                    }
-
-                    return response.json();
-
-                })
-
-                .then(videos => {
-
-                    const contenedor =
-                        document.getElementById("contenedor-videos");
-
-                    contenedor.innerHTML = "";
-
-
-                    /*
-                     * ------------------------------------------------
-                     * Crear un índice para buscar videos rápidamente
-                     * ------------------------------------------------
-                     */
-
-                    const videosPorId = {};
-
-                    videos.forEach(video => {
-
-                        videosPorId[video.videoId] = video;
-
-                    });
-
-
-                    /*
-                     * ------------------------------------------------
-                     * Crear cada grupo
-                     * ------------------------------------------------
-                     */
-
-                    grupos.forEach(grupo => {
-
-                        const videosDelGrupo =
-                            grupo.videos
-                                .map(id => videosPorId[id])
-                                .filter(video => video);
-
-
-                        /*
-                         * Si el grupo no tiene videos disponibles,
-                         * no se muestra.
-                         */
-
-                        if (videosDelGrupo.length === 0) {
-                            return;
-                        }
-
-
-                        /*
-                         * ------------------------------------------------
-                         * Crear sección
-                         * ------------------------------------------------
-                         */
-
-                        const section =
-                            document.createElement("section");
-
-                        section.className =
-                            "topic-section";
-
-                        section.id =
-                            grupo.id;
-
-
-                        /*
-                         * ------------------------------------------------
-                         * Encabezado del grupo
-                         * ------------------------------------------------
-                         */
-
-                        const heading =
-                            document.createElement("div");
-
-                        heading.className =
-                            "topic-heading";
-
-
-                        heading.innerHTML = `
-
-                            <div class="topic-icon">
-
-                                <i class="fas ${grupo.icono}"></i>
-
-                            </div>
-
-                            <div>
-
-                                <h2>
-                                    ${grupo.titulo}
-                                </h2>
-
-                                <p class="topic-description">
-                                    ${grupo.descripcion}
-                                </p>
-
-                            </div>
-
-                        `;
-
-
-                        section.appendChild(heading);
-
-
-                        /*
-                         * ------------------------------------------------
-                         * Grid de videos
-                         * ------------------------------------------------
-                         */
-
-                        const row =
-                            document.createElement("div");
-
-                        row.className =
-                            "row g-4";
-
-
-                        videosDelGrupo.forEach(video => {
-
-                            const videoUrl =
-                                `https://www.youtube.com/watch?v=${video.videoId}`;
-
-
-                            let desc =
-                                video.description
-                                    ? video.description
-                                    : "Clase de fisiología explicada de forma clara y sencilla.";
-
-
-                            /*
-                             * Limitar descripción para mantener
-                             * tarjetas visualmente equilibradas.
-                             */
-
-                            if (desc.length > 145) {
-
-                                desc =
-                                    desc.substring(0, 145) + "...";
-
-                            }
-
-
-                            /*
-                             * ------------------------------------------------
-                             * Tarjeta
-                             * ------------------------------------------------
-                             */
-
-                            const col =
-                                document.createElement("div");
-
-                            col.className =
-                                "col-lg-4 col-md-6";
-
-
-                            col.innerHTML = `
-
-                                <article class="video-card">
-
-                                    <a
-                                        href="${videoUrl}"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label="Ver ${video.title} en YouTube"
-                                    >
-
-                                        <div class="video-thumbnail">
-
-                                            <img
-                                                src="${video.thumbnail}"
-                                                alt="${video.title}"
-                                                loading="lazy"
-                                            >
-
-                                            <div class="video-play">
-
-                                                <i class="fas fa-play"></i>
-
-                                            </div>
-
-                                        </div>
-
-                                    </a>
-
-
-                                    <div class="video-body">
-
-                                        <h3 class="video-title">
-                                            ${video.title}
-                                        </h3>
-
-
-                                        <p class="video-description">
-                                            ${desc}
-                                        </p>
-
-
-                                        <a
-                                            href="${videoUrl}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="btn btn-sm btn-light text-uppercase video-button"
-                                        >
-
-                                            Ver en YouTube
-
-                                            <i class="fas fa-external-link-alt ms-1"></i>
-
-                                        </a>
-
-                                    </div>
-
-                                </article>
-
-                            `;
-
-
-                            row.appendChild(col);
-
-                        });
-
-
-                        section.appendChild(row);
-
-                        contenedor.appendChild(section);
-
-                    });
-
-
-                    /*
-                     * ------------------------------------------------
-                     * Detectar videos que todavía no fueron incluidos
-                     *
-                     * Esto es útil mientras seguimos agregando videos
-                     * o modificando la playlist.
-                     * ------------------------------------------------
-                     */
-
-                    const idsClasificados =
-                        new Set(
-                            grupos.flatMap(grupo => grupo.videos)
-                        );
-
-
-                    const videosSinGrupo =
-                        videos.filter(
-                            video => !idsClasificados.has(video.videoId)
-                        );
-
-
-                    /*
-                     * Si aparecen videos nuevos en el JSON,
-                     * los mostramos al final para no perderlos.
-                     */
-
-                    if (videosSinGrupo.length > 0) {
-
-                        const section =
-                            document.createElement("section");
-
-                        section.className =
-                            "topic-section";
-
-                        section.id =
-                            "otros-videos";
-
-
-                        section.innerHTML = `
-
-                            <div class="topic-heading">
-
-                                <div class="topic-icon">
-
-                                    <i class="fas fa-video"></i>
-
-                                </div>
-
-                                <div>
-
-                                    <h2>
-                                        Más videos sobre pH
-                                    </h2>
-
-                                    <p class="topic-description">
-                                        Otros contenidos relacionados con el equilibrio ácido-base.
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        `;
-
-
-                        const row =
-                            document.createElement("div");
-
-                        row.className =
-                            "row g-4";
-
-
-                        videosSinGrupo.forEach(video => {
-
-                            const videoUrl =
-                                `https://www.youtube.com/watch?v=${video.videoId}`;
-
-
-                            const col =
-                                document.createElement("div");
-
-                            col.className =
-                                "col-lg-4 col-md-6";
-
-
-                            let desc =
-                                video.description
-                                    ? video.description
-                                    : "Contenido de fisiología relacionado con el pH.";
-
-
-                            if (desc.length > 145) {
-
-                                desc =
-                                    desc.substring(0, 145) + "...";
-
-                            }
-
-
-                            col.innerHTML = `
-
-                                <article class="video-card">
-
-                                    <a
-                                        href="${videoUrl}"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-
-                                        <div class="video-thumbnail">
-
-                                            <img
-                                                src="${video.thumbnail}"
-                                                alt="${video.title}"
-                                                loading="lazy"
-                                            >
-
-                                            <div class="video-play">
-
-                                                <i class="fas fa-play"></i>
-
-                                            </div>
-
-                                        </div>
-
-                                    </a>
-
-
-                                    <div class="video-body">
-
-                                        <h3 class="video-title">
-                                            ${video.title}
-                                        </h3>
-
-                                        <p class="video-description">
-                                            ${desc}
-                                        </p>
-
-                                        <a
-                                            href="${videoUrl}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="btn btn-sm btn-light text-uppercase video-button"
-                                        >
-
-                                            Ver en YouTube
-
-                                            <i class="fas fa-external-link-alt ms-1"></i>
-
-                                        </a>
-
-                                    </div>
-
-                                </article>
-
-                            `;
-
-
-                            row.appendChild(col);
-
-                        });
-
-
-                        section.appendChild(row);
-
-                        contenedor.appendChild(section);
-
-                    }
-
-                })
-
-
-                /*
-                 * ----------------------------------------------------
-                 * Error
-                 * ----------------------------------------------------
-                 */
-
-                .catch(error => {
-
-                    console.error("Error:", error);
-
-                    document.getElementById("contenedor-videos").innerHTML = `
-
-                        <div class="col-12">
-
-                            <div
-                                class="alert alert-warning shadow-sm"
-                                role="alert"
+                            <img
+                                src="${thumbnail}"
+                                alt="${escapeHTML(titulo)}"
+                                loading="lazy"
                             >
 
-                                <i class="fas fa-exclamation-triangle me-2"></i>
+                            <div class="play-button">
 
-                                No se pudieron cargar las clases en este momento.
+                                <i class="fa-solid fa-play"></i>
 
                             </div>
 
                         </div>
 
-                    `;
+                    </a>
+
+
+                    <div class="video-content">
+
+                        <h3 class="video-title">
+
+                            ${escapeHTML(titulo)}
+
+                        </h3>
+
+
+                        <p class="video-description">
+
+                            ${escapeHTML(descripcion)}
+
+                        </p>
+
+
+                        <a
+                            href="${youtubeUrl}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="watch-button"
+                        >
+
+                            <i class="fa-brands fa-youtube"></i>
+
+                            Ver en YouTube
+
+                        </a>
+
+                    </div>
+
+                </article>
+
+            `;
+
+        }
+
+
+
+        /*
+        ============================================================
+        CREA UNA SECCIÓN DE CATEGORÍA
+        ============================================================
+        */
+
+        function crearCategoria(categoriaKey, videos) {
+
+            const categoria =
+                categorias[categoriaKey];
+
+
+            /*
+            Si aparece una categoría nueva en el JSON que todavía
+            no está definida arriba, igualmente la mostramos.
+            */
+
+            const titulo =
+                categoria?.titulo ||
+                categoriaKey;
+
+
+            const icono =
+                categoria?.icono ||
+                "fa-solid fa-book";
+
+
+            const descripcion =
+                categoria?.descripcion ||
+                "";
+
+
+            const videosHTML =
+                videos
+                    .map(video => crearVideoCard(video))
+                    .join("");
+
+
+            return `
+
+                <section
+                    class="topic-section"
+                    id="tema-${categoriaKey}"
+                >
+
+                    <div class="topic-header">
+
+                        <h2 class="topic-title">
+
+                            <i class="${icono}"></i>
+
+                            ${escapeHTML(titulo)}
+
+                        </h2>
+
+
+                        ${
+                            descripcion
+                                ? `
+                                    <p class="topic-description">
+
+                                        ${escapeHTML(descripcion)}
+
+                                    </p>
+                                  `
+                                : ""
+                        }
+
+                    </div>
+
+
+                    ${
+                        videos.length > 0
+
+                        ?
+
+                        `
+                            <div class="videos-grid">
+
+                                ${videosHTML}
+
+                            </div>
+                        `
+
+                        :
+
+                        `
+                            <p class="empty-category">
+                                Todavía no hay videos en esta sección.
+                            </p>
+                        `
+                    }
+
+                </section>
+
+            `;
+
+        }
+
+
+
+        /*
+        ============================================================
+        CARGA DEL JSON
+        ============================================================
+        */
+
+        async function cargarVideos() {
+
+            const container =
+                document.getElementById(
+                    "videos-container"
+                );
+
+
+            try {
+
+                const respuesta =
+                    await fetch(
+                        "regulacion-ph.json"
+                    );
+
+
+                if (!respuesta.ok) {
+
+                    throw new Error(
+                        `Error HTTP ${respuesta.status}`
+                    );
+
+                }
+
+
+                const videos =
+                    await respuesta.json();
+
+
+                if (!Array.isArray(videos)) {
+
+                    throw new Error(
+                        "El JSON no contiene una lista de videos."
+                    );
+
+                }
+
+
+
+                /*
+                ====================================================
+                AGRUPAMOS LOS VIDEOS POR CATEGORÍA
+
+                Acá está el cambio fundamental.
+
+                El HTML NO pregunta:
+
+                    "¿Cuál es el videoId?"
+
+                Pregunta:
+
+                    "¿Qué categoría tiene este video?"
+                ====================================================
+                */
+
+                const videosPorCategoria = {};
+
+
+                videos.forEach(video => {
+
+                    const categoria =
+                        video.categoria ||
+                        "otros";
+
+
+                    if (!videosPorCategoria[categoria]) {
+
+                        videosPorCategoria[categoria] = [];
+
+                    }
+
+
+                    videosPorCategoria[categoria]
+                        .push(video);
 
                 });
 
-        });
+
+
+                let html = "";
+
+
+
+                /*
+                ====================================================
+                PRIMERO MOSTRAMOS LAS CATEGORÍAS CONOCIDAS
+                EN EL ORDEN PEDAGÓGICO DEFINIDO ARRIBA.
+                ====================================================
+                */
+
+                ordenCategorias.forEach(categoriaKey => {
+
+                    const videosCategoria =
+                        videosPorCategoria[categoriaKey];
+
+
+                    if (
+                        videosCategoria &&
+                        videosCategoria.length > 0
+                    ) {
+
+                        html +=
+                            crearCategoria(
+                                categoriaKey,
+                                videosCategoria
+                            );
+
+                    }
+
+                });
+
+
+
+                /*
+                ====================================================
+                CATEGORÍAS NUEVAS
+
+                Si en el futuro agregás al JSON una categoría que
+                todavía no está declarada en "categorias", no se
+                pierde el video.
+
+                Aparecerá al final.
+                ====================================================
+                */
+
+                Object.keys(videosPorCategoria)
+                    .forEach(categoriaKey => {
+
+                        if (
+                            ordenCategorias
+                                .includes(categoriaKey)
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        html +=
+                            crearCategoria(
+                                categoriaKey,
+                                videosPorCategoria[
+                                    categoriaKey
+                                ]
+                            );
+
+                    });
+
+
+
+                /*
+                ====================================================
+                SI NO HAY VIDEOS
+                ====================================================
+                */
+
+                if (!html) {
+
+                    html = `
+
+                        <div class="error-message">
+
+                            <i class="fa-solid fa-circle-info fa-2x mb-3"></i>
+
+                            <p class="mb-0">
+
+                                No se encontraron videos
+                                para esta sección.
+
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                container.innerHTML = html;
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error cargando los videos:",
+                    error
+                );
+
+
+                container.innerHTML = `
+
+                    <div class="error-message">
+
+                        <i class="fa-solid fa-triangle-exclamation fa-2x mb-3"></i>
+
+                        <h3>
+                            No se pudieron cargar los videos
+                        </h3>
+
+                        <p class="mb-0">
+
+                            Verificá que el archivo
+                            <strong>regulacion-ph.json</strong>
+                            esté en la misma carpeta que esta página.
+
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+
+        /*
+        ============================================================
+        AÑO DEL FOOTER
+        ============================================================
+        */
+
+        document.getElementById(
+            "current-year"
+        ).textContent =
+            new Date().getFullYear();
+
+
+
+        /*
+        ============================================================
+        INICIAR
+        ============================================================
+        */
+
+        cargarVideos();
 
     </script>
-
 
 </body>
 
