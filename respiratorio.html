@@ -401,8 +401,31 @@
                 : "respiratorio.json";
 
             /*
+             * Normalizar el nombre del canal:
+             * - No distingue mayúsculas y minúsculas.
+             * - Ignora tildes.
+             * - Acepta "Fisio Mania", "Fisiomanía" y "Fisiomania".
+             */
+            function normalizarCanal(nombre) {
+                return (nombre || "")
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLowerCase()
+                    .replace(/\s+/g, " ")
+                    .trim();
+            }
+
+            function esVideoDeFisioMania(video) {
+                const canal = normalizarCanal(video && video.channelTitle);
+
+                return canal === "fisio mania" ||
+                       canal === "fisiomania";
+            }
+
+            /*
              * Los videos se agrupan por videoId.
-             * Los videos nuevos no clasificados aparecen al final.
+             * Los videos nuevos de Fisio Manía que no estén clasificados
+             * aparecerán automáticamente al final.
              */
             const grupos = [
                 {
@@ -458,7 +481,6 @@
                 let descripcion = video.description ||
                     "Clase de fisiología respiratoria.";
 
-                // Quitar saltos de línea innecesarios para mostrar la descripción.
                 descripcion = descripcion.replace(/\s+/g, " ").trim();
 
                 if (descripcion.length > 150) {
@@ -537,6 +559,7 @@
                     if (!response.ok) {
                         throw new Error(`No se pudo cargar ${archivoJson}.`);
                     }
+
                     return response.json();
                 })
                 .then(videos => {
@@ -546,23 +569,38 @@
                     contenedor.innerHTML = "";
 
                     if (!Array.isArray(videos)) {
-                        throw new Error("El archivo JSON no contiene una lista de videos.");
+                        throw new Error(
+                            "El archivo JSON no contiene una lista de videos."
+                        );
                     }
 
-                    if (videos.length === 0) {
+                    /*
+                     * FILTRO PRINCIPAL:
+                     * conservar solamente los videos cuyo canal sea Fisio Manía.
+                     * Los videos de otros canales no se muestran en esta página.
+                     */
+                    const videosFisioMania = videos.filter(esVideoDeFisioMania);
+
+                    if (videosFisioMania.length === 0) {
                         contenedor.innerHTML = `
                             <div class="text-center py-5">
                                 <p class="text-white-50">
-                                    Todavía no hay videos disponibles.
+                                    Todavía no hay videos de Fisio Manía disponibles
+                                    en esta sección.
                                 </p>
                             </div>
                         `;
                         return;
                     }
 
+                    /*
+                     * Crear el índice únicamente con los videos filtrados.
+                     * Así, un video externo nunca podrá aparecer dentro de
+                     * una categoría ni en la sección de videos sin clasificar.
+                     */
                     const videosPorId = new Map();
 
-                    videos.forEach(video => {
+                    videosFisioMania.forEach(video => {
                         if (video && video.videoId) {
                             videosPorId.set(video.videoId, video);
                         }
@@ -627,10 +665,12 @@
                     });
 
                     /*
-                     * Mostrar todos los videos nuevos o no clasificados.
+                     * Mostrar videos propios nuevos o no clasificados.
+                     * Se utiliza videosFisioMania, no la lista original.
                      */
-                    const videosSinGrupo = videos.filter(video =>
-                        video && video.videoId &&
+                    const videosSinGrupo = videosFisioMania.filter(video =>
+                        video &&
+                        video.videoId &&
                         !idsClasificados.has(video.videoId)
                     );
 
