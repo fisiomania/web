@@ -1,211 +1,59 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6X1NQJZHP"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
 
-          gtag('config', 'G-X6X1NQJZHP');
-        </script>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        
-        <!-- SEO Básico -->
-        <meta name="description" content="Fisiología Respiratoria: mecánica ventilatoria, intercambio gaseoso, transporte de gases y control de la respiración - Fisiomanía" />
-        <meta name="keywords" content="fisiologia respiratoria, mecanica ventilatoria, intercambio gaseoso, hematosis, espirometria, curva hemoglobina, fisiologia uba" />
-        <meta name="author" content="Dra. Valeria Rivarola" />
-        <title>Fisiología Respiratoria | Fisiomanía</title>
-
-        <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Font Awesome -->
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
-        <!-- Stylesheets -->
-        <link href="css/styles.css" rel="stylesheet" />
-
-        <!-- Canonical & OpenGraph (Redes Sociales) -->
-        <link rel="canonical" href="https://fisiomania.com.ar/respiratorio.html" />
-
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Fisiología Respiratoria | Fisiomanía" />
-        <meta property="og:description" content="Mecánica de la ventilación, difusión alveolocapilar, transporte de oxígeno y dióxido de carbono, y control del ritmo respiratorio explicados por la Dra. Valeria Rivarola." />
-        <meta property="og:url" content="https://fisiomania.com.ar/respiratorio.html" />
-        <meta property="og:image" content="https://fisiomania.com.ar/assets/img/Fisiologia Respiratorio.png" />
-        <meta property="og:locale" content="es_ES" />
-
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Fisiología Respiratoria | Fisiomanía" />
-        <meta name="twitter:description" content="Mecánica respiratoria, difusión, transporte de gases y regulación de la respiración explicados por la Dra. Valeria Rivarola." />
-        <meta name="twitter:image" content="https://fisiomania.com.ar/assets/img/Fisiologia Respiratorio.png" />
-
-        <!-- Datos Estructurados Schema.org -->
-        <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          "name": "Fisiología Respiratoria - Fisiomanía",
-          "description": "Videos y clases de fisiología respiratoria: mecánica ventilatoria, espirometría, difusión y transporte de gases.",
-          "url": "https://fisiomania.com.ar/respiratorio.html",
-          "isPartOf": {
-            "@type": "EducationalOrganization",
-            "name": "Fisiomanía",
-            "url": "https://fisiomania.com.ar/index.html"
-          }
-        }
-        </script>
-    </head>
-    <body id="page-top">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-            <div class="container">
-                <a class="navbar-brand text-uppercase font-weight-bold" href="index.html">Fisiomanía</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars ms-1"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index.html#portfolio">Catálogos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html#about">Acerca de</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html#contact">Contacto</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Header / Cabecera -->
-        <header class="masthead text-white" style="padding-top: 10rem; padding-bottom: 5rem; background-color: #212529;">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-8 text-start">
-                        <h1 class="display-4 fw-bold mb-3">Fisiología Respiratoria</h1>
-                        <p class="text-white-50 mb-3" style="max-width: 600px;">Mecánica ventilatoria, hematosis, transporte de O₂ y CO₂, relación ventilación/perfusión y regulación de la respiración explicadas paso a paso.</p>
-                        <p class="lead text-white mb-0">Explora los videos y clases del módulo</p>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Sección de Videos (Grid Dinámico) -->
-        <section class="page-section bg-dark text-white py-5" id="videos-respiratorio">
-            <div class="container">
-                <!-- Contenedor dinámico -->
-                <div class="row" id="contenedor-videos">
-                    <div class="text-center py-5">
-                        <div class="spinner-border text-light" role="status">
-                            <span class="visually-hidden">Cargando videos...</span>
-                        </div>
-                        <p class="text-white-50 mt-3">Cargando clases de fisiología respiratoria...</p>
-                    </div>
-                </div>
-                
-                <!-- Formulario Feedback (Tally) -->
-                <div class="row justify-content-center mt-5">
-                    <div class="col-lg-6 text-center">
-                        <iframe data-tally-src="https://tally.so/embed/RGO5Vj?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1&source=Respiratorio" loading="lazy" width="100%" height="10" frameborder="0" marginheight="0" marginwidth="0" title="Feedback Fisio Mania"></iframe>
-                        <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
-                    </div>
-                </div>
-                
-                <!-- Botón Volver -->
-                <div class="text-center mt-5">
-                    <a href="index.html#portfolio" class="btn btn-outline-light btn-lg text-uppercase">← Volver a los catálogos</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer py-4 bg-black text-white">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-4 text-lg-start">Copyright &copy; Fisiomanía 2026</div>
-                    <div class="col-lg-4 my-3 my-lg-0 text-center">
-                        <a class="btn btn-dark btn-social mx-2" href="https://www.youtube.com/channel/UCHf85J5ad4OTphK9Aykw3cg" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                    </div>
-                    <div class="col-lg-4 text-lg-end">
-                        <a class="link-light text-decoration-none me-3" href="#!">Política de Privacidad</a>
-                        <a class="link-light text-decoration-none" href="#!">Términos de Uso</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-        <!-- JS Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="js/scripts.js"></script>
-
-        <!-- Carga Dinámica de Videos segun el nombre del HTML -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const paginaActual = window.location.pathname.split("/").pop().replace(".html", "");
-                const archivoJson = (paginaActual && paginaActual !== "") ? `${paginaActual}.json` : "respiratorio.json";
-
-                fetch(archivoJson)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`No se pudo cargar el archivo ${archivoJson}.`);
-                        }
-                        return response.json();
-                    })
-                    .then(videos => {
-                        const contenedor = document.getElementById('contenedor-videos');
-                        contenedor.innerHTML = "";
-
-                        if (videos.length === 0) {
-                            contenedor.innerHTML = '<div class="col-12 text-center"><p class="text-white-50">No hay videos disponibles en este momento.</p></div>';
-                            return;
-                        }
-
-                        videos.forEach(video => {
-                            const videoUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
-                            
-                            let desc = video.description ? video.description : "Sin descripción disponible.";
-                            if (desc.length > 140) {
-                                desc = desc.substring(0, 140) + "...";
-                            }
-
-                            const col = document.createElement('div');
-                            col.className = "col-lg-4 col-sm-6 mb-4";
-                            
-                            col.innerHTML = `
-                                <div class="card h-100 shadow border-secondary bg-secondary text-white">
-                                    <a href="${videoUrl}" target="_blank">
-                                        <img src="${video.thumbnail}" class="card-img-top" alt="${video.title}" style="height: 200px; object-fit: cover;">
-                                    </a>
-                                    <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title fw-bold text-white fs-6 mb-2">${video.title}</h5>
-                                        <div class="p-3 bg-dark rounded shadow-sm mt-2 border-start border-primary border-4 flex-grow-1">
-                                            <p class="card-text text-light small mb-0">${desc}</p>
-                                        </div>
-                                        <div class="mt-3">
-                                            <a href="${videoUrl}" target="_blank" class="btn btn-sm btn-light text-uppercase fw-bold w-100">
-                                                Ver en YouTube <i class="fas fa-external-link-alt ms-1"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            contenedor.appendChild(col);
-                        });
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        document.getElementById('contenedor-videos').innerHTML = `
-                            <div class="col-12 text-center">
-                                <div class="alert alert-warning shadow-sm" role="alert">
-                                    <i class="fas fa-exclamation-triangle me-2"></i> 
-                                    Aún no se ha generado el archivo <strong>${archivoJson}</strong>. Ejecuta tu script de Python <code class="text-dark">actualizar_videos.py</code> para crearlo.
-                                </div>
-                            </div>
-                        `;
-                    });
-            });
-        </script>
-    </body>
-</html>
+[
+  {
+    "title": "Respiras bien… pero tu sangre no se oxigena | Relación V/Q fácil",
+    "description": "¿Por qué el oxígeno no llega a la sangre si los pulmones funcionan?\n\nEl secreto está en la Relación V/Q. Para que el intercambio gaseoso sea óptimo, no solo necesitamos que entre aire (Ventilación), sino que ese aire se encuentre con un flujo de sangre adecuado (Perfusión).\n\nEn este video analizamos los tres escenarios críticos:\n\nV/Q Normal (~0.8): El equilibrio perfecto en las zonas medias del pulmón.\n\nV/Q Bajo (Efecto Shunt): Hay sangre, pero no hay aire (ej. neumonía). La sangre pasa \"de largo\" sin oxigenarse.\n\nV/Q Alto (Espacio Muerto): Hay aire, pero no hay sangre (ej. tromboembolismo). El oxígeno se queda atrapado en el alvéolo.\n\nContenido técnico destacado:\n\nDiferencias entre el ápice y la base pulmonar (Zonas de West).\n\nCómo la gravedad afecta la distribución de la sangre.\n\nIdeal para estudiantes de medicina, fisiología, enfermería y ciencias de la salud que quieran comprender la **fisiología respiratoria** de manera clara y rápida.\n\nTimestamps:\n00:00 - Oxigenación de la hemoglobina\n00:40 - ¿Qué es la relación V/Q?\n01:20 - Variación de la ventilación en el pulmón\n02:40 - Variación de la perfusión\n03:05 - Variación de la relación V/Q y sus zonas\n\n👉 Si te sirvió, dejá un like y suscribite a **Fisio Manía** para seguir aprendiendo fisiología fácil, rápido y al grano.\n\n🌐 Más contenido y recursos de fisiología:\n**fisiomania.com.ar**\n\n#Fisiologia #Pulmon #VQ",
+    "videoId": "TypVSprMjf8",
+    "thumbnail": "https://i.ytimg.com/vi/TypVSprMjf8/maxresdefault.jpg",
+    "publishedAt": "2026-06-04T15:42:48Z",
+    "channelTitle": "Fisio Mania"
+  },
+  {
+    "title": "Zonas de West: el mapa del pulmón que todo médico debe conocer (5 min)",
+    "description": "Cuales son las zonas de West\nSi ya entendés V/Q, este es el video que te faltaba:\nel mecanismo real por el que las diferencias de presión empiezan a mandar sobre la perfusión pulmonar.\n\nAcá no repetimos lo básico. Vamos a entender CUÁNDO y POR QUÉ aparecen las Zonas de West.\n\n🔥 IMPORTANTE (mirá esto antes):\nSi todavía no viste la base de V/Q y perfusión, empezá acá:\n👉 https://youtu.be/TypVSprMjf8?si=caYdOJRc838muZYH\n\n💡 Lo que vas a entender en este video:\n\nPor qué la alta compliance pulmonar permite que las presiones dominen\nEl paso clave: de pulmón “uniforme” → gradientes funcionales\nQué es realmente la presión transmural (y por qué importa)\nCómo se forman las Zonas de West desde cero\n🔥 Zona 4: lo que casi nunca te explican (intersticio + edema)\nQué pasa con la perfusión si estás:\nAcostado\nDe pie\nEn vertical (sí, cambia TODO)\n\n🎯 Ideal para:\nMedicina · Enfermería · Kinesiología · Fisioterapia respiratoria\n\n⏱️ Timestamps\n0:00 Intro: las Zonas de West?\n0:40 zona 1\n01:40 Zona 2\n6:30 Zona 3: flujo dominante\n7:13 🔥 Zona 4 (clave clínica)\n8:30 Cambios de posición\n\n👉 Si te sirvió, dejá un like y suscribite a **Fisio Manía** para seguir aprendiendo fisiología fácil, rápido y al grano.\n\n🌐 Más contenido y recursos de fisiología:\n**fisiomania.com.ar**",
+    "videoId": "E6vwNfrcxb4",
+    "thumbnail": "https://i.ytimg.com/vi/E6vwNfrcxb4/maxresdefault.jpg",
+    "publishedAt": "2026-06-04T15:43:14Z",
+    "channelTitle": "Fisio Mania"
+  },
+  {
+    "title": "¿Cómo un pulmón “blando” termina generando Zonas de West? (El paso que nadie explica)",
+    "description": "¿Cómo un pulmón “blando” termina generando Zonas de West? (El paso que nadie explica)\n\nSi ya entendés V/Q, este es el video que te faltaba:\nel mecanismo real por el que las diferencias de presión empiezan a mandar sobre la perfusión pulmonar.\n\nAcá no repetimos lo básico. Vamos a entender CUÁNDO y POR QUÉ aparecen las Zonas de West.\n\n🔥 IMPORTANTE (mirá esto antes):\nSi todavía no viste la base de V/Q y perfusión, empezá acá:\n👉 https://youtu.be/TypVSprMjf8?si=caYdOJRc838muZYH\n\n💡 Lo que vas a entender en este video:\n\nPor qué la alta compliance pulmonar permite que las presiones dominen\nEl paso clave: de pulmón “uniforme” → gradientes funcionales\nQué es realmente la presión transmural (y por qué importa)\nCómo se forman las Zonas de West desde cero\n🔥 Zona 4: lo que casi nunca te explican (intersticio + edema)\nQué pasa con la perfusión si estás:\nAcostado\nDe pie\nEn vertical (sí, cambia TODO)\n\n🎯 Ideal para:\nMedicina · Enfermería · Kinesiología · Fisioterapia respiratoria\n\n⏱️ Timestamps\n0:00 Intro: ¿por qué aparecen las Zonas de West?\n2:15 Presión transmural\n4:00 Inicio de las diferencias de presión\n5:40 Formación de zonas\n6:30 Zona 3: flujo dominante\n7:13 🔥 Zona 4 (clave clínica)\n8:30 Cambios de posición\n\n👉 Si te sirvió, dejá un like y suscribite a **Fisio Manía** para seguir aprendiendo fisiología fácil, rápido y al grano.\n\n🌐 Más contenido y recursos de fisiología:\n**fisiomania.com.ar**",
+    "videoId": "Go_bJh9-vI8",
+    "thumbnail": "https://i.ytimg.com/vi/Go_bJh9-vI8/maxresdefault.jpg",
+    "publishedAt": "2026-06-04T15:43:38Z",
+    "channelTitle": "Fisio Mania"
+  },
+  {
+    "title": "Transporte de dióxido de carbono y oxigeno Fisio UBA",
+    "description": "Seguinos en Fb donde subimos ademas preguntas choice y materiales de fisiología cardiorespiratória:\nhttps://www.facebook.com/profile.php?id=100049186762933\n\nQueres nuestro Curso Online?\nclasescardiorespi@gmail.com o por mensaje de Fb.",
+    "videoId": "Ky0Fq_r3rdA",
+    "thumbnail": "https://i.ytimg.com/vi/Ky0Fq_r3rdA/maxresdefault.jpg",
+    "publishedAt": "2021-08-19T16:50:41Z",
+    "channelTitle": "ClasesCardioRespi"
+  },
+  {
+    "title": "Presión Alveolar de Oxigeno Fisio UBA",
+    "description": "Seguinos en Fb donde subimos ademas preguntas choice y materiales de fisiología cardiorespiratória:\nhttps://www.facebook.com/profile.php?id=100049186762933\n\nQueres nuestro Curso Online?\nclasescardiorespi@gmail.com o por mensaje de Fb.",
+    "videoId": "sgiE4WjpELA",
+    "thumbnail": "https://i.ytimg.com/vi/sgiE4WjpELA/hqdefault.jpg",
+    "publishedAt": "2021-08-19T16:51:48Z",
+    "channelTitle": "ClasesCardioRespi"
+  },
+  {
+    "title": "Hipobaria e Hiperbaria FISIO UBA",
+    "description": "Seguinos en Fb donde subimos ademas preguntas choice y materiales de fisiología cardiorespiratória:\nhttps://www.facebook.com/profile.php?id=100049186762933\n\nQueres nuestro Curso Online?\nclasescardiorespi@gmail.com o por mensaje de Fb.",
+    "videoId": "L30w9H-CndM",
+    "thumbnail": "https://i.ytimg.com/vi/L30w9H-CndM/maxresdefault.jpg",
+    "publishedAt": "2021-08-19T16:52:15Z",
+    "channelTitle": "ClasesCardioRespi"
+  },
+  {
+    "title": "Espirometría Fisio UBA",
+    "description": "Seguinos en Fb donde subimos ademas preguntas choice y materiales de fisiología cardiorespiratória:\nhttps://www.facebook.com/profile.php?id=100049186762933\n\nQueres nuestro Curso Online?\nclasescardiorespi@gmail.com o por mensaje de Fb.",
+    "videoId": "JQenbjvYZCo",
+    "thumbnail": "https://i.ytimg.com/vi/JQenbjvYZCo/maxresdefault.jpg",
+    "publishedAt": "2021-08-19T16:52:25Z",
+    "channelTitle": "ClasesCardioRespi"
+  }
+]
