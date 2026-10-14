@@ -1,211 +1,885 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6X1NQJZHP"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6X1NQJZHP"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-X6X1NQJZHP');
+    </script>
 
-          gtag('config', 'G-X6X1NQJZHP');
-        </script>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        
-        <!-- SEO Básico -->
-        <meta name="description" content="Fisiología de la Sangre: eritropoyesis, hemostasia, grupos sanguíneos e inmunidad - Fisiomanía" />
-        <meta name="keywords" content="fisiologia de la sangre, eritropoyesis, hemostasia, coagulacion, grupos sanguineos, inmunidad, fisiologia uba" />
-        <meta name="author" content="Dra. Valeria Rivarola" />
-        <title>Fisiología de la Sangre | Fisiomanía</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Font Awesome -->
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
-        <!-- Stylesheets -->
-        <link href="css/styles.css" rel="stylesheet" />
+    <!-- SEO -->
+    <title>Fisiología de la Sangre: Hematología, Hemograma y Hemostasia | Fisio Manía</title>
+    <meta name="description" content="Aprendé fisiología de la sangre con videos sobre hematopoyesis, glóbulos rojos, hemograma, RDW, grupos sanguíneos ABO y Rh, buffers sanguíneos, hemostasia y coagulación.">
+    <meta name="keywords" content="fisiología de la sangre, hematología, hematopoyesis, glóbulos rojos, hemograma, RDW, VCM, grupos sanguíneos, factor Rh, buffers sanguíneos, hemostasia, coagulación">
+    <meta name="author" content="Dra. Valeria Rivarola">
+    <meta name="robots" content="index, follow">
 
-        <!-- Canonical & OpenGraph (Redes Sociales) -->
-        <link rel="canonical" href="https://fisiomania.com.ar/sangre.html" />
+    <link rel="canonical" href="https://fisiomania.com.ar/sangre.html">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Fisiología de la Sangre | Fisiomanía" />
-        <meta property="og:description" content="Componentes de la sangre, eritropoyesis, hemostasia primaria y secundaria, inmunidad y grupos sanguíneos explicados por la Dra. Valeria Rivarola." />
-        <meta property="og:url" content="https://fisiomania.com.ar/sangre.html" />
-        <meta property="og:image" content="https://fisiomania.com.ar/assets/img/Fisiologia Sangre.png" />
-        <meta property="og:locale" content="es_ES" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Fisiología de la Sangre | Fisio Manía">
+    <meta property="og:description" content="Videos de fisiología de la sangre: hematopoyesis, hemograma, grupos sanguíneos, buffers, hemostasia y coagulación, explicados paso a paso.">
+    <meta property="og:url" content="https://fisiomania.com.ar/sangre.html">
+    <meta property="og:image" content="https://fisiomania.com.ar/assets/img/Fisiologia%20Sangre.png">
+    <meta property="og:locale" content="es_AR">
 
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Fisiología de la Sangre | Fisiomanía" />
-        <meta name="twitter:description" content="Eritropoyesis, hemostasia, coagulación y respuesta inmune explicados por la Dra. Valeria Rivarola." />
-        <meta name="twitter:image" content="https://fisiomania.com.ar/assets/img/Fisiologia Sangre.png" />
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Fisiología de la Sangre | Fisio Manía">
+    <meta name="twitter:description" content="Aprendé hematopoyesis, hemograma, grupos sanguíneos y hemostasia con videos de fisiología.">
+    <meta name="twitter:image" content="https://fisiomania.com.ar/assets/img/Fisiologia%20Sangre.png">
 
-        <!-- Datos Estructurados Schema.org -->
-        <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          "name": "Fisiología de la Sangre - Fisiomanía",
-          "description": "Videos y clases de fisiología sanguínea: eritropoyesis, hemostasia, cascada de coagulación y grupos sanguíneos.",
-          "url": "https://fisiomania.com.ar/sangre.html",
-          "isPartOf": {
-            "@type": "EducationalOrganization",
-            "name": "Fisiomanía",
-            "url": "https://fisiomania.com.ar/index.html"
-          }
+    <!-- Datos estructurados -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Fisiología de la Sangre - Fisio Manía",
+        "description": "Catálogo educativo de fisiología de la sangre, hematopoyesis, hemograma, grupos sanguíneos, buffers, hemostasia y coagulación.",
+        "url": "https://fisiomania.com.ar/sangre.html",
+        "inLanguage": "es",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Fisio Manía",
+            "url": "https://fisiomania.com.ar/"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Dra. Valeria Rivarola"
         }
-        </script>
-    </head>
-    <body id="page-top">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-            <div class="container">
-                <a class="navbar-brand text-uppercase font-weight-bold" href="index.html">Fisiomanía</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars ms-1"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index.html#portfolio">Catálogos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html#about">Acerca de</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html#contact">Contacto</a></li>
-                    </ul>
+    }
+    </script>
+
+    <!-- Fuentes e iconos -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet">
+
+    <!-- Estilos del sitio -->
+    <link href="css/styles.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --fm-teal: #0a2e35;
+            --fm-teal-dark: #061f24;
+            --fm-teal-light: #17616a;
+            --fm-cream: #f7f8f5;
+            --fm-gold: #d8a83e;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+
+        body {
+            background-color: var(--fm-teal-dark);
+        }
+
+        #mainNav {
+            background-color: var(--fm-teal-dark) !important;
+        }
+
+        .sangre-hero {
+            padding: 150px 0 75px;
+            background:
+                radial-gradient(ellipse at 85% 20%, rgba(23, 97, 106, 0.65), transparent 48%),
+                linear-gradient(135deg, var(--fm-teal-dark), var(--fm-teal));
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sangre-hero h1 {
+            color: #fff;
+            font-weight: 700;
+            line-height: 1.15;
+        }
+
+        .sangre-hero p {
+            max-width: 760px;
+            line-height: 1.8;
+        }
+
+        .hero-label {
+            display: inline-block;
+            margin-bottom: 18px;
+            padding: 7px 13px;
+            border: 1px solid rgba(216,168,62,0.65);
+            border-radius: 30px;
+            color: var(--fm-gold);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .sangre-content {
+            padding: 55px 0 70px;
+            background-color: var(--fm-teal-dark);
+            color: white;
+        }
+
+        .catalog-intro {
+            color: rgba(255,255,255,0.72);
+            line-height: 1.7;
+            margin-bottom: 35px;
+        }
+
+        .topic-section {
+            margin-bottom: 55px;
+            scroll-margin-top: 100px;
+        }
+
+        .topic-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .topic-icon {
+            display: flex;
+            flex: 0 0 48px;
+            width: 48px;
+            height: 48px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(23,97,106,0.45);
+            color: var(--fm-gold);
+            font-size: 1.25rem;
+        }
+
+        .topic-title {
+            margin: 0 0 7px;
+            color: white;
+            font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+            font-weight: 700;
+        }
+
+        .topic-description {
+            margin: 0 0 22px;
+            color: rgba(255,255,255,0.67);
+            line-height: 1.6;
+        }
+
+        .topic-divider {
+            height: 1px;
+            margin: 0 0 25px;
+            border: 0;
+            background: linear-gradient(90deg, var(--fm-teal-light), transparent);
+        }
+
+        .video-card {
+            height: 100%;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 13px;
+            background: #10383f;
+            color: white;
+            box-shadow: 0 7px 22px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(216,168,62,0.65);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+        }
+
+        .video-thumbnail-link {
+            display: block;
+            overflow: hidden;
+            background: #061f24;
+        }
+
+        .video-thumbnail {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            transition: transform 0.25s ease;
+        }
+
+        .video-thumbnail-link:hover .video-thumbnail {
+            transform: scale(1.035);
+        }
+
+        .video-card-body {
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - auto);
+            padding: 18px;
+        }
+
+        .video-title {
+            margin: 0 0 12px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.45;
+        }
+
+        .video-title a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .video-title a:hover {
+            color: var(--fm-gold);
+        }
+
+        .video-description {
+            flex-grow: 1;
+            margin-bottom: 15px;
+            color: rgba(255,255,255,0.75);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
+        .video-channel {
+            margin-bottom: 14px;
+            color: rgba(255,255,255,0.55);
+            font-size: 0.78rem;
+        }
+
+        .video-button {
+            width: 100%;
+            border: 0;
+            border-radius: 7px;
+            background: var(--fm-cream);
+            color: var(--fm-teal-dark);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .video-button:hover,
+        .video-button:focus {
+            background: var(--fm-gold);
+            color: var(--fm-teal-dark);
+        }
+
+        .catalog-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 25px 0 40px;
+        }
+
+        .catalog-nav a {
+            padding: 9px 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
+            color: white;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+
+        .catalog-nav a:hover {
+            background: var(--fm-teal-light);
+            border-color: var(--fm-teal-light);
+        }
+
+        .loading-message {
+            padding: 55px 15px;
+            color: rgba(255,255,255,0.75);
+            text-align: center;
+        }
+
+        .catalog-error {
+            padding: 22px;
+            border: 1px solid rgba(216,168,62,0.45);
+            border-radius: 10px;
+            background: rgba(216,168,62,0.1);
+            color: white;
+        }
+
+        .catalog-error code {
+            color: var(--fm-gold);
+        }
+
+        .catalog-count {
+            margin-bottom: 10px;
+            color: var(--fm-gold);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .sangre-feedback {
+            margin-top: 55px;
+            padding-top: 35px;
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .sangre-footer {
+            background: #030f12;
+            color: rgba(255,255,255,0.75);
+        }
+
+        @media (max-width: 767px) {
+            .sangre-hero {
+                padding: 125px 0 55px;
+            }
+
+            .sangre-content {
+                padding-top: 38px;
+            }
+
+            .topic-section {
+                margin-bottom: 42px;
+            }
+
+            .video-card-body {
+                padding: 15px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .video-card,
+            .video-thumbnail {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+    <!-- Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand text-uppercase fw-bold" href="index.html">
+                Fisio Manía
+            </a>
+
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarResponsive"
+                    aria-controls="navbarResponsive"
+                    aria-expanded="false"
+                    aria-label="Abrir menú">
+                Menú <i class="fas fa-bars ms-1"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ms-auto py-3 py-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#portfolio">Catálogos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sobre-fisiomania.html">Sobre Fisio Manía</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.youtube.com/@fisiomania1"
+                           target="_blank" rel="noopener noreferrer">YouTube</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cabecera -->
+    <header class="sangre-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <span class="hero-label">Catálogo de fisiología</span>
+
+                    <h1 class="display-4 mb-4">
+                        Fisiología de la Sangre
+                    </h1>
+
+                    <p class="lead text-white mb-3">
+                        De la formación de las células sanguíneas a la coagulación:
+                        entendé cómo funciona la sangre, paso a paso.
+                    </p>
+
+                    <p class="text-white-50 mb-0">
+                        Videos y clases sobre hematopoyesis, glóbulos rojos,
+                        hemograma, grupos sanguíneos, equilibrio ácido-base,
+                        hemostasia y coagulación. Ideal para estudiantes de Medicina
+                        y carreras de Ciencias de la Salud.
+                    </p>
                 </div>
             </div>
-        </nav>
+        </div>
+    </header>
 
-        <!-- Header / Cabecera -->
-        <header class="masthead text-white" style="padding-top: 10rem; padding-bottom: 5rem; background-color: #212529;">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-8 text-start">
-                        <h1 class="display-4 fw-bold mb-3">Fisiología de la Sangre</h1>
-                        <p class="text-white-50 mb-3" style="max-width: 600px;">Hematopoyesis, hemostasia primaria y secundaria, cascada de coagulación, inmunidad y grupos sanguíneos explicados paso a paso.</p>
-                        <p class="lead text-white mb-0">Explora los videos y clases del módulo</p>
+    <!-- Catálogo -->
+    <main class="sangre-content" id="videos-sangre">
+        <div class="container">
+
+            <p class="catalog-intro">
+                Elegí un tema para empezar. Encontrarás los videos organizados
+                por contenido para repasar conceptos, interpretar estudios de
+                laboratorio y comprender los mecanismos fisiológicos.
+            </p>
+
+            <!-- Accesos rápidos a las categorías -->
+            <nav class="catalog-nav" aria-label="Temas de fisiología de la sangre">
+                <a href="#hematopoyesis">Hematopoyesis</a>
+                <a href="#serie-roja">Glóbulos rojos y hemograma</a>
+                <a href="#grupos-sanguineos">Grupos sanguíneos</a>
+                <a href="#buffers">Buffers sanguíneos</a>
+                <a href="#hemostasia">Hemostasia y coagulación</a>
+                <a href="#recursos">Otros recursos</a>
+            </nav>
+
+            <div id="catalogo-contenido" aria-live="polite">
+                <div class="loading-message">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Cargando videos...</span>
                     </div>
+                    <p class="mt-3 mb-0">Cargando clases de fisiología de la sangre...</p>
                 </div>
             </div>
-        </header>
 
-        <!-- Sección de Videos (Grid Dinámico) -->
-        <section class="page-section bg-dark text-white py-5" id="videos-sangre">
-            <div class="container">
-                <!-- Contenedor dinámico -->
-                <div class="row" id="contenedor-videos">
-                    <div class="text-center py-5">
-                        <div class="spinner-border text-light" role="status">
-                            <span class="visually-hidden">Cargando videos...</span>
-                        </div>
-                        <p class="text-white-50 mt-3">Cargando clases de fisiología de la sangre...</p>
-                    </div>
-                </div>
-                
-                <!-- Formulario Feedback (Tally) -->
-                <div class="row justify-content-center mt-5">
-                    <div class="col-lg-6 text-center">
-                        <iframe data-tally-src="https://tally.so/embed/RGO5Vj?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1&source=Sangre" loading="lazy" width="100%" height="10" frameborder="0" marginheight="0" marginwidth="0" title="Feedback Fisio Mania"></iframe>
-                        <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
-                    </div>
-                </div>
-                
-                <!-- Botón Volver -->
-                <div class="text-center mt-5">
-                    <a href="index.html#portfolio" class="btn btn-outline-light btn-lg text-uppercase">← Volver a los catálogos</a>
-                </div>
-            </div>
-        </section>
+            <!-- Formulario de comentarios -->
+            <section class="sangre-feedback text-center" aria-labelledby="feedback-title">
+                <h2 id="feedback-title" class="h4 fw-bold mb-3">
+                    ¿Te resultó útil este catálogo?
+                </h2>
+                <p class="text-white-50 mb-4">
+                    Tu opinión nos ayuda a seguir mejorando los recursos de Fisio Manía.
+                </p>
 
-        <!-- Footer -->
-        <footer class="footer py-4 bg-black text-white">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-4 text-lg-start">Copyright &copy; Fisiomanía 2026</div>
-                    <div class="col-lg-4 my-3 my-lg-0 text-center">
-                        <a class="btn btn-dark btn-social mx-2" href="https://www.youtube.com/channel/UCHf85J5ad4OTphK9Aykw3cg" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                    </div>
-                    <div class="col-lg-4 text-lg-end">
-                        <a class="link-light text-decoration-none me-3" href="#!">Política de Privacidad</a>
-                        <a class="link-light text-decoration-none" href="#!">Términos de Uso</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
+                <iframe
+                    data-tally-src="https://tally.so/embed/RGO5Vj?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1&source=Sangre"
+                    loading="lazy"
+                    width="100%"
+                    height="10"
+                    frameborder="0"
+                    marginheight="0"
+                    marginwidth="0"
+                    title="Formulario de opinión de Fisio Manía">
+                </iframe>
 
-        <!-- JS Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="js/scripts.js"></script>
+                <script>
+                    (function () {
+                        var d = document;
+                        var w = "https://tally.so/widgets/embed.js";
 
-        <!-- Carga Dinámica de Videos segun el nombre del HTML -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const paginaActual = window.location.pathname.split("/").pop().replace(".html", "");
-                const archivoJson = (paginaActual && paginaActual !== "") ? `${paginaActual}.json` : "sangre.json";
-
-                fetch(archivoJson)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`No se pudo cargar el archivo ${archivoJson}.`);
-                        }
-                        return response.json();
-                    })
-                    .then(videos => {
-                        const contenedor = document.getElementById('contenedor-videos');
-                        contenedor.innerHTML = "";
-
-                        if (videos.length === 0) {
-                            contenedor.innerHTML = '<div class="col-12 text-center"><p class="text-white-50">No hay videos disponibles en este momento.</p></div>';
-                            return;
-                        }
-
-                        videos.forEach(video => {
-                            const videoUrl = `https://www.youtube.com/watch?v=${video.videoId}`;
-                            
-                            let desc = video.description ? video.description : "Sin descripción disponible.";
-                            if (desc.length > 140) {
-                                desc = desc.substring(0, 140) + "...";
+                        function loadTally() {
+                            if (typeof Tally !== "undefined") {
+                                Tally.loadEmbeds();
+                            } else {
+                                d.querySelectorAll('iframe[data-tally-src]:not([src])')
+                                    .forEach(function (iframe) {
+                                        iframe.src = iframe.dataset.tallySrc;
+                                    });
                             }
+                        }
 
-                            const col = document.createElement('div');
-                            col.className = "col-lg-4 col-sm-6 mb-4";
-                            
-                            col.innerHTML = `
-                                <div class="card h-100 shadow border-secondary bg-secondary text-white">
-                                    <a href="${videoUrl}" target="_blank">
-                                        <img src="${video.thumbnail}" class="card-img-top" alt="${video.title}" style="height: 200px; object-fit: cover;">
-                                    </a>
-                                    <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title fw-bold text-white fs-6 mb-2">${video.title}</h5>
-                                        <div class="p-3 bg-dark rounded shadow-sm mt-2 border-start border-primary border-4 flex-grow-1">
-                                            <p class="card-text text-light small mb-0">${desc}</p>
-                                        </div>
-                                        <div class="mt-3">
-                                            <a href="${videoUrl}" target="_blank" class="btn btn-sm btn-light text-uppercase fw-bold w-100">
-                                                Ver en YouTube <i class="fas fa-external-link-alt ms-1"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            contenedor.appendChild(col);
-                        });
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        document.getElementById('contenedor-videos').innerHTML = `
-                            <div class="col-12 text-center">
-                                <div class="alert alert-warning shadow-sm" role="alert">
-                                    <i class="fas fa-exclamation-triangle me-2"></i> 
-                                    Aún no se ha generado el archivo <strong>${archivoJson}</strong>. Ejecuta tu script de Python <code class="text-dark">actualizar_videos.py</code> para crearlo.
-                                </div>
-                            </div>
-                        `;
+                        if (typeof Tally !== "undefined") {
+                            loadTally();
+                        } else if (!d.querySelector('script[src="' + w + '"]')) {
+                            var s = d.createElement("script");
+                            s.src = w;
+                            s.onload = loadTally;
+                            s.onerror = loadTally;
+                            d.body.appendChild(s);
+                        }
+                    })();
+                </script>
+            </section>
+
+            <!-- Volver al catálogo general -->
+            <div class="text-center mt-5">
+                <a href="index.html#portfolio"
+                   class="btn btn-outline-light btn-lg text-uppercase">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Volver a los catálogos
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="footer py-4 sangre-footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-center text-lg-start">
+                    Copyright &copy; Fisio Manía 2026
+                </div>
+
+                <div class="col-lg-4 my-3 my-lg-0 text-center">
+                    <a class="btn btn-dark btn-social mx-2"
+                       href="https://www.youtube.com/@fisiomania1"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       aria-label="Canal de YouTube de Fisio Manía">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a class="link-light text-decoration-none"
+                       href="index.html#contact">
+                        Contacto
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap y scripts del sitio -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+
+    <!-- Carga y organización automática de los videos -->
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const catalogo = document.getElementById("catalogo-contenido");
+
+            const categorias = [
+                {
+                    id: "hematopoyesis",
+                    titulo: "Hematopoyesis y médula ósea",
+                    descripcion: "Cómo se forman las células de la sangre, cómo se diferencian y qué papel cumplen los nichos hematopoyéticos.",
+                    icono: "fa-solid fa-seedling",
+                    videos: ["A5v2TOVErrI", "n8OTBxTjJ-A"]
+                },
+                {
+                    id: "serie-roja",
+                    titulo: "Glóbulos rojos, hemograma y laboratorio",
+                    descripcion: "Funciones de los eritrocitos, hemoglobina e índices hematimétricos. Aprendé a interpretar el hemograma y a entender técnicas de laboratorio.",
+                    icono: "fa-solid fa-microscope",
+                    videos: [
+                        "MZAnzKSNJhc",
+                        "t4tfUQdasAI",
+                        "Ija3UMMAUWY",
+                        "hUdITqwPghg",
+                        "urhA4_EV8R4",
+                        "G0wmfyn3hqA"
+                    ]
+                },
+                {
+                    id: "grupos-sanguineos",
+                    titulo: "Grupos sanguíneos, ABO y Rh",
+                    descripcion: "Antígenos, anticuerpos, compatibilidad sanguínea, transfusión y pruebas de Coombs.",
+                    icono: "fa-solid fa-droplet",
+                    videos: ["sxmUI2Qv6oo", "FBuSdf-AtDM"]
+                },
+                {
+                    id: "buffers",
+                    titulo: "Buffers sanguíneos y equilibrio ácido-base",
+                    descripcion: "Cómo los sistemas amortiguadores de la sangre contribuyen a mantener estable el pH.",
+                    icono: "fa-solid fa-flask",
+                    videos: ["xik26mIKoZ4"]
+                },
+                {
+                    id: "hemostasia",
+                    titulo: "Hemostasia, plaquetas y coagulación",
+                    descripcion: "Producción y activación plaquetaria, formación del coágulo, cicatrización y cascada de coagulación.",
+                    icono: "fa-solid fa-shield-heart",
+                    videos: [
+                        "PrEHIEBc18w",
+                        "sRYvFe9UPBI",
+                        "KWumfzIkNrM",
+                        "EZ9FNuEXNl8",
+                        "gbyeU0vdwZU",
+                        "ZKpCSLu6Mqc",
+                        "yrpqgfSQbJ4"
+                    ]
+                },
+                {
+                    id: "recursos",
+                    titulo: "Circulación y otros recursos",
+                    descripcion: "Material audiovisual complementario para explorar la circulación sanguínea y otros contenidos relacionados.",
+                    icono: "fa-solid fa-heart-pulse",
+                    videos: ["d9D5csXovEM", "S2vZtPXV7A0", "d_hCD3yQnkg"]
+                }
+            ];
+
+            function crearElemento(etiqueta, clase, texto) {
+                const elemento = document.createElement(etiqueta);
+
+                if (clase) {
+                    elemento.className = clase;
+                }
+
+                if (texto !== undefined) {
+                    elemento.textContent = texto;
+                }
+
+                return elemento;
+            }
+
+            function crearTarjeta(video) {
+                const columna = crearElemento("div", "col-lg-4 col-sm-6 mb-4");
+                const tarjeta = crearElemento("article", "video-card");
+
+                const videoUrl = "https://www.youtube.com/watch?v=" +
+                    encodeURIComponent(video.videoId);
+
+                const enlaceMiniatura = crearElemento("a", "video-thumbnail-link");
+                enlaceMiniatura.href = videoUrl;
+                enlaceMiniatura.target = "_blank";
+                enlaceMiniatura.rel = "noopener noreferrer";
+                enlaceMiniatura.setAttribute(
+                    "aria-label",
+                    "Ver en YouTube: " + video.title
+                );
+
+                const miniatura = document.createElement("img");
+                miniatura.className = "video-thumbnail";
+                miniatura.src = video.thumbnail ||
+                    "https://i.ytimg.com/vi/" +
+                    encodeURIComponent(video.videoId) +
+                    "/hqdefault.jpg";
+                miniatura.alt = "Miniatura del video: " + video.title;
+                miniatura.loading = "lazy";
+                miniatura.decoding = "async";
+
+                miniatura.onerror = function () {
+                    if (!this.dataset.fallback) {
+                        this.dataset.fallback = "true";
+                        this.src = "https://i.ytimg.com/vi/" +
+                            encodeURIComponent(video.videoId) +
+                            "/hqdefault.jpg";
+                    }
+                };
+
+                enlaceMiniatura.appendChild(miniatura);
+                tarjeta.appendChild(enlaceMiniatura);
+
+                const cuerpo = crearElemento("div", "video-card-body");
+                const titulo = crearElemento("h3", "video-title");
+                const enlaceTitulo = crearElemento("a", "", video.title);
+
+                enlaceTitulo.href = videoUrl;
+                enlaceTitulo.target = "_blank";
+                enlaceTitulo.rel = "noopener noreferrer";
+
+                titulo.appendChild(enlaceTitulo);
+                cuerpo.appendChild(titulo);
+
+                const descripcionTexto = (video.description || "")
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                const descripcion = crearElemento(
+                    "p",
+                    "video-description",
+                    descripcionTexto
+                        ? (descripcionTexto.length > 170
+                            ? descripcionTexto.substring(0, 167).trimEnd() + "..."
+                            : descripcionTexto)
+                        : "Mirá este recurso audiovisual para ampliar el tema."
+                );
+
+                cuerpo.appendChild(descripcion);
+
+                if (video.channelTitle) {
+                    const canal = crearElemento(
+                        "p",
+                        "video-channel",
+                        "Canal: " + video.channelTitle
+                    );
+                    cuerpo.appendChild(canal);
+                }
+
+                const boton = crearElemento("a", "btn video-button");
+                boton.href = videoUrl;
+                boton.target = "_blank";
+                boton.rel = "noopener noreferrer";
+                boton.appendChild(document.createTextNode("Ver en YouTube "));
+
+                const icono = document.createElement("i");
+                icono.className = "fas fa-arrow-up-right-from-square ms-1";
+                icono.setAttribute("aria-hidden", "true");
+                boton.appendChild(icono);
+
+                cuerpo.appendChild(boton);
+                tarjeta.appendChild(cuerpo);
+                columna.appendChild(tarjeta);
+
+                return columna;
+            }
+
+            function crearSeccion(categoria, videos) {
+                const seccion = crearElemento("section", "topic-section");
+                seccion.id = categoria.id;
+                seccion.setAttribute("aria-labelledby", categoria.id + "-titulo");
+
+                const encabezado = crearElemento("div", "topic-heading");
+                const iconoContenedor = crearElemento("div", "topic-icon");
+                const icono = document.createElement("i");
+
+                icono.className = categoria.icono;
+                icono.setAttribute("aria-hidden", "true");
+                iconoContenedor.appendChild(icono);
+
+                const textos = crearElemento("div", "flex-grow-1");
+                const titulo = crearElemento("h2", "topic-title", categoria.titulo);
+                titulo.id = categoria.id + "-titulo";
+
+                const descripcion = crearElemento(
+                    "p",
+                    "topic-description",
+                    categoria.descripcion
+                );
+
+                textos.appendChild(titulo);
+                textos.appendChild(descripcion);
+                encabezado.appendChild(iconoContenedor);
+                encabezado.appendChild(textos);
+
+                seccion.appendChild(encabezado);
+                seccion.appendChild(crearElemento("hr", "topic-divider"));
+
+                const grilla = crearElemento("div", "row");
+
+                videos.forEach(function (video) {
+                    grilla.appendChild(crearTarjeta(video));
+                });
+
+                seccion.appendChild(grilla);
+                return seccion;
+            }
+
+            try {
+                const paginaActual = window.location.pathname
+                    .split("/")
+                    .pop()
+                    .replace(/\.html$/i, "");
+
+                const archivoJson = (paginaActual && paginaActual !== "")
+                    ? paginaActual + ".json"
+                    : "sangre.json";
+
+                const respuesta = await fetch(archivoJson);
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        "No se pudo cargar " + archivoJson +
+                        " (HTTP " + respuesta.status + ")."
+                    );
+                }
+
+                const videos = await respuesta.json();
+
+                if (!Array.isArray(videos)) {
+                    throw new Error(
+                        "El archivo JSON no contiene una lista válida de videos."
+                    );
+                }
+
+                catalogo.replaceChildren();
+
+                if (videos.length === 0) {
+                    catalogo.appendChild(
+                        crearElemento(
+                            "p",
+                            "text-center text-white-50 py-5",
+                            "No hay videos disponibles en este momento."
+                        )
+                    );
+                    return;
+                }
+
+                const usados = new Set();
+                let cantidadMostrada = 0;
+
+                categorias.forEach(function (categoria) {
+                    const videosCategoria = videos.filter(function (video) {
+                        return categoria.videos.includes(video.videoId);
                     });
-            });
-        </script>
-    </body>
+
+                    if (videosCategoria.length > 0) {
+                        catalogo.appendChild(
+                            crearSeccion(categoria, videosCategoria)
+                        );
+
+                        videosCategoria.forEach(function (video) {
+                            usados.add(video.videoId);
+                            cantidadMostrada++;
+                        });
+                    }
+                });
+
+                // Los videos nuevos que todavía no tienen categoría
+                // también se muestran automáticamente al final.
+                const videosSinClasificar = videos.filter(function (video) {
+                    return !usados.has(video.videoId);
+                });
+
+                if (videosSinClasificar.length > 0) {
+                    const categoriaOtros = {
+                        id: "nuevos-videos",
+                        titulo: "Más videos de fisiología de la sangre",
+                        descripcion: "Otros recursos del catálogo, incluidos los videos nuevos que todavía no están clasificados por tema.",
+                        icono: "fa-solid fa-book-open"
+                    };
+
+                    catalogo.appendChild(
+                        crearSeccion(categoriaOtros, videosSinClasificar)
+                    );
+
+                    cantidadMostrada += videosSinClasificar.length;
+                }
+
+                const contador = crearElemento(
+                    "p",
+                    "catalog-count",
+                    cantidadMostrada + (
+                        cantidadMostrada === 1
+                            ? " video en el catálogo"
+                            : " videos en el catálogo"
+                    )
+                );
+
+                catalogo.insertBefore(contador, catalogo.firstChild);
+
+            } catch (error) {
+                console.error("Error al cargar el catálogo de sangre:", error);
+
+                catalogo.replaceChildren();
+
+                const aviso = crearElemento("div", "catalog-error");
+                const titulo = crearElemento(
+                    "h2",
+                    "h5 fw-bold mb-3",
+                    "No se pudo cargar el catálogo"
+                );
+
+                const mensaje = crearElemento(
+                    "p",
+                    "mb-2",
+                    "Revisá que sangre.html y sangre.json estén publicados en la misma carpeta y que el archivo JSON tenga un formato válido."
+                );
+
+                const detalle = crearElemento("p", "mb-0");
+                detalle.appendChild(
+                    document.createTextNode("Podés ejecutar tu script ")
+                );
+                detalle.appendChild(crearElemento("code", "", "actualizar_videos.py"));
+                detalle.appendChild(
+                    document.createTextNode(" para regenerar el archivo JSON.")
+                );
+
+                aviso.appendChild(titulo);
+                aviso.appendChild(mensaje);
+                aviso.appendChild(detalle);
+                catalogo.appendChild(aviso);
+            }
+        });
+    </script>
+</body>
 </html>
+```
