@@ -270,13 +270,29 @@
             background: var(--teal-800);
         }
 
-        .portfolio-link img {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            object-fit: cover;
-            display: block;
-            transition: transform .3s ease;
-        }
+        .portfolio-link {
+    display: block;
+    overflow: hidden;
+    background: var(--teal-800);
+    text-align: center;
+}
+
+.portfolio-link img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 240px;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+    .portfolio-link img {
+        max-height: 190px;
+        width: auto;
+        max-width: 100%;
+    }
+}
 
         .portfolio-item:hover .portfolio-link img {
             transform: scale(1.025);
@@ -486,11 +502,7 @@
                 <p class="hero-description">
                     ¿Querés entender cómo funcionan los mecanismos
                     fisiológicos y qué pasa cuando cambian sus variables?
-                    Explorá estas simulaciones interactivas para estudiar
-                    la difusión, las leyes de Fick y la fisiología renal.
-                    Modificá parámetros, observá los resultados y conectá
-                    los conceptos teóricos con los procesos que ocurren
-                    en el organismo.
+                    Explorá modelos interactivos de difusión y función renal para descubrir cómo cambian los resultados.
                 </p>
 
                 <a class="hero-cta" href="#simulaciones">
