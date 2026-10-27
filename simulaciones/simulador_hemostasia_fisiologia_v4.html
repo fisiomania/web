@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101c2a">
+<title>Hemostasia · Simulador de fisiología · Laboratorio y casos</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1420;--panel:#142334;--panel2:#1c3042;--line:#31465a;--txt:#eef5fa;--muted:#b2c5d4;--yellow:#f6c969;--cyan:#6fd7dc;--lime:#7de4a6;--red:#ff8892;--blue:#8fbaff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse 60% 50% at 15% 0%,#163451 0%,var(--bg) 85%);font:15px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--txt)}main{max-width:1250px;margin:auto;padding:22px 18px 42px}header{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}h1{font-size:clamp(1.5rem,3vw,2.15rem);margin:2px 0;font-weight:760;letter-spacing:-.035em}h2{font-size:1.15rem;margin:0 0 12px}h3{margin:0;font-size:.99rem}.eyebrow{text-transform:uppercase;font-size:.72rem;letter-spacing:.15em;color:#9bcfe2;font-weight:750}.hint{color:var(--muted);font-size:.91rem;margin:3px 0 16px}.badge{border:1px solid #527386;padding:7px 12px;border-radius:18px;background:#183146;color:#ccecf8;font-size:.81rem} .layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:16px;margin-top:20px}.panel{background:linear-gradient(150deg,#172a3c,#101f2f);border:1px solid var(--line);border-radius:16px;padding:17px;min-width:0;box-shadow:0 12px 30px #030c1538}.stage{position:relative;overflow:hidden;border-radius:12px;background:#112638;border:1px solid #345263;min-height:295px}canvas{display:block;width:100%;height:auto}#vessel{aspect-ratio:780/415;width:100%;height:auto}.stage:after{content:'ILUSTRACIÓN CONCEPTUAL — NO A ESCALA';position:absolute;bottom:7px;right:9px;color:#d0dfeb90;font-size:.57rem;letter-spacing:.08em;pointer-events:none}.stage-top,.stage-bottom{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.stage-top{margin-bottom:10px}.legend{display:flex;gap:13px;flex-wrap:wrap;font-size:.79rem;color:#c7d5df}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;background:var(--red)}.dot.plate{background:var(--yellow)}.dot.fib{background:var(--cyan)}.dot.plas{background:var(--lime)}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}button,select{font:inherit}button{border:1px solid #57758a;border-radius:9px;background:#274359;color:var(--txt);padding:9px 13px;cursor:pointer;font-weight:680}button.primary{background:#d6eef8;border-color:#d6eef8;color:#123047}button:hover{filter:brightness(1.15)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #f5c772;outline-offset:2px}button:disabled{opacity:.4;cursor:not-allowed} .timer{font-weight:700;font-variant-numeric:tabular-nums;color:#c4e3ed}.controls-panel label{display:flex;align-items:center;justify-content:space-between;font-weight:620;font-size:.89rem;gap:8px}.controls-panel label strong{color:#edcf90;font-variant-numeric:tabular-nums}.sliderbox{padding:7px 0}.sliderbox small{display:block;color:#a9bfd0;line-height:1.3;font-size:.76rem}input[type=range]{width:100%;accent-color:#f5ca75;cursor:pointer;margin:9px 0 1px}.preset{width:100%;padding:10px;border-radius:10px;border:1px solid #658294;background:#21384b;color:#f3f7fc;margin:5px 0 8px} .callout{background:#203548;border:1px solid #365367;padding:11px 13px;border-radius:10px;color:#d6e7f2;font-size:.88rem;margin-top:10px} .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:14px}.metric{border:1px solid #365263;border-radius:10px;background:#192d3f;padding:11px}.metric-head{display:flex;justify-content:space-between;font-size:.81rem;gap:5px}.metric-head strong{font-size:.84rem;font-variant-numeric:tabular-nums}.meter{height:9px;border-radius:8px;background:#071321;overflow:hidden;margin-top:9px}.meter div{height:100%;width:0%;border-radius:8px;transition:width .09s linear}#pbar{background:var(--yellow)}#fbar{background:var(--cyan)}#lbar{background:var(--lime)}.assessment{margin-top:12px;display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}.status{padding:6px 10px;border-radius:9px;border:1px solid #6b8392;font-weight:730;background:#263f51}.assessment p{margin:2px 0;flex:1;color:#d7e6f1;font-size:.88rem}.pathways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:15px}.pathway{padding:13px;background:#172e3d;border:1px solid #38596b;border-radius:11px}.pathway:nth-child(1){border-top:4px solid var(--yellow)}.pathway:nth-child(2){border-top:4px solid var(--cyan)}.pathway:nth-child(3){border-top:4px solid var(--lime)}.pathway p{color:var(--muted);margin:7px 0 0;font-size:.86rem}.arrow{color:#9cb9c9}.footergrid{display:grid;grid-template-columns:minmax(0,1fr) 275px;gap:16px;margin-top:16px}.chart{width:100%;height:180px;border-radius:10px;background:#0e2131}.lab{display:grid;grid-template-columns:1fr 1fr;gap:8px}.lab div{background:#21384b;border-radius:8px;padding:9px}.lab span{display:block;color:#a9c2d0;font-size:.8rem}.lab strong{font-size:.9rem}.lab-note{margin:8px 0 0;color:var(--muted);font-size:.79rem}.lesson{font-size:.91rem;color:#d6e2eb}.lesson b{color:#f4cf85}.note{padding:10px 13px;border-left:3px solid #89c1d9;color:#bcd4e2;background:#10283b;border-radius:4px;margin-top:12px;font-size:.81rem}.intro{color:#bcd0de;margin:2px 0 0}.footer{margin-top:15px;color:#849dac;font-size:.76rem;text-align:center} .soft{font-size:.78rem;color:#a3c2d0}.flow-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}@media(max-width:860px){.layout,.footergrid{grid-template-columns:1fr}.pathways{grid-template-columns:1fr}.metrics{grid-template-columns:1fr}.metric{padding:10px}.stage{min-height:auto}.stage:after{font-size:.5rem}}
+@media(prefers-reduced-motion:reduce){.meter div{transition:none}}
+
+/* Vistas ampliadas · versión 2 */
+.navtabs{display:flex;gap:9px;margin:20px 0 1px;flex-wrap:wrap;padding:5px;background:#0c1c2b;border:1px solid #38556a;border-radius:14px}
+.tabbtn{flex:1;min-width:192px;padding:13px 10px;border-color:transparent;background:transparent;color:#c4d6e3;font-size:.94rem}
+.tabbtn[aria-selected="true"]{background:#d8f0fb;color:#14344a;border-color:#d8f0fb;box-shadow:0 5px 17px #0003}
+.tabview[hidden]{display:none!important}.zoom-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,1fr);gap:16px;margin-top:17px}
+.zoom-stage{background:#0d2231;border:1px solid #38566b;border-radius:13px;overflow:hidden;min-width:0}.zoom-stage svg{display:block;width:100%;height:auto}
+.step-controls{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:15px 0 0}.step-controls .step-counter{margin-left:auto;color:#9fc6d9;font-size:.86rem;font-weight:700}
+.step-progress{display:flex;gap:5px;margin:13px 0}.step-progress span{flex:1;height:5px;background:#34485d;border-radius:99px}.step-progress span.active{background:#e7be69}
+.zoomcard{border:1px solid #3e5b70;background:#1a3145;border-radius:12px;padding:14px;margin-top:11px}.zoomcard h3{color:#ffe0a6}.zoomcard p{color:#d6e6f0;font-size:.9rem;margin:8px 0 0}.impact{color:#ffe6b4!important;border-top:1px solid #41596a;margin-top:11px!important;padding-top:10px}
+.receptor-options{display:grid;gap:9px;margin-top:13px}.receptor-options label{display:flex;align-items:flex-start;gap:10px;padding:10px;border-radius:9px;border:1px solid #486275;background:#182e40;cursor:pointer;font-size:.87rem}.receptor-options input{accent-color:#eac678;width:18px;height:18px;flex:0 0 auto}
+.chapter{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:#9ed9ef;font-weight:800}
+.svg-label{font:650 19px system-ui;fill:#eaf5fd}.svg-small{font:600 15px system-ui;fill:#bfd7e4}.svg-tiny{font:600 13px system-ui;fill:#bed1df}.svg-help{fill:#829fb3;font:12px system-ui}
+.primary-layer{transition:opacity .4s ease,filter .3s ease}.primary-layer.is-hidden{opacity:.04}.primary-layer.is-current{filter:drop-shadow(0 0 9px #fff5)}.primary-layer.is-impaired{opacity:.22;filter:grayscale(.8)}
+.svg-pill{fill:#142b3d;stroke:#527186;stroke-width:1.6}.svg-yellow{fill:#ffe3a1}.svg-cyan{fill:#91e4ec}.svg-mint{fill:#86e7af}.svg-red{fill:#ff9fa5}
+.coag-root{background:#0b2031;border:1px solid #35546a;border-radius:12px;overflow:hidden}.coag-root svg{display:block;width:100%;height:auto}
+.cascade-line{fill:none;stroke:#6b8295;stroke-width:3.3;stroke-linejoin:round}.cascade-line.ex{stroke:#ffb290}.cascade-line.intr{stroke:#92b9ef}.cascade-line.common{stroke:#78cdd7}
+.factor-node{cursor:pointer;outline:none}.factor-node rect{fill:#213e54;stroke:#66869a;stroke-width:2;transition:fill .2s,stroke .2s}.factor-node text{fill:#f0f8fd;font:700 19px system-ui;text-anchor:middle;pointer-events:none}.factor-node .factor-caption{font:600 11px system-ui;fill:#bcdae6}.factor-node.reached rect{fill:#235062;stroke:#9fe2e5}.factor-node.selected rect{fill:#725929;stroke:#ffe5a1;stroke-width:4}.factor-node.deficient rect{fill:#573045;stroke:#ff9faa;stroke-dasharray:7 4}.factor-node:focus-visible rect{stroke:#fff;stroke-width:5}
+.factor-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}.factor-list button{font-size:.78rem;padding:7px 9px}.factor-list button.active{background:#d6eef8;color:#14364c}
+.factor-info h3{color:#f8d58f;font-size:1.05rem}.factor-info p{font-size:.89rem;color:#dcebf3}.factor-info .tests{color:#9bcde4;font-weight:650}
+.factor-info .warn{font-size:.83rem;color:#f1c3b4}.sources-mini{color:#a3becd;font-size:.79rem;margin:16px 0 0}.sources-mini a{color:#9ee0f0}
+@media(max-width:870px){.zoom-layout{grid-template-columns:1fr}.tabbtn{min-width:0;flex-basis:100%}.zoom-stage svg,.coag-root svg{min-width:0}}
+
+/* Extensiones V3: tres nuevas vistas, laboratorio sinóptico y casos */
+:root{--rose:#ffb8c1}
+.navtabs{flex-wrap:wrap}.tabbtn{flex:1 1 170px;min-width:155px;font-size:.86rem;padding:12px 8px}
+.lab-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:18px 0 14px}.lab-head h2{margin:4px 0}
+.synoptic{background:#0e2434;padding:18px;border:1px solid #46677b;border-radius:15px;margin-top:13px}.syn-title{text-align:center;margin:0 auto 15px;max-width:490px;border-radius:10px;background:#dfedf3;color:#153448;padding:11px;font-weight:850;letter-spacing:.04em}
+.syn-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.syn-column{position:relative;background:#142b3d;border:1px solid #416074;border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:7px}.syn-column:before{content:'';position:absolute;width:2px;height:15px;background:#6e92a6;top:-15px;left:50%}.syn-column h3{border-bottom:1px solid #466579;padding-bottom:9px;font-size:1rem}.syn-column:nth-child(1) h3{color:#f6d080}.syn-column:nth-child(2) h3{color:#a7caff}.syn-column:nth-child(3) h3{color:#8ee3ae}.syn-column button{text-align:left;font-size:.86rem;background:#203e53;border:1px solid #57768d;font-weight:560;padding:10px 12px;min-height:43px}.syn-column button.active{border:2px solid #f5cf88;background:#4e4330;color:#fff3d6}.syn-sub{font-size:.73rem;font-weight:780;color:#a6c8d9;letter-spacing:.07em;text-transform:uppercase;margin-top:7px}
+.lab-work{margin-top:16px}.lab-widget{border:1px solid #39586e;border-radius:12px;background:#0e2536;padding:17px;min-height:190px}.lab-widget .controls{margin:10px 0}.lab-widget label{display:block;color:#dcecf5;font-size:.9rem;margin:7px 0 6px;font-weight:650}.lab-widget select,.lab-widget input[type=number]{background:#203e53;color:#fff;border:1px solid #7290a5;border-radius:8px;padding:9px;max-width:100%;font:inherit;min-width:190px}.lab-widget input[type=checkbox]{accent-color:#f6c969;width:17px;height:17px}.lab-widget input[type=range]{width:100%}.lab-widget .fieldrow{display:flex;gap:13px;flex-wrap:wrap;align-items:flex-end}.lab-widget .fieldrow>div{flex:1 1 170px}.lab-result{background:#163a45;border-left:4px solid #65d7d3;padding:12px;border-radius:5px;margin-top:12px;color:#e0f4f7;line-height:1.5}.lab-explain{color:#c2d5e1;font-size:.9rem;line-height:1.65;margin-top:11px}.lab-explain b{color:#ffe0a3}.lab-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}.lab-grid>div{background:#21394b;border:1px solid #49697e;border-radius:8px;padding:12px}.lab-grid strong{display:block;color:#f3d08f}.lab-grid small{color:#bcd3df}.lab-plot{display:block;width:100%;max-height:290px;aspect-ratio:700/270;background:#102538;border:1px solid #49697b;border-radius:10px}.lab-plot text{font:14px system-ui;fill:#cbddea}.lab-plot .gridline{stroke:#335266;stroke-width:1}.lab-plot .curve{fill:none;stroke:#f4cb72;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1000;stroke-dashoffset:1000;animation:revealCurve 1.8s ease forwards}.lab-plot .reference{fill:none;stroke:#79cbd2;stroke-width:3;stroke-dasharray:5 6;opacity:.45}.lab-plot .teg-area{fill:#e7c17a33;stroke:#ebc978;stroke-width:2.5;stroke-linejoin:round}.lab-marker{background:#1c3a4d;border-radius:8px;padding:10px;display:inline-block;margin:4px}.lab-testcards{display:flex;gap:9px;flex-wrap:wrap}.lab-testcards>span{display:inline-block;padding:9px;background:#254456;border-radius:8px}
+@keyframes revealCurve{to{stroke-dashoffset:0}}.meds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:13px}.meds button{font-size:.8rem;padding:9px}.meds button.active{background:#f3dcac;color:#17374b}
+.endo-viz{position:relative;background:linear-gradient(#153549,#112a3b);height:270px;border:1px solid #4c7080;border-radius:11px;overflow:hidden;margin:10px 0}.endo-label{position:absolute;top:10px;left:15px;font-size:.78rem;color:#b5dbea;letter-spacing:.05em}.endo-particles{position:absolute;top:65px;left:0;width:100%;display:flex;justify-content:space-evenly;color:#ebc772;font-size:30px;animation:endoFloat 6s linear infinite}.endo-particles span:nth-child(odd){color:#f78998}.endo-line{position:absolute;top:125px;height:28px;left:0;right:0;background:#6abac5;border-top:5px solid #a5e6e7;border-bottom:5px solid #378d9d;display:flex;align-items:center;justify-content:center;color:#0b2838;font-size:.8rem;letter-spacing:.15em;font-weight:900}.endo-sub{position:absolute;top:168px;left:15px;color:#e7c5a3;font-size:.82rem}.endo-molecules{position:absolute;bottom:12px;left:12px;right:12px;display:flex;gap:8px;flex-wrap:wrap}.endo-molecules span{background:#263e51;border:1px solid #698492;border-radius:30px;padding:5px 9px;font-size:.8rem}.endo-viz.injured .endo-line{background:linear-gradient(90deg,#b36b79 0 33%,#142e40 33% 63%,#b36b79 63%);border-color:#e5928c}.endo-viz.injured .endo-particles{animation-duration:2.8s}.endo-viz.injured .endo-molecules span{border-color:#eea890}
+.fibrin-steps{display:flex;gap:6px;align-items:stretch;flex-wrap:wrap}.fibrin-steps>div:not(.mini-arrow){flex:1;min-width:135px;background:#1d4350;border:1px solid #608c99;border-radius:9px;padding:15px;text-align:center;font-weight:800}.fibrin-steps small{display:block;font-size:.77rem;font-weight:450;color:#afc8d6}.fibrin-steps .mini-arrow{align-self:center;color:#97d9d5;font-size:1.5rem}
+@keyframes endoFloat{from{transform:translateX(-65px)}to{transform:translateX(65px)}}
+.cascade-line.is-active{stroke-width:6;stroke-dasharray:11 10;animation:coagFlow .7s linear infinite;filter:drop-shadow(0 0 5px currentColor)}.factor-node.reached rect{animation:factorPulse 1.7s ease-in-out infinite alternate}.factor-node.deficient rect{animation:none}.cascade-line:not(.is-active){opacity:.33}
+@keyframes coagFlow{to{stroke-dashoffset:-42}}@keyframes factorPulse{to{stroke-width:3;filter:drop-shadow(0 0 7px #8be2e9)}}
+.cellular{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:15px}.cellular>div{border:1px solid #56788b;background:#193c50;border-radius:11px;padding:14px}.cellular h3{color:#ffdda2}.cellular p{font-size:.84rem;color:#c7dce7}.cellular .activated{border-color:#f5cb81;box-shadow:inset 0 0 20px #ecca6535}.cellular-step{color:#8bd6e2;font-size:.76rem;letter-spacing:.09em;font-weight:800}
+.cases-layout{grid-template-columns:minmax(240px,.7fr) minmax(0,1.7fr)}.case-list{display:grid;gap:6px}.case-list button{text-align:left;font-size:.83rem;font-weight:550;padding:9px 11px;background:#1c364a}.case-list button.active{background:#e7d19b;color:#173748}.case-story{color:#d7e7ef;font-size:.91rem;line-height:1.65;background:#193144;border-radius:8px;padding:14px}.case-labs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 20px}.case-labs span{background:#294558;border:1px solid #45677e;padding:5px 9px;border-radius:6px;font-size:.8rem}.case-qbox{border-top:1px solid #3e5e72;padding-top:15px}.case-qbox h3{font-size:1.05rem;margin:12px 0}.case-qnav{display:flex;align-items:center;gap:11px;justify-content:space-between}.case-choices{display:grid;gap:9px}.case-choices button{text-align:left;background:#1e3c4f;font-size:.88rem;line-height:1.5;font-weight:520}.case-choices button.correct{background:#254e42;border-color:#88e4a6}.case-choices button.incorrect{background:#53333c;border-color:#f8a1ad}.case-feedback{font-size:.86rem;color:#d7eaf2;padding-top:9px;min-height:1.4rem}.case-qbox .controls{margin-top:11px}.case-qbox .hint{border-left:3px solid #e9be76;background:#293c42;padding:11px}.case-qbox #case-next:disabled{opacity:.45}
+@media(max-width:850px){.syn-columns,.cellular{grid-template-columns:1fr}.cases-layout{grid-template-columns:1fr}.syn-column:before{display:none}.meds{grid-template-columns:1fr}.lab-grid{grid-template-columns:1fr}.fibrin-steps{flex-direction:column}.fibrin-steps .mini-arrow{text-align:center;transform:rotate(90deg)}}
+@media(max-width:610px){.tabbtn{flex-basis:calc(50% - 9px);min-width:0;font-size:.78rem}.lab-widget{padding:10px}.lab-head{margin-top:8px}.lab-head h2{font-size:1rem}}
+@media(prefers-reduced-motion:reduce){.endo-particles,.cascade-line.is-active,.factor-node.reached rect,.lab-plot .curve{animation:none}.lab-plot .curve{stroke-dashoffset:0}}
+
+/* V4 · autoría y microanimaciones de procedimientos */
+.sim-disclaimer{max-width:700px;margin:3px 0 7px;color:#bcd6e2;font-size:.72rem;line-height:1.45;letter-spacing:.008em}
+.lab-animation{padding:12px;margin:14px 0;background:#123247;border:1px solid #54768a;border-radius:12px}
+.lab-anim-title,.lysis-demo-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+.lab-anim-title strong,.lysis-demo-top strong{font-size:.9rem;color:#ffdfa6}
+.lab-replay{font-size:.8rem;padding:7px 11px}
+.lab-scene{width:100%;overflow:hidden;border:1px solid #446b80;border-radius:10px;background:#0d2534}
+.lab-demo-svg{width:100%;max-height:235px;display:block;aspect-ratio:760/220}
+.lab-anim-caption{margin:8px 2px 1px;color:#c9e6ec;font-size:.83rem;line-height:1.45;min-height:20px}
+.lv-flow{animation:lvMove 1.1s linear infinite}.lv-appear{opacity:0;animation:lvArrive .6s ease-out forwards}.lv-arrival{animation:lvArrival 1.2s ease-in-out infinite alternate}.lv-plate-settle{animation:lvSettle 1.3s ease-out both}.lv-plate-scatter{animation:lvAppear .9s ease-out both}.lv-passage{animation:lvPassage 1.9s ease-in forwards}.lv-bleed{animation:lvBleed 1.5s ease-in-out infinite}.lv-grow{stroke-dasharray:180;stroke-dashoffset:180;animation:lvGrow 2.5s ease-out forwards}.lv-frag{opacity:0;animation:lvFrag 1.6s ease-out forwards}.lv-teg-open{stroke-dasharray:1550;stroke-dashoffset:1550;animation:lvTeg 3.3s ease-in-out forwards}
+@keyframes lvMove{to{stroke-dashoffset:-34}}
+@keyframes lvArrive{from{opacity:0;transform:translate(-16px,12px) scale(.2)}to{opacity:1;transform:none}}
+@keyframes lvArrival{from{transform:translateX(-18px)}to{transform:translateX(18px)}}
+@keyframes lvSettle{from{opacity:.1;transform:translate(-80px,-12px) scale(.4)}to{opacity:1;transform:none}}
+@keyframes lvAppear{from{opacity:.1;transform:translate(-10px,0)}to{opacity:1;transform:none}}
+@keyframes lvPassage{from{opacity:1;transform:translate(-180px,-90px)}to{opacity:.45;transform:none}}
+@keyframes lvBleed{0%{opacity:.1;transform:translateY(-20px)}70%{opacity:.9}100%{opacity:0;transform:translateY(30px)}}
+@keyframes lvGrow{to{stroke-dashoffset:0}}
+@keyframes lvFrag{0%{opacity:0;transform:translate(-18px,-8px)}100%{opacity:1;transform:none}}
+@keyframes lvTeg{to{stroke-dashoffset:0}}
+.lysis-experiment{background:#113044;border:1px solid #4d7685;border-radius:12px;padding:13px;margin:10px 0 16px}
+.lysis-animation{overflow:hidden;border-radius:10px;border:1px solid #365f74}
+.lysis-animation svg{width:100%;display:block;height:auto}
+.lysis-progress{height:8px;border-radius:99px;background:#173545;overflow:hidden;margin-top:12px}
+#lysis-progress-fill{height:100%;width:0;background:linear-gradient(90deg,#72cddf,#88e1aa);transition:width .12s linear}
+.lysis-fragment{opacity:0}.plasmin-agent{opacity:.2;transition:opacity .25s}
+@media(max-width:600px){.sim-disclaimer{font-size:.69rem}.lab-animation{padding:8px}.lab-replay{padding:7px 9px}.lab-anim-title strong{font-size:.79rem}.lysis-experiment{padding:8px}}
+@media(prefers-reduced-motion:reduce){.lab-animation svg *{animation:none!important}.lv-grow,.lv-teg-open{stroke-dashoffset:0!important}.lv-appear,.lv-frag{opacity:1!important}.lv-flow{stroke-dashoffset:0!important}}
+
+</style>
+</head>
+<body>
+<main>
+<header><div><div class="eyebrow">Laboratorio virtual</div><p class="sim-disclaimer">Esto no es bibliografía oficial, simplemente es un proyecto de simulador. Espero que les guste y les sea útil para aprender este tema tan maravilloso, Geral &lt;3</p><h1>¿Cómo se forma y se destruye un coágulo?</h1><p class="intro">Explorá la hemostasia primaria, la coagulación y la fibrinólisis en un mismo vaso.</p></div><span class="badge">Simulación didáctica · Funciona sin internet</span></header>
+<nav class="navtabs" role="tablist" aria-label="Vistas del simulador">
+<button class="tabbtn" id="tab-general" role="tab" aria-controls="view-general" aria-selected="true">🩸 Vista general del vaso</button>
+<button class="tabbtn" id="tab-primary" role="tab" aria-controls="view-primary" aria-selected="false" tabindex="-1">🟡 Zoom: hemostasia primaria</button>
+<button class="tabbtn" id="tab-cascade" role="tab" aria-controls="view-cascade" aria-selected="false" tabindex="-1">🔵 Zoom: cascada de coagulación</button>
+<button class="tabbtn" id="tab-endothelium" role="tab" aria-controls="view-endothelium" aria-selected="false" tabindex="-1">🟢 Endotelio y fibrinólisis</button>
+<button class="tabbtn" id="tab-laboratory" role="tab" aria-controls="view-laboratory" aria-selected="false" tabindex="-1">🔬 Laboratorio interactivo</button>
+<button class="tabbtn" id="tab-cases" role="tab" aria-controls="view-cases" aria-selected="false" tabindex="-1">📋 Casos clínicos</button>
+</nav>
+<div id="view-general" class="tabview" role="tabpanel" aria-labelledby="tab-general">
+<div class="layout">
+ <section class="panel" aria-label="Animación de hemostasia">
+  <div class="stage-top"><h2>Lesión vascular</h2><div class="timer" id="clock" aria-live="off">t = 0 · tiempo relativo</div></div>
+  <div class="stage"><canvas id="vessel" width="780" height="415" role="img" aria-label="Vaso sanguíneo lesionado; plaquetas se adhieren, se forma fibrina y luego aparece fibrinólisis."></canvas></div>
+  <div class="stage-bottom" style="margin-top:11px"><div class="legend"><span><i class="dot"></i>Eritrocitos</span><span><i class="dot plate"></i>Plaquetas</span><span><i class="dot fib"></i>Fibrina</span><span><i class="dot plas"></i>Plasmina</span></div></div>
+  <div class="controls"><button class="primary" id="start">▶ Iniciar lesión</button><button id="pause" disabled>Ⅱ Pausar</button><button id="reset">↻ Reiniciar</button><button id="advance" disabled>+ 10 unidades de tiempo</button></div>
+  <div class="metrics" aria-label="Medidores didácticos"><div class="metric"><div class="metric-head"><span>Tapón plaquetario</span><strong id="pv">0%</strong></div><div class="meter"><div id="pbar"></div></div></div><div class="metric"><div class="metric-head"><span>Fibrina presente</span><strong id="fv">0%</strong></div><div class="meter"><div id="fbar"></div></div></div><div class="metric"><div class="metric-head"><span>Actividad fibrinolítica</span><strong id="lv">0%</strong></div><div class="meter"><div id="lbar"></div></div></div></div>
+  <div class="assessment"><span class="status" id="status">Vaso intacto</span><p id="description">Iniciá la lesión para observar la respuesta hemostática.</p></div>
+  <div class="note">Las tres vías funcionales se superponen: el tapón plaquetario ofrece una superficie para la coagulación, mientras los mecanismos anticoagulantes y fibrinolíticos regulan el proceso.</div>
+ </section>
+ <aside class="panel controls-panel"><div class="flow-title"><h2>Modificar condiciones</h2><span class="soft">0 = mínimo · 100 = normal</span></div>
+  <label for="preset">Seleccioná una situación</label><select class="preset" id="preset"><option value="normal">Hemostasia normal</option><option value="thrombocytopenia">Trombocitopenia</option><option value="vwd">Alteración del factor von Willebrand</option><option value="aspirin">Disfunción plaquetaria (tipo aspirina)</option><option value="hemophilia">Hemofilia A (déficit de VIII)</option><option value="lowfibrin">Fibrinógeno muy disminuido</option><option value="hyperlysis">Hiperfibrinólisis</option><option value="lowlysis">Fibrinólisis disminuida</option></select>
+  <div id="sliders"></div><div class="callout"><strong id="scenario-name">Hemostasia normal</strong><div id="scenario-desc">Probá iniciar la lesión y observá cómo se forma un tapón que se estabiliza con fibrina.</div></div>
+  <p class="hint" style="margin-top:12px">Podés modificar varios controles y comparar situaciones. Al mover un control, el experimento se reinicia.</p>
+ </aside>
+</div>
+<section class="panel" style="margin-top:16px"><h2>¿Qué representa cada mecanismo?</h2><div class="pathways"><div class="pathway"><h3>1 · Hemostasia primaria</h3><p>Lesión <span class="arrow">→</span> colágeno expuesto <span class="arrow">→</span> FvW–GPIb <span class="arrow">→</span> activación plaquetaria (ADP/TXA₂) <span class="arrow">→</span> agregación por GPIIb/IIIa y fibrinógeno.</p></div><div class="pathway"><h3>2 · Coagulación</h3><p>Factor tisular–VIIa <span class="arrow">→</span> Xa/Va <span class="arrow">→</span> trombina <span class="arrow">→</span> fibrinógeno a fibrina; XIIIa favorece entrecruzamiento y estabilidad. El complejo IXa/VIIIa amplifica la generación de Xa.</p></div><div class="pathway"><h3>3 · Fibrinólisis</h3><p>tPA <span class="arrow">→</span> plasminógeno a plasmina <span class="arrow">→</span> degradación de fibrina. La actividad se mantiene controlada por inhibidores fisiológicos.</p></div></div></section>
+<div class="footergrid"><section class="panel"><h2>Evolución del experimento</h2><canvas id="plot" class="chart" width="750" height="180" role="img" aria-label="Curvas relativas de tapón plaquetario, fibrina y fibrinólisis durante la simulación"></canvas><p class="hint" style="margin:9px 0 0">Las curvas muestran unidades normalizadas, no concentraciones ni mediciones clínicas.</p></section><section class="panel"><h2>Para relacionar con el laboratorio</h2><div class="lab"><div><span>TP / INR</span><strong id="pt">Normal*</strong></div><div><span>TTPa</span><strong id="aptt">Normal*</strong></div></div><p class="lab-note" id="labtext">*Orientación conceptual según el cuadro seleccionado. No calculado por el motor de simulación.</p></section></div>
+<section class="panel lesson" style="margin-top:16px"><h2>Desafío para los alumnos</h2><p><b>1.</b> Probá trombocitopenia. ¿El problema se observa primero en el tapón o en la fibrina?</p><p><b>2.</b> Compará alteración del FvW y hemofilia A. ¿Por qué pueden tener fenotipos hemorrágicos distintos?</p><p><b>3.</b> Activá hiperfibrinólisis. ¿Puede formarse un coágulo inicialmente y perderse después?</p><p><b>4.</b> Modificá fibrinógeno y plaquetas por separado. ¿En qué se diferencia la formación del tapón de su estabilización?</p></section>
+
+</div><!-- /view-general -->
+<section class="tabview" id="view-primary" role="tabpanel" aria-labelledby="tab-primary" hidden>
+<div class="zoom-layout">
+ <div class="panel">
+  <div class="stage-top"><div><div class="chapter">Microscopía esquemática · 6 pasos</div><h2>De la adhesión al tapón plaquetario</h2></div><span class="badge">Zoom conceptual · no a escala</span></div>
+  <div class="zoom-stage">
+   <svg viewBox="0 0 1000 550" aria-label="Zoom de dos plaquetas sobre colágeno, interacción entre GPIb-IX-V, factor de von Willebrand, GPVI y GPIIb/IIIa">
+    <defs><linearGradient id="zoomBg" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#203e55"/><stop offset="1" stop-color="#10293d"/></linearGradient><linearGradient id="plateFill" x1="0" x2="1"><stop stop-color="#ffdf81"/><stop offset="1" stop-color="#c58b3d"/></linearGradient><marker id="primaryArrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0L9,4L0,8" fill="#dfe6e9"/></marker></defs>
+    <rect width="1000" height="550" fill="url(#zoomBg)"/>
+    <text x="40" y="42" class="svg-small">Luz vascular</text>
+    <g data-step="0" class="primary-layer"><rect x="0" y="442" width="1000" height="108" fill="#3d2734"/><path d="M0 438H222 M790 438H1000" stroke="#dc8c99" stroke-width="21"/><path d="M220 443Q292 465 330 444T490 444T670 444T790 438" stroke="#b57955" stroke-width="8" fill="none"/><g stroke="#efbd8a" stroke-width="6" stroke-linecap="round"><path d="M260 480l70 -22 42 28M340 466l75 21 30-26M440 485l85 -27 40 24M550 465l65 22 38-23M650 479l70-22"/></g><text x="55" y="507" class="svg-label">Colágeno subendotelial expuesto</text><text x="55" y="530" class="svg-tiny">Lesión del endotelio</text></g>
+    <g data-step="1" class="primary-layer is-hidden"><g fill="none" stroke="#85dde5" stroke-width="8" stroke-linecap="round"><path d="M345 445Q299 398 353 363T348 305"/><path d="M522 463Q471 428 509 399T519 360"/><path d="M718 444Q685 416 721 385"/></g><circle cx="350" cy="362" r="13" fill="#c6faff"/><circle cx="517" cy="397" r="10" fill="#c6faff"/><rect x="675" y="400" width="205" height="35" rx="11" class="svg-pill"/><text x="695" y="424" class="svg-cyan" font-size="19" font-weight="750">Factor von Willebrand</text></g>
+    <g data-step="2" class="primary-layer is-hidden">
+      <path d="M355 370L360 317" stroke="#75f2d6" stroke-width="8" stroke-linecap="round"/>
+      <path d="M347 341l12 12 12-12" fill="none" stroke="#75f2d6" stroke-width="7"/>
+      <rect x="66" y="300" width="233" height="40" rx="10" class="svg-pill"/><text x="80" y="325" class="svg-mint" font-size="18" font-weight="750">GPIb-IX-V ↔ vWF</text><path d="M300 319L344 340" fill="none" stroke="#d8f1e7" stroke-width="2.5"/>
+    </g>
+    <g data-step="3" class="primary-layer is-hidden">
+      <path d="M475 341L484 434" fill="none" stroke="#dcaaff" stroke-width="8" stroke-linecap="round"/>
+      <path d="M480 373l-12 -13m12 13l10 -13" stroke="#dcaaff" stroke-width="6"/>
+      <rect x="550" y="351" width="213" height="44" rx="10" class="svg-pill"/><text x="571" y="377" fill="#e6c4ff" font-size="19" font-weight="760">GPVI · α₂β₁</text><path d="M551 375L484 375" stroke="#dac1f1" stroke-width="2.4"/>
+      <g fill="#e5c4ff"><circle cx="347" cy="215" r="11"/><circle cx="388" cy="217" r="7"/><circle cx="419" cy="195" r="8"/><circle cx="440" cy="228" r="7"/></g>
+      <rect x="545" y="75" width="295" height="60" rx="12" fill="#2f3858" stroke="#a999e0"/><text x="562" y="100" class="svg-label">Liberación de ADP</text><text x="562" y="124" class="svg-small">Síntesis de TXA₂ · activación</text><path d="M545 107Q495 155 440 207" fill="none" stroke="#cdb7e8" stroke-width="3" stroke-dasharray="9 7"/>
+    </g>
+    <g data-step="0" class="primary-layer">
+      <path d="M301 275Q288 222 339 195Q385 162 434 192Q484 220 469 274Q448 319 386 322Q316 328 301 275" fill="url(#plateFill)" stroke="#ffedae" stroke-width="5"/>
+      <g fill="#aa6a39" opacity=".8"><circle cx="374" cy="228" r="10"/><circle cx="410" cy="260" r="13"/><circle cx="353" cy="267" r="8"/><circle cx="428" cy="222" r="8"/></g>
+      <text x="305" y="168" class="svg-yellow" font-size="24" font-weight="800">Plaqueta 1</text>
+    </g>
+    <g data-step="4" class="primary-layer is-hidden">
+      <path d="M467 232L508 232M509 231L519 218M509 231l10 13" stroke="#7de4a6" stroke-width="8" stroke-linecap="round"/>
+      <rect x="500" y="260" width="260" height="40" rx="10" class="svg-pill"/><text x="515" y="286" class="svg-mint" font-size="20" font-weight="750">GPIIb/IIIa activada</text>
+      <path d="M632 261L544 233" stroke="#c2f1d7" stroke-width="2.5"/>
+    </g>
+    <g data-step="5" class="primary-layer is-hidden">
+      <path d="M510 232Q557 190 632 232" stroke="#7edeea" stroke-width="12" fill="none" stroke-linecap="round"/>
+      <g fill="#91e9f0"><circle cx="534" cy="212" r="9"/><circle cx="574" cy="209" r="9"/><circle cx="612" cy="220" r="9"/></g>
+      <path d="M654 257l-20 -26" stroke="#7de4a6" stroke-width="9"/><path d="M635 231l-4 -13m4 13l15 -3" stroke="#7de4a6" stroke-width="5"/>
+      <path d="M634 264Q643 213 698 185Q768 165 812 213Q849 252 815 301Q776 329 717 314Q669 300 634 264" fill="url(#plateFill)" stroke="#ffedae" stroke-width="5"/>
+      <g fill="#a87541"><circle cx="722" cy="233" r="12"/><circle cx="768" cy="263" r="10"/><circle cx="796" cy="222" r="8"/></g>
+      <rect x="512" y="145" width="221" height="34" rx="10" class="svg-pill"/><text x="530" y="169" class="svg-cyan" font-size="19" font-weight="750">Puente de fibrinógeno</text><path d="M617 181L578 205" stroke="#a9e5ea" stroke-width="2.5"/>
+      <text x="765" y="164" class="svg-yellow" font-size="21" font-weight="800">Plaqueta 2</text>
+    </g>
+    <text x="27" y="30" class="svg-help">Los elementos aparecen progresivamente al avanzar los pasos.</text>
+   </svg>
+  </div>
+  <div class="step-controls"><button id="p-prev">← Anterior</button><button class="primary" id="p-next">Siguiente paso →</button><button id="p-play">▶ Reproducir secuencia</button><span id="p-count" class="step-counter">Paso 1 de 6</span></div>
+  <div class="step-progress" id="p-progress" aria-hidden="true"></div>
+ </div>
+ <aside class="panel">
+  <div class="chapter">¿Qué está ocurriendo?</div><div class="zoomcard"><h3 id="p-step-title">1. Lesión vascular</h3><p id="p-step-desc"></p><p id="p-step-impact" class="impact"></p></div>
+  <div class="zoomcard"><h3>Experimentá con los receptores</h3><div class="receptor-options"><label><input type="checkbox" id="block-gpib"><span><b>Bloquear GPIb-IX-V</b><br><span class="soft">Dificulta la unión inicial al vWF.</span></span></label><label><input type="checkbox" id="block-gpiib"><span><b>Bloquear GPIIb/IIIa</b><br><span class="soft">Impide puentes eficientes de fibrinógeno.</span></span></label></div><button id="restore-primary" style="margin-top:11px">Restablecer hemostasia normal</button></div>
+  <p class="hint" style="margin:12px 0 0">Estos bloqueos modifican también el tapón de la <b>vista general</b>. La unión al colágeno por GPVI/α₂β₁ participa en la adhesión firme y la señal de activación.</p>
+ </aside>
+</div></section>
+<section class="tabview" id="view-cascade" role="tabpanel" aria-labelledby="tab-cascade" hidden>
+<div class="zoom-layout">
+ <div class="panel">
+  <div class="chapter">Cascada clásica y formación de fibrina</div><h2 style="margin-top:5px">Seleccioná un factor para explorar su función</h2>
+  <p class="hint">Las flechas representan el esquema didáctico clásico; la coagulación real se inicia con factor tisular y se amplifica sobre superficies celulares.</p>
+  <div class="coag-root">
+   <svg viewBox="0 0 1000 600" role="img" aria-label="Cascada de la coagulación, vía extrínseca, vía intrínseca, vía común y formación de fibrina">
+   <defs><marker id="aEx" markerWidth="10" markerHeight="9" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8" fill="#ffb290"/></marker><marker id="aIn" markerWidth="10" markerHeight="9" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8" fill="#92b9ef"/></marker><marker id="aCo" markerWidth="10" markerHeight="9" refX="9" refY="4" orient="auto"><path d="M0 0L10 4L0 8" fill="#78cdd7"/></marker></defs>
+   <rect width="1000" height="600" fill="#112638"/>
+   <rect x="24" y="23" rx="13" width="398" height="245" fill="#3f2b35" opacity=".4" stroke="#865364"/>
+   <rect x="561" y="23" rx="13" width="412" height="276" fill="#243b5c" opacity=".38" stroke="#5477ab"/>
+   <text x="45" y="57" fill="#ffc5ad" font-size="23" font-weight="760">VÍA EXTRÍNSECA</text><text x="45" y="82" class="svg-small">TP / INR · inicio fisiológico</text>
+   <text x="578" y="57" fill="#b3d0ff" font-size="23" font-weight="760">VÍA INTRÍNSECA</text><text x="578" y="82" class="svg-small">TTPa · esquema clásico</text>
+   <path d="M192 135H211" class="cascade-line ex" marker-end="url(#aEx)"/><path d="M328 168Q340 238 416 291" class="cascade-line ex" marker-end="url(#aEx)"/>
+   <path d="M756 118V132" class="cascade-line intr" marker-end="url(#aIn)"/><path d="M756 200L701 227" class="cascade-line intr" marker-end="url(#aIn)"/>
+   <path d="M790 260H790" class="cascade-line intr"/><path d="M728 291L522 307" class="cascade-line intr" marker-end="url(#aIn)"/><path d="M789 262L734 276" class="cascade-line intr" stroke-dasharray="6 6"/>
+   <path d="M462 350V373" class="cascade-line common" marker-end="url(#aCo)"/><path d="M605 382H548" class="cascade-line common" marker-end="url(#aCo)"/><path d="M462 450V480" class="cascade-line common" marker-end="url(#aCo)"/><path d="M731 523H563" class="cascade-line common" marker-end="url(#aCo)"/>
+   <text x="465" y="275" fill="#9de1e8" font-size="16" text-anchor="middle" font-weight="700">VÍA COMÚN</text>
+   <text x="485" y="373" class="svg-tiny">Complejo protrombinasa</text>
+   <text x="492" y="474" class="svg-tiny">Genera fibrina</text>
+   <rect x="235" y="567" width="530" height="24" rx="7" fill="#1d3a4b"/><text x="500" y="584" text-anchor="middle" class="svg-tiny">XIIIa entrecruza la fibrina y estabiliza la red</text>
+<g class="factor-node" data-factor="FT" role="button" tabindex="0" aria-label="Información y déficit del factor FT"><rect x="88" y="102.5" rx="13" width="104" height="65"/><text x="140" y="131" style="font-size:13px">Factor tisular</text><text class="factor-caption" x="140" y="150">FT</text></g>
+<g class="factor-node" data-factor="VII" role="button" tabindex="0" aria-label="Información y déficit del factor VII"><rect x="221" y="102.5" rx="13" width="108" height="65"/><text x="275" y="131">VII / VIIa</text><text class="factor-caption" x="275" y="150">VIIa</text></g>
+<g class="factor-node" data-factor="XII" role="button" tabindex="0" aria-label="Información y déficit del factor XII"><rect x="691" y="55" rx="13" width="130" height="62"/><text x="756" y="82">XII / XIIa</text><text class="factor-caption" x="756" y="101">XIIa</text></g>
+<g class="factor-node" data-factor="XI" role="button" tabindex="0" aria-label="Información y déficit del factor XI"><rect x="691" y="137" rx="13" width="130" height="62"/><text x="756" y="164">XI / XIa</text><text class="factor-caption" x="756" y="183">XIa</text></g>
+<g class="factor-node" data-factor="IX" role="button" tabindex="0" aria-label="Información y déficit del factor IX"><rect x="616.5" y="229" rx="13" width="115" height="62"/><text x="674" y="256">IX / IXa</text><text class="factor-caption" x="674" y="275">IXa</text></g>
+<g class="factor-node" data-factor="VIII" role="button" tabindex="0" aria-label="Información y déficit del factor VIII"><rect x="794.5" y="229" rx="13" width="115" height="62"/><text x="852" y="256">VIII / VIIIa</text><text class="factor-caption" x="852" y="275">VIIIa</text></g>
+<g class="factor-node" data-factor="X" role="button" tabindex="0" aria-label="Información y déficit del factor X"><rect x="395" y="281.5" rx="13" width="134" height="67"/><text x="462" y="311">X → Xa</text><text class="factor-caption" x="462" y="330">Xa</text></g>
+<g class="factor-node" data-factor="V" role="button" tabindex="0" aria-label="Información y déficit del factor V"><rect x="607" y="351" rx="13" width="118" height="62"/><text x="666" y="378">V / Va</text><text class="factor-caption" x="666" y="397">Va</text></g>
+<g class="factor-node" data-factor="II" role="button" tabindex="0" aria-label="Información y déficit del factor II"><rect x="381" y="381.5" rx="13" width="162" height="69"/><text x="462" y="412">II → IIa</text><text class="factor-caption" x="462" y="431">Trombina</text></g>
+<g class="factor-node" data-factor="I" role="button" tabindex="0" aria-label="Información y déficit del factor I"><rect x="367" y="489.5" rx="13" width="190" height="67"/><text x="462" y="519">I → Fibrina</text><text class="factor-caption" x="462" y="538">Fibrinógeno</text></g>
+<g class="factor-node" data-factor="XIII" role="button" tabindex="0" aria-label="Información y déficit del factor XIII"><rect x="729" y="489.5" rx="13" width="148" height="67"/><text x="803" y="519">XIII / XIIIa</text><text class="factor-caption" x="803" y="538">XIIIa</text></g>
+
+   </svg>
+  </div>
+  <div class="step-controls"><button id="c-prev">← Anterior</button><button class="primary" id="c-next">Siguiente fase →</button><button id="c-play">▶ Animar cascada</button><span id="c-count" class="step-counter">Fase 1 de 5</span></div><div class="step-progress" id="c-progress" aria-hidden="true"></div>
+  <div class="callout" id="c-phase-desc">La exposición del factor tisular inicia la coagulación con el factor VII/VIIa.</div>
+ </div>
+ <aside class="panel"><div class="chapter">Ficha interactiva</div><div class="zoomcard factor-info"><h3 id="c-factor-title">Factor VIII (cofactor)</h3><p id="c-factor-text"></p><p id="c-factor-lab" class="tests"></p><p id="c-factor-clinical" class="warn"></p><button id="c-deficit" class="primary" style="margin-top:12px">Simular déficit del factor</button><button id="c-normal" style="margin-top:8px">Restablecer normalidad</button></div>
+  <div class="chapter" style="margin-top:15px">Elegí un factor</div><div id="factor-list" class="factor-list"></div>
+  <p class="note"><b>Atención con el factor XII:</b> su déficit prolonga el TTPa, pero no produce el patrón hemorrágico de la hemofilia. La vía de contacto del laboratorio no equivale a la iniciación in vivo.</p>
+  <p class="hint" style="margin-top:12px">Los déficits seleccionados modifican la formación o estabilidad de fibrina en la vista general. TP y TTPa son interpretaciones orientativas, no resultados calculados.</p>
+ </aside>
+</div></section>
+<section class="tabview" id="view-endothelium" role="tabpanel" aria-labelledby="tab-endothelium" hidden>
+ <div class="lab-head"><div><div class="chapter">Integración funcional · vasos y control</div><h2>Endotelio, reguladores naturales y fibrinólisis</h2><p class="hint">Compará las propiedades del vaso en reposo y tras la lesión. Luego alterá frenos anticoagulantes o la activación de plasmina.</p></div></div>
+ <div class="zoom-layout">
+ <article class="panel">
+  <div class="controls" role="group" aria-label="Estado endotelial"><button class="primary" id="end-intact">Endotelio en reposo</button><button id="end-injured">Endotelio lesionado / activado</button></div>
+  <div class="endo-viz" id="endo-viz" aria-label="Esquema animado de endotelio y sustancias reguladoras">
+   <div class="endo-label">LUZ DEL VASO · plaquetas circulantes</div>
+   <div class="endo-particles" aria-hidden="true"><span>●</span><span>✦</span><span>●</span><span>✦</span><span>●</span></div>
+   <div class="endo-line" id="endo-line"><span>ENDOTELIO</span></div>
+   <div class="endo-sub">COLÁGENO · SUBENDOTELIO</div>
+   <div class="endo-molecules" id="endo-molecules" aria-live="polite"></div>
+  </div>
+  <div class="zoomcard"><h3 id="endo-title">En reposo: superficie antitrombótica</h3><p id="endo-desc"></p></div>
+  <div class="pathways" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="pathway"><h3>Antiplaquetarios</h3><p>NO y PGI₂ disminuyen la activación y agregación. El endotelio intacto separa las plaquetas del colágeno.</p></div><div class="pathway"><h3>Anticoagulantes y fibrinolíticos</h3><p>Heparán sulfato, trombomodulina, TFPI y activación de plasminógeno restringen el coágulo.</p></div></div>
+ </article>
+ <aside class="panel"><div class="chapter">Experimentos reguladores</div><h2>Activá o retirá los frenos</h2>
+  <div class="receptor-options"><label><input type="checkbox" id="r-antithrombin" checked><span><b>Antitrombina</b><br><span class="soft">Inhibe trombina y Xa; potenciada por heparán sulfato/heparina.</span></span></label>
+  <label><input type="checkbox" id="r-proteinc" checked><span><b>Proteína C activada + S</b><br><span class="soft">Inactivan Va y VIIIa tras activación dependiente de trombomodulina.</span></span></label>
+  <label><input type="checkbox" id="r-tfpi" checked><span><b>TFPI</b><br><span class="soft">Limita la iniciación por factor tisular–VIIa y Xa.</span></span></label>
+  <label><input type="checkbox" id="r-vitk" checked><span><b>Vitamina K disponible</b><br><span class="soft">II, VII, IX, X; además proteínas C y S.</span></span></label></div>
+  <div class="sliderbox"><label for="r-anticoag"><span>Anticoagulante para experimentar</span></label><select class="preset" id="r-anticoag"><option value="none">Sin anticoagulante</option><option value="heparin">Heparina no fraccionada · antitrombina</option><option value="avk">Antagonista de vitamina K · modelo</option></select><span class="soft">Afecta la generación de fibrina; no equivale a dosis o concentraciones clínicas.</span></div>
+  <div class="sliderbox"><label for="r-tpa"><span>Actividad de tPA</span><strong id="r-tpa-v">100%</strong></label><input id="r-tpa" type="range" min="10" max="250" value="100"></div>
+  <div class="sliderbox"><label for="r-pai"><span>PAI-1 (inhibidor de tPA)</span><strong id="r-pai-v">100%</strong></label><input id="r-pai" type="range" min="20" max="250" value="100"></div>
+  <div class="sliderbox"><label for="r-a2"><span>α₂-antiplasmina</span><strong id="r-a2-v">100%</strong></label><input id="r-a2" type="range" min="20" max="250" value="100"></div>
+  <div class="callout" id="reg-impact" aria-live="polite"></div><button id="reg-normal">Restablecer reguladores</button>
+ </aside>
+ </div>
+ <div class="panel" style="margin-top:16px"><h2>De plasminógeno a productos de degradación</h2><div class="fibrin-steps" id="lysis-steps"><div>tPA / uPA<small>Activadores</small></div><div class="mini-arrow">→</div><div>Plasminógeno<small>Proteína inactiva</small></div><div class="mini-arrow">→</div><div>Plasmina<small>Proteasa activa</small></div><div class="mini-arrow">→</div><div>Fibrina degradada<small>PDF y dímero D si fibrina entrecruzada</small></div></div><p class="hint">PAI-1 inhibe a tPA/uPA; α₂-antiplasmina neutraliza plasmina. El dímero D exige degradación de fibrina entrecruzada, pero no identifica por sí solo la causa.</p></div>
+</section>
+<section class="tabview" id="view-laboratory" role="tabpanel" aria-labelledby="tab-laboratory" hidden>
+ <div class="lab-head"><div><div class="chapter">Laboratorio virtual</div><h2>Estudios de hemostasia: elegí una prueba</h2><p class="hint">Cada casillero abre un experimento. Los resultados cualitativos son patrones de enseñanza, no valores clínicos simulados con precisión.</p></div><button id="lab-sync" class="primary">↻ Usar condiciones del vaso</button></div>
+ <div class="synoptic" id="lab-tree" aria-label="Cuadro sinóptico de pruebas de hemostasia">
+  <div class="syn-title">ESTUDIOS DE LA HEMOSTASIA</div>
+  <div class="syn-columns">
+   <div class="syn-column"><h3>🟡 PLAQUETAS</h3><div class="syn-sub">Cuantitativos</div><button data-test="count">Recuento de plaquetas</button><button data-test="smear">Frotis de sangre periférica</button><div class="syn-sub">Cualitativos · función</div><button data-test="bleeding">Tiempo de sangría (Ivy)</button><button data-test="adhesion">Adhesividad plaquetaria</button><button data-test="aggregometry">Agregometría + ristocetina</button></div>
+   <div class="syn-column"><h3>🔵 COAGULACIÓN</h3><div class="syn-sub">Orientación</div><button data-test="pt">TP / Quick / INR</button><button data-test="aptt">TTPa</button><button data-test="tt">Tiempo de trombina</button><div class="syn-sub">Específicos</div><button data-test="mix">Prueba de mezcla</button><button data-test="factor">Dosaje de factores</button><button data-test="fibrinogen">Fibrinógeno (Clauss)</button></div>
+   <div class="syn-column"><h3>🟢 GLOBAL Y FIBRINÓLISIS</h3><div class="syn-sub">Coágulo completo</div><button data-test="teg">Tromboelastograma (TEG)</button><div class="syn-sub">Degradación</div><button data-test="ddimer">Dímero D / PDF</button><button data-test="lysis">Lisis de euglobulinas</button><div class="syn-sub">Reguladores</div><button data-test="inhibitors">Inhibidores fisiológicos</button></div>
+  </div>
+ </div>
+ <div class="panel lab-work" id="lab-work" aria-live="polite"><div class="lab-head"><div><div class="chapter">Prueba seleccionada</div><h2 id="lab-name">Agregometría plaquetaria</h2></div><span class="badge">Modo experimental</span></div><div class="lab-widget" id="lab-widget"></div><div class="lab-explain" id="lab-explain"></div><div class="note">Los rangos, los reactivos y las pruebas se interpretan según el laboratorio. Tiempo de sangría y adhesividad histórica se incluyen por estar en la guía, no como recomendaciones para práctica clínica actual.</div></div>
+</section>
+<section class="tabview" id="view-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+ <div class="lab-head"><div><div class="chapter">Casos clínicos · actividades de la guía</div><h2>Resolver casos con el simulador</h2><p class="hint">Leé el caso, seleccioná una hipótesis y avanzá por tres decisiones. Podés pedir una pista y revelar la explicación solo cuando quieras.</p></div><button id="cases-reset">↻ Reiniciar razonamiento</button></div>
+ <div class="zoom-layout cases-layout">
+ <aside class="panel"><label for="case-select">Elegí un caso clínico</label><select class="preset" id="case-select"></select><div class="case-list" id="case-list"></div></aside>
+ <section class="panel"><div class="chapter" id="case-source">Caso clínico 1</div><h2 id="case-title">Caso clínico</h2><p class="case-story" id="case-story"></p><div class="case-labs" id="case-labs"></div>
+  <div class="case-qbox"><div class="case-qnav"><span class="badge" id="case-progress">Paso 1 de 3</span><span class="soft" id="case-score">Respondé para avanzar</span></div><h3 id="case-question"></h3><div id="case-choices" class="case-choices"></div><div id="case-feedback" class="case-feedback" aria-live="polite"></div><div class="controls"><button id="case-hint">💡 Mostrar pista</button><button id="case-next" class="primary" disabled>Siguiente pregunta →</button><button id="case-explanation">Ver orientación completa</button></div><p class="hint" id="case-hintbox" hidden></p></div>
+  <div class="zoomcard" id="case-solution" hidden><h3>Orientación docente y límites del caso</h3><p id="case-solution-text"></p></div>
+  <div class="controls"><button id="case-load-vaso">↗ Probar mecanismo en el vaso</button><button id="case-open-lab">↗ Abrir prueba relacionada</button></div>
+ </section></div>
+ <div class="note">Las respuestas son razonamientos orientativos para clase, no diagnósticos definitivos. Se mantienen los datos y las preguntas centrales de las actividades que aparecen en las imágenes de los TP; cuando un resultado no permite concluir, el simulador lo señala.</div>
+</section>
+
+<div class="footer">Modelo educativo simplificado: las curvas no son mediciones clínicas, la secuencia no representa cinética real y los esquemas no sustituyen estudios de laboratorio ni el modelo celular completo.</div>
+<p class="sources-mini">Referencia conceptual: <a href="https://www.ncbi.nlm.nih.gov/books/NBK534253/" target="_blank" rel="noopener">Hemostasia fisiológica, NCBI Bookshelf</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4826570/" target="_blank" rel="noopener">Inicio de la cascada, revisión</a>. Los enlaces son opcionales: el simulador funciona sin conexión.</p>
+</main>
+<script>
+'use strict';
+const cfg = [
+ {id:'platelets',label:'Cantidad de plaquetas',hint:'Disponibilidad para formar el tapón',initial:100},
+ {id:'vwf',label:'Factor von Willebrand',hint:'Adhesión plaquetaria al subendotelio',initial:100},
+ {id:'function',label:'Función plaquetaria',hint:'Activación y agregación',initial:100},
+ {id:'factor8',label:'Actividad del factor VIII',hint:'Amplificación de la coagulación (tenasa)',initial:100},
+ {id:'fibrinogen',label:'Fibrinógeno disponible',hint:'Sustrato para formar fibrina',initial:100},
+ {id:'fibrinolysis',label:'Potencia fibrinolítica',hint:'Actividad relativa de plasmina',initial:100}
+];
+const scenarios={
+ normal:{name:'Hemostasia normal',desc:'El tapón se forma y la fibrina lo estabiliza; la fibrinólisis aparece progresivamente.',vals:[100,100,100,100,100,100],pt:'Normal',aptt:'Normal',lab:'En esta situación de referencia se esperan pruebas globales normales.'},
+ thrombocytopenia:{name:'Trombocitopenia',desc:'Menos plaquetas: cae el tapón primario. TP y TTPa suelen permanecer normales.',vals:[12,100,100,100,100,100],pt:'Normal',aptt:'Normal',lab:'La trombocitopenia aislada típicamente no prolonga TP ni TTPa.'},
+ vwd:{name:'Alteración del factor von Willebrand',desc:'Se dificulta la adhesión plaquetaria. En algunas formas también disminuye el VIII.',vals:[100,14,100,70,100,100],pt:'Normal',aptt:'Normal o ↑',lab:'En la enfermedad de von Willebrand, el TTPa puede ser normal o prolongarse según los niveles de VIII.'},
+ aspirin:{name:'Disfunción plaquetaria',desc:'Modelo general de antiagregación: menor activación y agregación de plaquetas.',vals:[100,100,22,100,100,100],pt:'Normal',aptt:'Normal',lab:'La aspirina altera función plaquetaria, no suele prolongar TP o TTPa.'},
+ hemophilia:{name:'Hemofilia A',desc:'Disminuye la amplificación de generación de trombina: tapón temprano relativamente preservado, fibrina menos robusta.',vals:[100,100,100,3,100,100],pt:'Normal',aptt:'↑',lab:'El déficit significativo de VIII suele prolongar TTPa y deja TP normal.'},
+ lowfibrin:{name:'Fibrinógeno muy disminuido',desc:'La generación de una red firme de fibrina está comprometida. También puede alterarse la agregación mediada por fibrinógeno.',vals:[100,100,100,100,8,100],pt:'Puede ↑',aptt:'Puede ↑',lab:'Cuando el fibrinógeno es muy bajo, pueden prolongarse TP y TTPa; dependen de la magnitud del déficit.'},
+ hyperlysis:{name:'Hiperfibrinólisis',desc:'Se forma el coágulo al principio, pero su red de fibrina se degrada demasiado rápido.',vals:[100,100,100,100,100,350],pt:'Variable',aptt:'Variable',lab:'Las pruebas habituales TP y TTPa no miden directamente la fibrinólisis; su alteración depende del contexto.'},
+ lowlysis:{name:'Fibrinólisis disminuida',desc:'La degradación de la fibrina es más lenta: el coágulo persiste.',vals:[100,100,100,100,100,6],pt:'Normal*',aptt:'Normal*',lab:'El defecto fibrinolítico aislado puede no evidenciarse en TP o TTPa.'}
+};
+const $=s=>document.querySelector(s), cv=$('#vessel'),ctx=cv.getContext('2d'),graph=$('#plot'),g=graph.getContext('2d');
+let extendedReady=false;
+let factorLevels={VII:100,IX:100,XI:100,XII:100,X:100,V:100,II:100,XIII:100}, plateletBlocks={gpib:false,gpiib:false};
+let vals={}, t=0, running=false, started=false, P=0,F=0,L=0, history=[], last=0, raf=0;
+let flowRbc=[],flowPlatelets=[],anchors=[],fibers=[];
+const rand=(a,b)=>a+Math.random()*(b-a), clamp=(x)=>Math.min(1,Math.max(0,x));
+for(let i=0;i<27;i++)flowRbc.push({x:rand(25,800),y:rand(155,268),r:rand(11,20),s:rand(.55,1.65),phase:rand(0,6.28)});
+for(let i=0;i<44;i++)flowPlatelets.push({x:rand(20,810),y:rand(145,284),s:rand(.8,2),phase:rand(0,6.28)});
+for(let i=0;i<45;i++) anchors.push({x:rand(309,475),y:rand(263,328),rot:rand(0,Math.PI)});
+for(let i=0;i<85;i++)fibers.push([Math.floor(rand(0,anchors.length)),Math.floor(rand(0,anchors.length))]);
+function buildSliders(){const root=$('#sliders');for(let c of cfg){const div=document.createElement('div');div.className='sliderbox';div.innerHTML=`<label for="${c.id}"><span>${c.label}</span><strong id="${c.id}-value"></strong></label><input type="range" id="${c.id}" min="0" max="${c.id==='fibrinolysis' ? 400:100}" step="1" value="${c.initial}"><small>${c.hint}</small>`;root.append(div);let i=div.querySelector('input');i.addEventListener('input',()=>{vals[c.id]=Number(i.value);$('#preset').value='normal';$('#scenario-name').textContent='Condiciones personalizadas';$('#scenario-desc').textContent='Explorá el efecto conjunto de las variables que modificaste.';$('#pt').textContent='No estimado';$('#aptt').textContent='No estimado';$('#labtext').textContent='Las pruebas dependen del defecto concreto; los controles no equivalen a una predicción clínica.';refreshLabels();reset();});}}
+function refreshLabels(){for(let c of cfg)$('#'+c.id+'-value').textContent=vals[c.id]+(c.id==='fibrinolysis'?'%':'%');}
+function applyPreset(name){const s=scenarios[name]||scenarios.normal;for(const k of Object.keys(factorLevels))factorLevels[k]=100;plateletBlocks.gpib=false;plateletBlocks.gpiib=false;if(extendedReady){resetExtras();syncExtendedControls();}cfg.forEach((c,i)=>{vals[c.id]=s.vals[i];$('#'+c.id).value=s.vals[i];});$('#scenario-name').textContent=s.name;$('#scenario-desc').textContent=s.desc;$('#pt').textContent=s.pt;$('#aptt').textContent=s.aptt;$('#labtext').textContent=s.lab;refreshLabels();reset();}
+function reset(){t=0;P=0;F=0;L=0;history=[];running=false;started=false;$('#start').disabled=false;$('#start').textContent='▶ Iniciar lesión';$('#pause').disabled=true;$('#advance').disabled=true;$('#pause').textContent='Ⅱ Pausar';last=0;updateUI();drawVessel();drawGraph();}
+function start(){if(!started){started=true;running=true;$('#start').disabled=true;$('#pause').disabled=false;$('#advance').disabled=false;last=0;}updateUI();}
+function simulate(dt){if(!started)return;t=Math.min(115,t+dt);const plate=vals.platelets/100,adh=vals.vwf/100,act=vals.function/100,coag=vals.factor8/100,substrate=vals.fibrinogen/100,lysis=(vals.fibrinolysis/100)*(regulation.tpa/100)*(100/Math.max(20,regulation.pai))*(100/Math.max(20,regulation.a2));
+ // Conceptual pedagogical dynamics; not a calibrated pharmacologic or biochemical model.
+ const adhesion=(.03+.97*adh)*(plateletBlocks.gpib?.075:1), functionPlate=(.04+.96*act)*(plateletBlocks.gpiib?.055:1),Pcap=clamp((.06+.94*plate)*adhesion*functionPlate*(.65+.35*Math.sqrt(substrate)));
+ if(t>2) P=Math.min(Pcap,P+(Pcap-P)*.11*dt);
+ const tenase=(.05+.95*coag)*(.05+.95*factorLevels.IX/100)*(.35+.65*factorLevels.XI/100);const extrinsic=(.10+.90*factorLevels.VII/100);
+ const regulationEffect=(regulation.antithrombin?1:1.18)*(regulation.proteinc?1:1.12)*(regulation.tfpi?1:1.12)*(regulation.vitk?1:.24)*(anticoagulation==='heparin'&&regulation.antithrombin?.23:1)*(anticoagulation==='avk'?.25:1);
+ const generation=regulationEffect*(.12+.88*extrinsic)*(.25+.75*tenase)*(.38+.62*P)*(.06+.94*factorLevels.X/100)*(.07+.93*factorLevels.V/100)*(.07+.93*factorLevels.II/100);
+ const fibrinCap=clamp(substrate*(.04+.96*generation));
+ if(t>7) F=Math.min(fibrinCap,F+(fibrinCap-F)*(.046+generation*.085)*dt);
+ L=t>49?clamp((t-49)/22*(lysis/1.1)):0;
+ if(t>49){F=Math.max(0,F-.0064*lysis*(1+1.9*(1-factorLevels.XIII/100))*F*dt);P=Math.max(0,P-.0011*lysis*P*dt);}
+ if(t>114.99){running=false;$('#pause').disabled=true;$('#advance').disabled=true;$('#start').disabled=false;$('#start').textContent='↻ Nueva lesión';}
+ if(history.length===0||t-history[history.length-1][0]>=.55)history.push([t,P,F,L]);
+}
+function updateUI(){const pct=x=>Math.round(100*clamp(x));const fields=[['p',P],['f',F],['l',L]];for(const [k,x] of fields){$('#'+k+'v').textContent=pct(x)+'%';$('#'+k+'bar').style.width=pct(x)+'%';}$('#clock').textContent='t = '+Math.round(t)+' · tiempo relativo';let status='',desc='';let strength=.55*P+.75*F;
+ if(!started){status='Vaso intacto';desc='Iniciá la lesión para observar la respuesta hemostática.';}
+ else if(t<6){status='Lesión reciente';desc='Se expone el subendotelio y comienza la adhesión plaquetaria.';}
+ else if(t<24){status=P>.28?'Tapón en formación':'Hemostasia primaria deficiente';desc='Las plaquetas se adhieren y agregan; la trombina empieza a generar fibrina.';}
+ else if(t<49){status=strength>1.0?'Coágulo estable':'Coágulo poco estable';desc='La fibrina refuerza el tapón. Observá si la disponibilidad de plaquetas y factores alcanza.';}
+ else if(t<75){status=F>.35?'Fibrinólisis activa':'Red de fibrina insuficiente';desc='La plasmina degrada parte de la red de fibrina; en condiciones normales existe equilibrio.';}
+ else {status=F>.27?'Coágulo aún presente':'Disolución/fragilidad del coágulo';desc='Compará cuánto se conserva del coágulo según la potencia fibrinolítica.';}
+ $('#status').textContent=status;$('#description').textContent=desc;$('#status').style.borderColor=strength>1.0?'#579c78':'#916e63';}
+function drawPlatelet(x,y,r,alpha=1){ctx.save();ctx.globalAlpha=alpha;ctx.translate(x,y);ctx.strokeStyle='#ffe6a0';ctx.lineWidth=1.3;for(let k=0;k<6;k++){let a=k*Math.PI/3;ctx.beginPath();ctx.moveTo(Math.cos(a)*r*.6,Math.sin(a)*r*.6);ctx.lineTo(Math.cos(a)*r*1.35,Math.sin(a)*r*1.35);ctx.stroke();}ctx.fillStyle='#f6c969';ctx.beginPath();ctx.ellipse(0,0,r,r*.73,0,0,Math.PI*2);ctx.fill();ctx.restore()}
+function label(text,x,y,color='#eff7f9'){ctx.font='600 15px system-ui';ctx.fillStyle=color;ctx.fillText(text,x,y)}
+function vesselPath(){ctx.beginPath();ctx.moveTo(0,114);ctx.lineTo(780,114);ctx.lineTo(780,306);ctx.lineTo(479,306);ctx.lineTo(455,329);ctx.lineTo(335,329);ctx.lineTo(309,306);ctx.lineTo(0,306);ctx.closePath()}
+function drawVessel(){const w=780,h=415;ctx.clearRect(0,0,w,h);
+ const bg=ctx.createLinearGradient(0,0,0,415);bg.addColorStop(0,'#142c3f');bg.addColorStop(1,'#071a2c');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+ ctx.fillStyle='#581827';ctx.fillRect(0,91,w,18);ctx.fillRect(0,312,310,22);ctx.fillRect(479,312,301,22);
+ const blood=ctx.createLinearGradient(0,114,0,326);blood.addColorStop(0,'#652737');blood.addColorStop(.6,'#8d2f41');blood.addColorStop(1,'#702336');vesselPath();ctx.fillStyle=blood;ctx.fill();
+ // Injured vessel margin/collagen
+ ctx.strokeStyle='#ed8895';ctx.lineWidth=12;ctx.beginPath();ctx.moveTo(0,112);ctx.lineTo(780,112);ctx.moveTo(0,305);ctx.lineTo(308,305);ctx.lineTo(332,328);ctx.moveTo(479,305);ctx.lineTo(456,328);ctx.stroke();
+ ctx.strokeStyle='#f3c398';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(337,329);ctx.lineTo(454,329);ctx.stroke();for(let i=0;i<11;i++){const x=343+i*10;ctx.beginPath();ctx.moveTo(x,329);ctx.lineTo(x-5,342);ctx.stroke();}
+ ctx.fillStyle='#c85b62';for(let a of flowRbc){const x=(a.x+t*(started?26:0)*a.s)%850-35,y=a.y+Math.sin(t*.12+a.phase)*5;ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(a.phase)*.24);ctx.beginPath();ctx.ellipse(0,0,a.r*1.4,a.r*.73,0,0,2*Math.PI);ctx.fill();ctx.fillStyle='#9f3342';ctx.beginPath();ctx.ellipse(0,0,a.r*.64,a.r*.40,0,0,2*Math.PI);ctx.fill();ctx.restore();}
+ const count=Math.round(flowPlatelets.length*(vals.platelets/100));for(let i=0;i<count;i++){const a=flowPlatelets[i];const x=(a.x+t*(started?33:0)*a.s)%850-35;drawPlatelet(x,a.y+Math.sin(t*.13+a.phase)*3,5,.96);}
+ let anchored=Math.floor(P*anchors.length);for(let i=0;i<anchored;i++){let a=anchors[i];drawPlatelet(a.x,a.y,5.1,.96)}
+ if(started){ // fibrin scaffold: fibres are visible in proportion to present fibrin
+  ctx.lineWidth=2;for(let i=0;i<Math.floor(F*fibers.length);i++){const [a,b]=fibers[i];if(a===b)continue;let aa=anchors[a],bb=anchors[b];const dist=Math.hypot(aa.x-bb.x,aa.y-bb.y);if(dist>105)continue;ctx.globalAlpha=Math.min(.9,.24+F*.7);ctx.strokeStyle='#73dfe9';ctx.beginPath();ctx.moveTo(aa.x,aa.y);ctx.quadraticCurveTo((aa.x+bb.x)/2,(aa.y+bb.y)/2-6,bb.x,bb.y);ctx.stroke()}ctx.globalAlpha=1;
+  if(t>49){
+   // La fibrinólisis se hace visible como plasmina móvil, cortes y fragmentos
+   // de la red. Los parámetros representan tendencias, no cinética real.
+   const activity=Math.max(.15,Math.min(2.5,(vals.fibrinolysis/100)*lysisEffectiveRate()));
+   const n=Math.ceil(5+15*Math.min(1,L));
+   for(let i=0;i<n;i++){
+    const x=334+(i*43+t*(4+activity*3))%123, y=280+(i*29+t*(2+activity*2))%62;
+    ctx.save();ctx.globalAlpha=.35+Math.min(.65,L*.7);ctx.fillStyle='#81f2b2';
+    ctx.beginPath();ctx.arc(x,y,3.5+(i%3),0,Math.PI*2);ctx.fill();
+    if(i%2===0){ctx.strokeStyle='#b4f4fa';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x+8,y-5);ctx.lineTo(x+17+(i%4)*2,y-10);ctx.moveTo(x+17+(i%4)*2,y-10);ctx.lineTo(x+20,y-3);ctx.stroke();}
+    ctx.restore();
+   }
+   if(L>.10){label('Plasmina: degradación de fibrina',480,189,'#a2ffcc');ctx.strokeStyle='#83edb9';ctx.beginPath();ctx.moveTo(543,195);ctx.lineTo(475,272);ctx.stroke();}
+  }
+  // blood loss: only when seal is insufficient
+  const seal=clamp(.5*P+.63*F);const loss=Math.max(0,1-seal);for(let i=0;i<Math.ceil(loss*14);i++){let y=337+(i*33+t*(7+i%3)*2)%81;const x=342+(i*29+t*4)%110;ctx.fillStyle='#cf475d';ctx.globalAlpha=.45+loss*.45;ctx.beginPath();ctx.ellipse(x,y,3,7,0,0,2*Math.PI);ctx.fill()}ctx.globalAlpha=1;
+ }
+ label('Luz vascular',24,155,'#f8d7d9');label('Endotelio',16,83,'#f5acb3');label('Subendotelio expuesto',303,382,'#f9d1a3');ctx.strokeStyle='#f9d1a3';ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(408,356);ctx.lineTo(403,333);ctx.stroke();
+ if(t>4&&P>.04){label('Tapón plaquetario',481,263,'#ffe0a0');ctx.strokeStyle='#ffe0a0';ctx.beginPath();ctx.moveTo(500,268);ctx.lineTo(457,294);ctx.stroke();}
+ if(t>11&&F>.12){label('Red de fibrina',498,226,'#9ae5ee');ctx.strokeStyle='#9ae5ee';ctx.beginPath();ctx.moveTo(509,232);ctx.lineTo(458,280);ctx.stroke();}
+}
+function drawGraph(){const W=750,H=180;g.clearRect(0,0,W,H);g.fillStyle='#0e2131';g.fillRect(0,0,W,H);for(let i=0;i<=4;i++){const y=26+i*29;g.strokeStyle='#29475a';g.lineWidth=1;g.beginPath();g.moveTo(38,y);g.lineTo(724,y);g.stroke();}g.fillStyle='#9ab9c8';g.font='11px system-ui';g.fillText('100%',5,27);g.fillText('0%',17,146);g.fillText('0',38,166);g.fillText('50',337,166);g.fillText('115',700,166);
+ const draw=(ix,color)=>{if(history.length<2)return;g.strokeStyle=color;g.lineWidth=2.7;g.lineJoin='round';g.beginPath();history.forEach((a,j)=>{const x=38+(a[0]/115)*686,y=142-a[ix]*116;if(j===0)g.moveTo(x,y);else g.lineTo(x,y)});g.stroke()};draw(1,'#f6c969');draw(2,'#6fd7dc');draw(3,'#7de4a6');g.font='12px system-ui';g.fillStyle='#f6c969';g.fillText('● Plaquetas',48,17);g.fillStyle='#6fd7dc';g.fillText('● Fibrina',169,17);g.fillStyle='#7de4a6';g.fillText('● Fibrinólisis',267,17)}
+function loop(now){if(running&&started){if(!last)last=now;const dt=Math.min(.6,(now-last)/1000*2.6);last=now;simulate(dt);updateUI();}else last=now;drawVessel();drawGraph();raf=requestAnimationFrame(loop)}
+buildSliders();applyPreset('normal');$('#preset').addEventListener('change',e=>applyPreset(e.target.value));$('#start').addEventListener('click',()=>{if(t>114)reset();start()});$('#reset').addEventListener('click',reset);$('#pause').addEventListener('click',()=>{if(!started)return;running=!running;$('#pause').textContent=running?'Ⅱ Pausar':'▶ Continuar';last=0;});$('#advance').addEventListener('click',()=>{running=false;$('#pause').textContent='▶ Continuar';for(let i=0;i<20;i++)simulate(.5);updateUI()});if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ /* user may step manually */ }requestAnimationFrame(loop);
+
+// --- Vistas ampliadas. Independientes para navegar; efectos experimentales compartidos. ---
+const tabNames=['general','primary','cascade','endothelium','laboratory','cases'];
+function activateTab(name,focus=false){
+ for(const n of tabNames){const tab=$('#tab-'+n);const pane=$('#view-'+n);const on=n===name;tab.setAttribute('aria-selected',String(on));tab.tabIndex=on?0:-1;pane.hidden=!on;}
+ if(focus)$('#tab-'+name).focus();
+}
+for(let i=0;i<tabNames.length;i++){
+ const name=tabNames[i],node=$('#tab-'+name);node.addEventListener('click',()=>activateTab(name));
+ node.addEventListener('keydown',e=>{if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();let target=e.key==='Home'?0:e.key==='End'?tabNames.length-1:(i+(e.key==='ArrowRight'?1:tabNames.length-1))%tabNames.length;activateTab(tabNames[target],true);}});
+}
+function markCustom(desc){$('#preset').value='normal';$('#scenario-name').textContent='Condiciones personalizadas';$('#scenario-desc').textContent=desc;$('#pt').textContent='Según defecto';$('#aptt').textContent='Según defecto';$('#labtext').textContent='Orientación conceptual: examiná cada mecanismo. Estos cambios no predicen tiempos de laboratorio.';reset();}
+function syncExtendedControls(){
+ if($('#block-gpib'))$('#block-gpib').checked=plateletBlocks.gpib;
+ if($('#block-gpiib'))$('#block-gpiib').checked=plateletBlocks.gpiib;
+ if($('#view-primary'))updatePrimary();
+ if($('#view-cascade'))updateCascade();
+}
+const primarySteps=[
+ {name:'Lesión vascular y exposición del colágeno',description:'Una solución de continuidad en el endotelio expone colágeno y otras estructuras subendoteliales al flujo sanguíneo. Se inicia también vasoconstricción local.',impact:'Sin lesión y exposición subendotelial, no hay un sitio de adhesión que desencadene este proceso.'},
+ {name:'El factor von Willebrand se fija al colágeno',description:'El vWF sirve como puente de adhesión entre el colágeno expuesto y el receptor plaquetario GPIb-IX-V; resulta particularmente importante cuando el flujo genera fuerzas de cizallamiento elevadas.',impact:'Si disminuye el vWF, se compromete la adhesión y también puede bajar el factor VIII plasmático.'},
+ {name:'Adhesión inicial mediante GPIb-IX-V',description:'La subunidad GPIbα del complejo GPIb-IX-V reconoce el dominio A1 del vWF unido a la superficie lesionada. La plaqueta puede translocarse antes de adherirse de manera más firme.',impact:'Defecto de GPIb-IX-V: adhesión inicial deficiente (ejemplo: síndrome de Bernard-Soulier).'},
+ {name:'GPVI, α₂β₁, ADP y tromboxano A₂',description:'GPVI y la integrina α₂β₁ interactúan con el colágeno: favorecen adhesión firme y activación. Aumenta el Ca²⁺ intracelular, cambia la forma, se secretan gránulos (ADP) y se sintetiza TXA₂; la trombina también amplifica la activación.',impact:'Un defecto de activación o inhibir COX-1/P2Y₁₂ disminuye el reclutamiento de plaquetas.'},
+ {name:'Activación de GPIIb/IIIa (αIIbβ3)',description:'La señal intracelular cambia la conformación de GPIIb/IIIa, haciendo que pueda unir fibrinógeno. Este receptor interviene principalmente en la agregación, no es el principal receptor de la adhesión inicial por vWF.',impact:'Si GPIIb/IIIa no funciona, la plaqueta puede adherirse, pero no agregar adecuadamente.'},
+ {name:'Agregación por puentes de fibrinógeno',description:'El fibrinógeno plasmático enlaza receptores GPIIb/IIIa activados de plaquetas vecinas; así crece el tapón plaquetario. Luego la trombina convierte el fibrinógeno en fibrina, reforzando el tapón.',impact:'Defecto de GPIIb/IIIa: agregación comprometida (ejemplo: trombastenia de Glanzmann).'}
+];
+let pStep=0,pPlaying=false,pElapsed=0;
+function renderDots(root,count,index){const host=$(root);host.replaceChildren();for(let i=0;i<count;i++){const el=document.createElement('span');if(i<=index)el.className='active';host.append(el);}}
+function primaryProblem(step){
+ if(step===1 && vals.vwf<45)return 'En este experimento hay poco vWF: la formación del puente se dificulta.';
+ if(step===2 && plateletBlocks.gpib)return 'GPIb-IX-V bloqueada: falla la adhesión inicial al vWF.';
+ if(step===3 && vals.function<40)return 'La función plaquetaria está disminuida: se reduce la activación y el reclutamiento.';
+ if(step===4 && plateletBlocks.gpiib)return 'GPIIb/IIIa bloqueada: no puede unir eficazmente fibrinógeno.';
+ if(step===5 && (plateletBlocks.gpiib||vals.fibrinogen<20))return 'La agregación será deficiente por falla del receptor o poco fibrinógeno.';
+ if(vals.platelets<25&&step>=2)return 'Hay pocas plaquetas disponibles para formar el tapón.';
+ return '';
+}
+function updatePrimary(){
+ const s=primarySteps[pStep];$('#p-step-title').textContent=(pStep+1)+'. '+s.name;$('#p-step-desc').textContent=s.description;
+ const problem=primaryProblem(pStep);$('#p-step-impact').textContent=problem||s.impact;
+ $('#p-count').textContent='Paso '+(pStep+1)+' de '+primarySteps.length;
+ document.querySelectorAll('.primary-layer').forEach(el=>{
+   const stage=Number(el.getAttribute('data-step'));el.classList.toggle('is-hidden',stage>pStep);
+   el.classList.toggle('is-current',stage===pStep);
+   const impaired=(stage===1&&vals.vwf<45)||(stage===2&&(plateletBlocks.gpib||vals.vwf<30))||(stage===3&&vals.function<30)||(stage>=4&&(plateletBlocks.gpiib||vals.function<30));
+   el.classList.toggle('is-impaired',stage<=pStep&&impaired);
+ });
+ renderDots('#p-progress',primarySteps.length,pStep);
+ $('#p-play').textContent=pPlaying?'Ⅱ Detener reproducción':'▶ Reproducir secuencia';
+ $('#p-prev').disabled=pStep===0;$('#p-next').disabled=pStep===primarySteps.length-1;
+}
+$('#p-prev').addEventListener('click',()=>{pPlaying=false;pStep=Math.max(0,pStep-1);updatePrimary();});
+$('#p-next').addEventListener('click',()=>{pPlaying=false;pStep=Math.min(primarySteps.length-1,pStep+1);updatePrimary();});
+$('#p-play').addEventListener('click',()=>{pPlaying=!pPlaying;pElapsed=0;if(pPlaying&&pStep===5)pStep=0;updatePrimary();});
+$('#block-gpib').addEventListener('change',e=>{plateletBlocks.gpib=e.target.checked;markCustom('Bloqueo experimental de GPIb-IX-V: falla la adhesión de las plaquetas al factor von Willebrand.');updatePrimary();});
+$('#block-gpiib').addEventListener('change',e=>{plateletBlocks.gpiib=e.target.checked;markCustom('Bloqueo experimental de GPIIb/IIIa: baja la agregación mediada por fibrinógeno.');updatePrimary();});
+$('#restore-primary').addEventListener('click',()=>{$('#preset').value='normal';applyPreset('normal');updatePrimary();});
+
+const factorInfo={
+ FT:{title:'Factor tisular (FT)',detail:'Proteína que queda expuesta tras la lesión; forma complejo con VII/VIIa e inicia la generación de pequeñas cantidades de Xa y trombina in vivo.',test:'En los ensayos, el TP usa factor tisular como activador.',clinical:'El FT no se modela aquí como déficit plasmático aislado; seleccioná VII para alterar la vía extrínseca.',available:false},
+ VII:{title:'VII / VIIa · vía extrínseca',detail:'Se une al factor tisular; el complejo FT–VIIa activa X y también IX. Es importante para la iniciación de la coagulación.',test:'Déficit importante: TP prolongado, TTPa generalmente normal.',clinical:'En el simulador, menos VII reduce el inicio de la generación de trombina.',available:true},
+ XII:{title:'XII / XIIa · vía de contacto',detail:'Participa en la vía intrínseca clásica activada por superficies del ensayo TTPa. No es indispensable para la hemostasia fisiológica tras lesión tisular.',test:'Déficit: TTPa prolongado, TP normal.',clinical:'Dato clave: déficit de XII NO suele causar sangrado clínico. El motor conserva la hemostasia al reducir XII.',available:true},
+ XI:{title:'XI / XIa · amplificación',detail:'Contribuye a generar IXa y a amplificar trombina. Su participación fisiológica difiere del esquema lineal XII → XI.',test:'Déficit: TTPa puede prolongarse, TP normal.',clinical:'Déficit de XI: hemorragia variable, frecuentemente tras procedimientos.',available:true},
+ IX:{title:'IX / IXa · tenasa',detail:'IXa forma con VIIIa, Ca²⁺ y fosfolípidos plaquetarios el complejo tenasa que activa X.',test:'Déficit significativo: TTPa prolongado, TP normal.',clinical:'Hemofilia B: menor generación de trombina y fibrina.',available:true},
+ VIII:{title:'VIII / VIIIa · cofactor',detail:'El VIIIa actúa como cofactor del IXa en la tenasa. Circula asociado al vWF, que ayuda a protegerlo de degradación.',test:'Déficit importante: TTPa prolongado, TP normal.',clinical:'Hemofilia A: formación de fibrina menos eficaz pese a la adhesión plaquetaria inicial.',available:true},
+ X:{title:'X / Xa · vía común',detail:'El Xa, junto con Va, calcio y fosfolípidos, integra el complejo protrombinasa, que activa protrombina.',test:'Déficit importante: TP y TTPa prolongados.',clinical:'Su disminución reduce la generación de trombina.',available:true},
+ V:{title:'V / Va · cofactor de protrombinasa',detail:'El Va acelera la conversión de protrombina en trombina por Xa sobre membranas con fosfolípidos.',test:'Déficit importante: TP y TTPa prolongados.',clinical:'No confundir déficit de V con factor V Leiden (resistencia a proteína C activada).',available:true},
+ II:{title:'II → IIa · trombina',detail:'La protrombina (II) se convierte en trombina (IIa). La trombina produce fibrina, activa XIII y potencia activación plaquetaria y cofatores.',test:'Déficit importante: TP y TTPa pueden prolongarse.',clinical:'Menos trombina reduce la consolidación de la malla de fibrina.',available:true},
+ I:{title:'I · fibrinógeno → fibrina',detail:'La trombina escinde fibrinógeno para generar monómeros de fibrina que polimerizan. El fibrinógeno también conecta GPIIb/IIIa en la agregación.',test:'Déficit intenso: TP y TTPa pueden prolongarse; tiempo de trombina típicamente prolongado.',clinical:'La insuficiencia de fibrinógeno compromete la agregación y la formación de red.',available:true},
+ XIII:{title:'XIII → XIIIa · estabilización',detail:'El XIIIa entrecruza covalentemente cadenas de fibrina; estabiliza la red y aumenta su resistencia a la fibrinólisis.',test:'En déficit aislado de XIII, TP y TTPa suelen ser normales.',clinical:'Puede sangrar a pesar de pruebas habituales normales; el simulador aumenta la fragilidad del coágulo.',available:true}
+};
+const coagPhases=[
+ {desc:'1. Inicio: la lesión expone factor tisular, que se une a VII/VIIa y comienza a producir factor Xa y trombina.',reached:['FT','VII']},
+ {desc:'2. Amplificación: las reacciones sobre superficies celulares y el complejo IXa–VIIIa favorecen más Xa. La rama XII → XI → IX se enseña para interpretar TTPa.',reached:['FT','VII','XII','XI','IX','VIII']},
+ {desc:'3. Vía común: X se activa a Xa y, junto a Va, forma protrombinasa sobre membranas fosfolipídicas.',reached:['FT','VII','XII','XI','IX','VIII','X','V']},
+ {desc:'4. Protrombina II → trombina IIa: esta enzima transforma fibrinógeno (I) en fibrina y amplifica numerosas etapas.',reached:['FT','VII','XII','XI','IX','VIII','X','V','II']},
+ {desc:'5. Fibrina se polimeriza y XIIIa la entrecruza: se estabiliza el coágulo, que más tarde será remodelado por la fibrinólisis.',reached:['FT','VII','XII','XI','IX','VIII','X','V','II','I','XIII']}
+];
+let selectedFactor='VIII',cStep=0,cPlaying=false,cElapsed=0;
+function factorDeficient(f){if(f==='VIII')return vals.factor8<35;if(f==='I')return vals.fibrinogen<35;return Object.prototype.hasOwnProperty.call(factorLevels,f)&&factorLevels[f]<35;}
+function updateCascade(){
+ const f=factorInfo[selectedFactor];if(!f)return;
+ $('#c-factor-title').textContent=f.title;$('#c-factor-text').textContent=f.detail;$('#c-factor-lab').textContent=f.test;$('#c-factor-clinical').textContent=f.clinical;
+ $('#c-deficit').disabled=!f.available;
+ $('#c-deficit').textContent=factorDeficient(selectedFactor)?'Déficit aplicado ✓':'Simular déficit del factor';
+ $('#c-phase-desc').textContent=coagPhases[cStep].desc;$('#c-count').textContent='Fase '+(cStep+1)+' de '+coagPhases.length;
+ $('#c-play').textContent=cPlaying?'Ⅱ Detener animación':'▶ Animar cascada';$('#c-prev').disabled=cStep===0;$('#c-next').disabled=cStep===4;
+ renderDots('#c-progress',5,cStep);
+ document.querySelectorAll('.factor-node').forEach(el=>{const key=el.dataset.factor;el.classList.toggle('selected',key===selectedFactor);el.classList.toggle('reached',coagPhases[cStep].reached.includes(key));el.classList.toggle('deficient',factorDeficient(key));});
+ document.querySelectorAll('#factor-list button').forEach(el=>el.classList.toggle('active',el.dataset.factor===selectedFactor));
+}
+function selectFactor(key){if(!(key in factorInfo))return;selectedFactor=key;updateCascade();}
+const factorRoot=$('#factor-list');
+for(const key of ['FT','VII','XII','XI','IX','VIII','X','V','II','I','XIII']){
+ const b=document.createElement('button');b.textContent=key==='FT'?'FT':'Factor '+key;b.dataset.factor=key;b.addEventListener('click',()=>selectFactor(key));factorRoot.append(b);
+}
+document.querySelectorAll('.factor-node').forEach(el=>{
+ el.addEventListener('click',()=>selectFactor(el.dataset.factor));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectFactor(el.dataset.factor);}});
+});
+$('#c-prev').addEventListener('click',()=>{cPlaying=false;cStep=Math.max(0,cStep-1);updateCascade();});
+$('#c-next').addEventListener('click',()=>{cPlaying=false;cStep=Math.min(4,cStep+1);updateCascade();});
+$('#c-play').addEventListener('click',()=>{cPlaying=!cPlaying;cElapsed=0;if(cPlaying&&cStep===4)cStep=0;updateCascade();});
+$('#c-deficit').addEventListener('click',()=>{
+ if(!factorInfo[selectedFactor].available)return;
+ applyPreset('normal');
+ for(const k of Object.keys(factorLevels))factorLevels[k]=100;
+ if(selectedFactor==='VIII'){vals.factor8=5;$('#factor8').value=5;}
+ else if(selectedFactor==='I'){vals.fibrinogen=7;$('#fibrinogen').value=7;}
+ else factorLevels[selectedFactor]=5;
+ markCustom('Déficit seleccionado: factor '+selectedFactor+'. Compará las fases de la cascada con la formación de fibrina en la vista general.');
+ const patterns={VII:['↑','Normal'],XII:['Normal','↑ (sin sangrado típico)'],XI:['Normal','Puede ↑'],IX:['Normal','↑'],VIII:['Normal','↑'],X:['↑','↑'],V:['↑','↑'],II:['↑','↑'],I:['Puede ↑','Puede ↑'],XIII:['Normal','Normal']};
+ const x=patterns[selectedFactor];if(x){$('#pt').textContent=x[0];$('#aptt').textContent=x[1];$('#labtext').textContent='Patrones orientativos para déficit significativo de '+selectedFactor+'; TP y TTPa no se calculan con el motor.';}
+ updateCascade();updatePrimary();
+});
+$('#c-normal').addEventListener('click',()=>{$('#preset').value='normal';applyPreset('normal');updateCascade();});
+// Sin intervalos de red ni dependencias: las secuencias avanzan por requestAnimationFrame.
+let zoomTick=0;
+function zoomAnimation(now){if(!zoomTick)zoomTick=now;const delta=Math.min(100,now-zoomTick);zoomTick=now;
+ if(pPlaying){pElapsed+=delta;if(pElapsed>2300){pElapsed=0;if(pStep===5)pPlaying=false;else pStep++;updatePrimary();}}
+ if(cPlaying){cElapsed+=delta;if(cElapsed>2800){cElapsed=0;if(cStep===4)cPlaying=false;else cStep++;updateCascade();}}
+ requestAnimationFrame(zoomAnimation);
+}
+extendedReady=true;syncExtendedControls();updatePrimary();updateCascade();requestAnimationFrame(zoomAnimation);
+
+
+// ===== V3 · módulo endotelial, farmacología, cascada móvil y laboratorio =====
+const normalReg={antithrombin:true,proteinc:true,tfpi:true,vitk:true,tpa:100,pai:100,a2:100};
+let regulation={...normalReg}, endInjured=false, drug='none',anticoagulation='none';
+function resetExtras(){regulation={...normalReg};endInjured=false;drug='none';anticoagulation='none';document.querySelectorAll('.meds button').forEach(x=>x.classList.remove('active'));const none=$('#drug-none');if(none)none.classList.add('active');if($('#r-antithrombin')){updateEndothelium();} }
+function updateEndothelium(){
+ const data=endInjured?{name:'Endotelio lesionado o activado',desc:'El daño deja accesible colágeno y puede exponer factor tisular subendotelial. vWF permite adhesión de plaquetas; aparecen estímulos procoagulantes. La activación inflamatoria puede modificar expresión de moléculas de adhesión, PAI-1 y otros mediadores.',tags:['Colágeno expuesto','vWF','Factor tisular','Adhesión y activación']}:{name:'Endotelio sano en reposo',desc:'La superficie intacta separa sangre y colágeno y mantiene el equilibrio antitrombótico mediante NO, PGI₂, trombomodulina/proteína C, heparán sulfato–antitrombina y TFPI. Puede liberar tPA y sus reguladores.',tags:['NO','PGI₂','Heparán sulfato','Trombomodulina','TFPI','tPA']};
+ $('#endo-title').textContent=data.name;$('#endo-desc').textContent=data.desc;$('#endo-viz').classList.toggle('injured',endInjured);
+ $('#endo-molecules').replaceChildren(...data.tags.map(tag=>{const sp=document.createElement('span');sp.textContent=tag;return sp;}));
+ $('#end-intact').classList.toggle('primary',!endInjured);$('#end-injured').classList.toggle('primary',endInjured);
+ for(const [k,selector] of [['antithrombin','#r-antithrombin'],['proteinc','#r-proteinc'],['tfpi','#r-tfpi'],['vitk','#r-vitk']])$(selector).checked=regulation[k];
+ for(const k of ['tpa','pai','a2']){$('#r-'+k).value=regulation[k];$('#r-'+k+'-v').textContent=regulation[k]+'%';}
+ $('#r-anticoag').value=anticoagulation;
+ const low=['antithrombin','proteinc','tfpi'].filter(k=>!regulation[k]).length;
+ let info=low?`Hay ${low} mecanismo(s) inhibidor(es) reducidos: modelo de mayor potencial procoagulante.`:'Los tres principales frenos seleccionados están activos.';
+ if(!regulation.vitk)info+=' Vitamina K reducida: menor función de II, VII, IX, X y también C/S (consecuencia neta no trivial).';
+ if(anticoagulation==='heparin')info+=' Heparina no fraccionada: potencia antitrombina; menor trombina/Xa funcional.';
+ if(anticoagulation==='avk')info+=' Antagonista vitamina K: menor actividad de los factores dependientes de vitamina K, con efecto diferido.';
+ if(regulation.tpa>120||regulation.pai<75||regulation.a2<75)info+=' Actividad fibrinolítica efectiva aumentada.';
+ if(regulation.tpa<70||regulation.pai>150||regulation.a2>150)info+=' Actividad fibrinolítica efectiva disminuida.';
+ $('#reg-impact').textContent=info+' Estos factores alteran el modelo del vaso, pero no constituyen una predicción de riesgo trombótico.';
+}
+$('#end-intact').addEventListener('click',()=>{endInjured=false;updateEndothelium();});
+$('#end-injured').addEventListener('click',()=>{endInjured=true;updateEndothelium();});
+for(const k of ['antithrombin','proteinc','tfpi','vitk'])$('#r-'+k).addEventListener('change',e=>{regulation[k]=e.target.checked;updateEndothelium();markCustom('Se modificaron los frenos fisiológicos o el aporte de vitamina K.');});
+for(const k of ['tpa','pai','a2'])$('#r-'+k).addEventListener('input',e=>{regulation[k]=Number(e.target.value);updateEndothelium();markCustom('Se modificaron tPA y sus inhibidores; compará la persistencia de la fibrina.');});
+$('#r-anticoag').addEventListener('change',e=>{anticoagulation=e.target.value;updateEndothelium();markCustom('Anticoagulante experimental activado. Cambia la generación de fibrina en el vaso.');});
+$('#reg-normal').addEventListener('click',()=>{regulation={...normalReg};anticoagulation='none';updateEndothelium();markCustom('Reguladores restablecidos a condiciones basales.');});
+// Añadimos 3 fármacos al panel que ya existe de plaquetas: evitamos duplicar sus receptores.
+const drugBox=document.createElement('div');drugBox.className='zoomcard';drugBox.innerHTML='<h3>Antiagregantes: ¿dónde actúan?</h3><p>Elegí una intervención y mirá el resultado en la vista general y en agregometría.</p><div class="meds"><button id="drug-none" class="active" data-drug="none">Sin fármaco</button><button data-drug="aspirin">Aspirina · COX-1</button><button data-drug="clopidogrel">Clopidogrel · P2Y₁₂</button><button data-drug="gpiib">Anti-GPIIb/IIIa</button></div><div class="soft" id="drug-description" style="margin-top:11px">Sin inhibición farmacológica.</div>';
+$('#restore-primary').parentNode.insertBefore(drugBox,$('#restore-primary'));
+function applyDrug(d){drug=d;plateletBlocks.gpiib=d==='gpiib';plateletBlocks.gpib=false;vals.function=d==='aspirin'?55:d==='clopidogrel'?45:100;$('#function').value=vals.function;refreshLabels();
+ const explain={none:'Sin inhibición farmacológica. La agregación depende de agonistas y GPIIb/IIIa.',aspirin:'Aspirina: bloquea irreversiblemente COX-1 y disminuye TXA₂; reduce especialmente agregación inducida por ácido araquidónico.',clopidogrel:'Clopidogrel: bloquea P2Y₁₂ y la amplificación por ADP, con menor activación de GPIIb/IIIa.',gpiib:'Antagonismo de GPIIb/IIIa: bloquea la unión de fibrinógeno y reduce la agregación independientemente del agonista.'};
+ $('#drug-description').textContent=explain[d];drugBox.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.drug===d));updatePrimary();markCustom('Intervención farmacológica: '+explain[d]);}
+for(const b of drugBox.querySelectorAll('button'))b.addEventListener('click',()=>applyDrug(b.dataset.drug));
+// Reacciones de la cascada animadas: coloreamos la trayectoria con el avance.
+const cascadePaths=[...document.querySelectorAll('.coag-root .cascade-line')];
+const baselineCascadeUpdate=updateCascade;
+updateCascade=function(){baselineCascadeUpdate();cascadePaths.forEach((path,i)=>{const stage=i<2?0:i<6?1:i<8?2:i<9?3:4;path.classList.toggle('is-active',stage<=cStep);});
+ if($('#cellular'))[...$('#cellular').children].forEach((el,i)=>el.classList.toggle('activated',cStep>=i+1));};
+const cel=document.createElement('article');cel.className='panel';cel.style.marginTop='14px';cel.innerHTML='<div class="chapter">En paralelo · modelo celular fisiológico</div><h2 style="margin-top:4px">Iniciación → amplificación → propagación</h2><div class="cellular" id="cellular"><div><div class="cellular-step">FASE 1</div><h3>Iniciación</h3><p>Célula que expresa FT + VIIa → pequeñas cantidades de Xa y trombina.</p></div><div><div class="cellular-step">FASE 2</div><h3>Amplificación</h3><p>La trombina activa plaquetas y cofatores V, VIII, XI.</p></div><div><div class="cellular-step">FASE 3</div><h3>Propagación</h3><p>Tenasa (IXa–VIIIa) y protrombinasa (Xa–Va) sobre fosfolípidos plaquetarios → “estallido” de trombina y fibrina.</p></div></div><p class="hint">El camino XII→XI→IX se conserva en el esquema clásico para entender TTPa, no como disparador indispensable de la hemostasia in vivo.</p>';
+$('#view-cascade').append(cel);
+updateCascade();updateEndothelium();
+// ----- Laboratorio interactivo -----
+const testNames={count:'Recuento de plaquetas',smear:'Frotis de sangre periférica',bleeding:'Tiempo de sangría (Ivy)',adhesion:'Adhesividad plaquetaria',aggregometry:'Agregometría óptica + ristocetina',pt:'TP / Quick / INR',aptt:'Tiempo de tromboplastina parcial activado',tt:'Tiempo de trombina',mix:'Prueba de mezcla',factor:'Dosaje específico de factores',fibrinogen:'Fibrinógeno funcional (Clauss)',teg:'Tromboelastograma',ddimer:'Dímero D y PDF',lysis:'Lisis de euglobulinas',inhibitors:'Inhibidores fisiológicos'};
+let labTest='aggregometry',labMode='current';
+const btns=[...document.querySelectorAll('#lab-tree button[data-test]')];
+for(const btn of btns)btn.addEventListener('click',()=>openLab(btn.dataset.test));
+$('#lab-sync').addEventListener('click',()=>{labMode='current';openLab(labTest);});
+function makeField(label,control){return `<div><label>${label}</label>${control}</div>`;}
+function showLabResult(text,explain){$('#lab-widget').insertAdjacentHTML('beforeend',`<div class="lab-result">${text}</div>`);$('#lab-explain').innerHTML=explain;}
+function labSvg(paths,labels='',height=260){return `<svg class="lab-plot" viewBox="0 0 700 ${height}" role="img" aria-label="Curva esquemática de la prueba"><g>${[60,110,160,210].map(y=>`<line class="gridline" x1="52" y1="${y}" x2="675" y2="${y}"/>`).join('')}<path d="M52 30V221H675" fill="none" stroke="#7090a3" stroke-width="2"/>${labels}${paths}</g></svg>`;}
+function labSelect(id,values,selected){return `<select id="${id}">${values.map(([v,label])=>`<option value="${v}" ${v===selected?'selected':''}>${label}</option>`).join('')}</select>`;}
+function simplePattern(){let p=vals.platelets<30?'Muy bajo':vals.platelets<65?'Disminuido':'Habitualmente conservado',aptt=vals.factor8<25?'Prolongación posible':Object.entries(factorLevels).some(([k,v])=>['IX','XI','XII','X','V','II'].includes(k)&&v<30)?'Prolongación posible':'Generalmente normal';
+ let pt=['VII','X','V','II'].some(k=>factorLevels[k]<30)||!regulation.vitk||anticoagulation==='avk'?'Prolongación posible':'Generalmente normal';if(!regulation.vitk||anticoagulation==='avk'||anticoagulation==='heparin')aptt='Prolongación posible';return {p,pt,aptt};}
+function openLab(name){if(!testNames[name])return;labTest=name;$('#lab-name').textContent=testNames[name];btns.forEach(b=>b.classList.toggle('active',b.dataset.test===name));const host=$('#lab-widget');host.replaceChildren();$('#lab-explain').textContent='';
+ switch(name){
+ case 'count':case 'smear':{
+ const val=Math.round(250000*vals.platelets/100);host.innerHTML=`<div class="fieldrow">${makeField('Plaquetas estimadas del experimento (por mm³)',`<input type="number" min="0" max="1000000" step="1000" id="lb-count" value="${val}">`)}${makeField('Preparación de muestra',labSelect('lb-sample',[['ok','Sin artefactos'],['edta','Agregados por EDTA'],['sat','Satelitismo plaquetario']],'ok'))}</div><div class="lab-grid"><div><strong id="lb-auto"></strong><small>Contador automático</small></div><div><strong id="lb-true"></strong><small>Frotis / recuento confirmado</small></div><div><strong id="lb-label"></strong><small>Interpretación</small></div></div><svg class="lab-plot" viewBox="0 0 700 190" id="lb-smear-svg" aria-label="Campo esquemático de frotis con plaquetas y eritrocitos"></svg>`;
+ function upd(){let n=Math.max(0,Number($('#lb-count').value)||0),s=$('#lb-sample').value,auto=s==='ok'?n:Math.round(n*.28);$('#lb-auto').textContent=auto.toLocaleString('es-AR')+'/mm³';$('#lb-true').textContent=n.toLocaleString('es-AR')+'/mm³';$('#lb-label').textContent=n<150000?'Trombocitopenia':n>450000?'Trombocitosis':'En rango habitual';const svg=$('#lb-smear-svg');let items=[];for(let i=0;i<20;i++){const x=47+(i%10)*65+((i*23)%13),y=35+Math.floor(i/10)*70;items.push(`<ellipse cx="${x}" cy="${y}" rx="20" ry="13" fill="#c85a70" stroke="#e999aa"/><ellipse cx="${x}" cy="${y}" rx="8" ry="4" fill="#96364b"/>`);}let pc=Math.min(35,Math.round(n/25000));for(let i=0;i<pc;i++){let x=35+(i*53)%640,y=25+(i*41)%147;if(s!=='ok'&&i>3){x=310+(i%4)*8;y=95+(i%3)*8;}items.push(`<circle cx="${x}" cy="${y}" r="4" fill="#ffdc7a" stroke="#fff1be"/>`);}svg.innerHTML=items.join('');$('#lab-explain').innerHTML=s==='ok'?'Recuento cuantitativo; el frotis permite evaluar tamaño, morfología y presencia de agregados. Intervalo de referencia habitual aproximado: 150.000–450.000/mm³.':'<b>Pseudotrombocitopenia:</b> agrupamientos/satelitismo pueden falsear el recuento automático. Revisar frotis y, cuando corresponda, repetir en otro anticoagulante (p. ej., citrato).';}
+ $('#lb-count').addEventListener('input',upd);$('#lb-sample').addEventListener('change',upd);upd();break;}
+ case 'bleeding':case 'adhesion':{
+ host.innerHTML=`<div class="fieldrow">${makeField('Plaquetas',`<input type="range" id="lb-p" min="5" max="100" value="${vals.platelets}">`)}${makeField('vWF',`<input type="range" id="lb-v" min="5" max="100" value="${vals.vwf}">`)}${makeField('Función',`<input type="range" id="lb-f" min="5" max="100" value="${vals.function}">`)}</div><div class="lab-grid"><div><strong id="lb-b-r"></strong><small>Patrón orientativo</small></div><div><strong id="lb-b-p"></strong><small>Conteo relativo</small></div><div><strong id="lb-b-v"></strong><small>Adhesión / activación</small></div></div>`;
+ function upd(){let p=+$('#lb-p').value,v=+$('#lb-v').value,f=+$('#lb-f').value;$('#lb-b-r').textContent=p<45||v<45||f<45?(name==='bleeding'?'Puede prolongarse':'Puede disminuir'):'Aproximadamente conservado';$('#lb-b-p').textContent=p+'%';$('#lb-b-v').textContent='vWF '+v+'% · Fx '+f+'%';}
+ host.querySelectorAll('input').forEach(i=>i.addEventListener('input',upd));upd();$('#lab-explain').innerHTML=name==='bleeding'?'<b>Ivy:</b> prueba histórica del tapón in vivo con alta variabilidad (técnica, hematocrito y fármacos). No se recomienda como prueba diagnóstica rutinaria; el método Duke se abandonó por baja reproducibilidad. La simulación no calcula minutos reales.':'<b>Adhesividad:</b> técnicas históricas como Borchgrevink/Hellem valoraban retención plaquetaria; pueden alterarse por vWF o GPIb. No equivalen a un diagnóstico específico ni sustituyen los métodos modernos.';break;}
+ case 'aggregometry':{
+ host.innerHTML=`<div class="fieldrow">${makeField('Agonista',labSelect('agg-a',[['adp','ADP'],['epi','Adrenalina'],['collagen','Colágeno'],['aa','Ácido araquidónico'],['risto','Ristocetina'],['thrombin','Trombina']],'adp'))}${makeField('Condición',labSelect('agg-d',[['normal','Normal'],['current','Condiciones del vaso'],['glanzmann','Glanzmann (GPIIb/IIIa)'],['bernard','Bernard-Soulier (GPIb)'],['vwd','Enfermedad de von Willebrand'],['aspirin','Aspirina'],['p2y12','Bloqueo P2Y₁₂'],['granules','Defecto de liberación/gránulos']],'current'))}</div><div id="agg-graph"></div><div class="lab-grid"><div><strong id="agg-peak"></strong><small>Respuesta conceptual</small></div><div><strong id="agg-type"></strong><small>Tipo de respuesta</small></div><div><strong id="agg-comment"></strong><small>Segunda ola</small></div></div>`;
+ $('#agg-a').addEventListener('change',drawAgg);$('#agg-d').addEventListener('change',drawAgg);drawAgg();break;}
+ case 'pt':case 'aptt':case 'tt':case 'factor':case 'fibrinogen':{
+ host.innerHTML=`<div class="fieldrow">${makeField('Patrón experimental',labSelect('cl-defect',[['current','Condiciones del vaso'],['normal','Normal'],['liver','Enfermedad hepática'],['7','Déficit de VII'],['8','Déficit de VIII'],['9','Déficit de IX'],['12','Déficit de XII'],['13','Déficit de XIII'],['common','Déficit vía común'],['vitk','Déficit de vitamina K'],['lowf','Fibrinógeno bajo'],['heparin','Heparina'],['inhibitor','Inhibidor del TTPa']],'current'))}${name==='factor'?makeField('Factor a medir',labSelect('cl-factor',[['VII','VII'],['VIII','VIII'],['IX','IX'],['X','X'],['XIII','XIII']],'VIII')):''}</div><div class="lab-grid"><div><strong id="cl-tp"></strong><small>TP / INR</small></div><div><strong id="cl-aptt"></strong><small>TTPa</small></div><div><strong id="cl-tt"></strong><small>TT</small></div></div><div class="lab-result" id="cl-result"></div>`;
+ $('#cl-defect').addEventListener('change',updateClotLabs);if($('#cl-factor'))$('#cl-factor').addEventListener('change',updateClotLabs);updateClotLabs();break;}
+ case 'mix':{
+ host.innerHTML=`<div class="fieldrow">${makeField('Causa posible del TTPa prolongado',labSelect('mx-cause',[['deficiency','Déficit de un factor'],['inhibitor','Inhibidor inmediato / anticoagulante lúpico'],['fviii','Inhibidor tiempo-dependiente de FVIII'],['partial','Corrección parcial (ej.: 60 → 50 s)'],['heparin','Heparina / interferente']],'deficiency'))}${makeField('Etapa de evaluación',labSelect('mx-time',[['immediate','Mezcla inmediata 1:1'],['incubated','Mezcla incubada (37 °C, 1–2 h)']],'immediate'))}</div><div class="lab-grid"><div><strong>TTPa prolongado</strong><small>Paciente (supuesto)</small></div><div><strong>TTPa normal</strong><small>Plasma normal</small></div><div><strong id="mx-result"></strong><small>Mezcla 1:1 · resultado orientativo</small></div></div><div class="lab-result" id="mx-detail"></div>`;
+ $('#mx-cause').addEventListener('change',updateMix);$('#mx-time').addEventListener('change',updateMix);updateMix();break;}
+ case 'teg':{
+ host.innerHTML=`<div class="fieldrow">${makeField('Condición',labSelect('tg-defect',[['current','Condiciones del vaso'],['normal','Normal'],['coag','Déficit de factores / anticoagulación'],['platelet','Plaquetas escasas o disfuncionales'],['fibrin','Fibrinógeno bajo'],['lysis','Hiperfibrinólisis'],['hyper','Hipercoagulabilidad (esquema)']],'current'))}</div><div id="tg-graph"></div><div class="lab-grid" id="tg-params"></div><button id="tg-animate" class="primary">▶ Reproducir trazado</button>`;$('#tg-defect').addEventListener('change',drawTeg);$('#tg-animate').addEventListener('click',drawTeg);drawTeg();break;}
+ case 'ddimer':case 'lysis':{
+ host.innerHTML=`<div class="fieldrow">${makeField('tPA relativo',`<input id="ld-tpa" type="range" min="10" max="300" value="${regulation.tpa}">`)}${makeField('Inhibición por PAI-1 / α₂-antiplasmina',`<input id="ld-inhib" type="range" min="15" max="250" value="${Math.round((regulation.pai+regulation.a2)/2)}">`)}</div><div class="lab-grid"><div><strong id="ld-state"></strong><small>Actividad fibrinolítica</small></div><div><strong id="ld-lysis"></strong><small>Lisis conceptual</small></div><div><strong id="ld-dimer">No específico</strong><small>Dímero D</small></div></div><div class="lab-result" id="ld-explain"></div>`;
+ $('#ld-tpa').addEventListener('input',updateLysisLab);$('#ld-inhib').addEventListener('input',updateLysisLab);updateLysisLab();break;}
+ case 'inhibitors':{
+ host.innerHTML=`<div class="lab-grid"><div><strong>Antitrombina</strong><small>Trombina y Xa; heparina aumenta su eficacia</small></div><div><strong>Proteína C + proteína S</strong><small>Inactivación de Va y VIIIa</small></div><div><strong>TFPI</strong><small>FT–VIIa / Xa</small></div></div><div class="lab-grid"><div><strong>PAI-1</strong><small>Inhibe tPA/uPA</small></div><div><strong>α₂-antiplasmina</strong><small>Neutraliza plasmina</small></div><div><strong>Vitamina K</strong><small>II, VII, IX, X y C/S</small></div></div><button id="lab-go-endo" class="primary">Abrir controles reguladores →</button>`;$('#lab-go-endo').addEventListener('click',()=>activateTab('endothelium'));$('#lab-explain').innerHTML='Seleccioná la pestaña de endotelio para retirar o recuperar cada freno y observar sus efectos sobre la dinámica del coágulo.';break;}
+ }
+ installLabAnimation(name);
+}
+function drawAgg(){if(labTest!=='aggregometry')return;const a=$('#agg-a').value,d=$('#agg-d').value,risto=a==='risto';let peak=95,secondary=(a==='adp'||a==='epi'),delay=a==='collagen'?1.5:.3;
+ if(d==='glanzmann'&&!risto)peak=5;
+ if(d==='bernard'&&risto)peak=5;
+ if(d==='vwd'&&risto)peak=10;
+ if(d==='aspirin'){if(a==='aa')peak=4;else if(secondary){peak=34;secondary=false;}else if(a==='collagen')peak=54;}
+ if(d==='p2y12'){if(a==='adp'){peak=20;secondary=false;}else if(a==='epi'){peak=38;secondary=false;}}
+ if(d==='granules'&&secondary){peak=29;secondary=false;}
+ if(d==='current'){let p=vals.platelets/100,v=vals.vwf/100,fun=vals.function/100;
+  if(risto)peak=plateletBlocks.gpib?4:Math.round(95*v*(.5+.5*p));
+  else peak=plateletBlocks.gpiib?5:Math.round(95*fun*(.4+.6*p));
+  if(drug==='aspirin'&&a==='aa')peak=4;if(drug==='clopidogrel'&&a==='adp')peak=16;if(drug==='gpiib'&&!risto)peak=5;
+  if(peak<55)secondary=false;
+ }
+ let points=[];for(let i=0;i<=100;i++){let x=i/100,y=0;if(risto)y=(1-Math.exp(-8*Math.max(0,x-.11)));else if(secondary){let first=.36*(1-Math.exp(-24*Math.max(0,x-.13)));let second=.64/(1+Math.exp(-16*(x-.51)));y=first+second;}else{y=1/(1+Math.exp(-13*(x-.35-delay*.08)));}points.push([55+i*6.1,210-(Math.max(0,Math.min(1,y))*peak)*1.6]);}
+ let dpath='M'+points.map(p=>p.map(n=>n.toFixed(1)).join(' ')).join(' L');let normal=labSvg(`<path class="curve" d="${dpath}"/>`,'<text x="60" y="22">Transmitancia / respuesta (%)</text><text x="580" y="248">Tiempo relativo →</text>',270);
+ $('#agg-graph').innerHTML=normal;$('#agg-peak').textContent=peak<15?'Ausente/mínima':peak<60?'Reducida':'Conservada';$('#agg-type').textContent=risto?'Aglutinación (vWF–GPIb)':'Agregación (GPIIb/IIIa)';$('#agg-comment').textContent=secondary&&peak>=60?'Primaria + secundaria':'Sin segunda ola / monofásica';
+ $('#lab-explain').innerHTML=(risto?'<b>Ristocetina:</b> explora la aglutinación dependiente de vWF–GPIb; no equivale al mecanismo de agregación por fibrinógeno/GPIIb-IIIa. En Glanzmann suele conservarse; en von Willebrand o Bernard-Soulier se altera.':'<b>Agregometría óptica:</b> la transmisión de luz aumenta a medida que las plaquetas se agregan. ADP y adrenalina débiles pueden mostrar una primera y una segunda ola. Colágeno/trombina suelen generar una respuesta fuerte.')+' Curvas puramente esquemáticas; la concentración del agonista cambia el patrón.';
+}
+function coagPattern(d){const patt={normal:['Normal','Normal','Normal','Sin alteración simulada.'],liver:['Puede ↑','Puede ↑','Variable','Enfermedad hepática: disminuyen factores procoagulantes y anticoagulantes. INR aislado no predice sangrado.'],7:['↑','Normal','Normal','Factor VII: vía extrínseca del ensayo.'],8:['Normal','↑','Normal','Factor VIII: tenasa intrínseca.'],9:['Normal','↑','Normal','Factor IX: hemofilia B.'],12:['Normal','↑','Normal','Factor XII: prolonga TTPa sin sangrado típico.'],13:['Normal','Normal','Normal','Factor XIII puede estar bajo con pruebas globales normales.'],common:['↑','↑','Normal o ↑','Deficiencia en X/V/II afecta ambas pruebas.'],vitk:['↑','Puede ↑','Normal','La caída de VII puede afectar primero TP; II/IX/X después.'],lowf:['Puede ↑','Puede ↑','↑','Fibrinógeno muy bajo puede modificar los tres tiempos.'],heparin:['Variable','↑','↑','Heparina no fraccionada suele prolongar TTPa/TT; según reactivo.'],inhibitor:['Normal','↑','Normal','Estudiar inhibidor o anticoagulante/interferencia.']};
+ if(d==='current'){let p=simplePattern();return [p.pt,p.aptt,anticoagulation==='heparin'?'Prolongación probable':vals.fibrinogen<25?'Prolongación posible':'Generalmente normal','Patrón vinculado a tus modificaciones del vaso; no es una predicción cuantitativa.'];}
+ return patt[d]||patt.normal;}
+function updateClotLabs(){let d=$('#cl-defect').value,patterns=coagPattern(d),n=labTest;$('#cl-tp').textContent=patterns[0];$('#cl-aptt').textContent=patterns[1];$('#cl-tt').textContent=patterns[2];
+ let extra=n==='pt'?'<b>TP / Quick / INR:</b> se añade factor tisular y calcio a plasma citratado. Quick es actividad porcentual dependiente del método; INR estandariza sobre todo el seguimiento de antagonistas de vitamina K.':n==='aptt'?'<b>TTPa:</b> plasma citratado + activador de contacto + fosfolípidos + calcio. Valora vía intrínseca de laboratorio y común.':n==='tt'?'<b>TT:</b> se añade trombina al plasma y se mide la conversión de fibrinógeno a fibrina. Heparina o fibrinógeno anormal pueden prolongarlo.':n==='fibrinogen'?'<b>Clauss:</b> trombina en exceso mide fibrinógeno funcional; alteraciones cualitativas no siempre coinciden con concentración antigénica.':'<b>Ensayo específico:</b> el laboratorio determina actividad de cada factor con un ensayo apropiado; los resultados no se infieren solo del TTPa.';
+ if(n==='factor'){const f=$('#cl-factor').value;extra+=` Elegiste el factor ${f}; el ensayo específico, y no el TP/TTPa por sí solos, confirma su déficit.`;}
+ $('#cl-result').textContent=patterns[3];$('#lab-explain').innerHTML=extra+' <b>Importante:</b> resultados cualitativos según el defecto y su severidad; los tiempos de la guía no se generan por una fórmula universal.';
+}
+function updateMix(){const cause=$('#mx-cause').value,inc=$('#mx-time').value==='incubated';const corrected=cause==='deficiency'||(cause==='fviii'&&!inc);$('#mx-result').textContent=cause==='partial'?'Corrección parcial':corrected?'Tiende a corregir':'Persistente / no corrige';$('#mx-detail').textContent=cause==='partial'?'Disminuyó el TTPa, pero continúa fuera de rango. No permite confirmar deficiencia pura sin repetir/validar el ensayo y estudiar inhibidores.':corrected?'Aporte de factor de plasma normal sugiere deficiencia (no diagnóstica en forma aislada).':'Puede orientar a inhibidor, fármaco interferente o inhibidor tiempo-dependiente. Correlacionar con ensayo e historia.';
+ $('#lab-explain').innerHTML='<b>Prueba de mezcla:</b> 1 parte de plasma del paciente + 1 parte de plasma normal. La corrección puede sugerir deficiencia; la ausencia de corrección orienta a inhibidor/interferente. Hay inhibidores de FVIII tiempo y temperatura dependientes, y <b>los puntos de corte deben validarse localmente</b>. No establece un diagnóstico por sí sola.';}
+function drawTeg(){if(labTest!=='teg')return;let d=$('#tg-defect').value;if(d==='current'){if(vals.fibrinolysis>180||regulation.tpa>170)d='lysis';else if(vals.platelets<45||vals.function<35||plateletBlocks.gpiib)d='platelet';else if(vals.fibrinogen<35)d='fibrin';else if(vals.factor8<25||factorLevels.IX<25||!regulation.vitk||anticoagulation!=='none')d='coag';else d='normal';}
+ const settings={normal:[60,36,105,.08,'Referencia'],coag:[145,65,94,.09,'R ↑ (inicio tardío)'],platelet:[66,65,50,.07,'MA ↓ (menor fuerza)'],fibrin:[70,83,47,.10,'K ↑; α y MA ↓'],lysis:[65,34,102,.84,'LY30 ↑ (lisis rápida)'],hyper:[38,19,123,.04,'R/K ↓; MA ↑']}[d];
+ const [R,K,max,loss,label]=settings;function pointsFor(isNormal){let RR=isNormal?60:R,KK=isNormal?36:K,MM=isNormal?105:max,ll=isNormal?.08:loss;let upper=[],lower=[];for(let i=0;i<=120;i++){let x=48+i*5.2,z=Math.max(0,i*4.2-RR);let y=z<=0?0:(1-Math.exp(-z/(KK*2.6)))*MM;if(i*4.2>RR+165)y*=1-ll*(1-Math.exp(-(i*4.2-RR-165)/65));upper.push(`${x.toFixed(1)},${(132-y*.65).toFixed(1)}`);lower.push(`${x.toFixed(1)},${(132+y*.65).toFixed(1)}`);}return {upper,lower};}
+ const a=pointsFor(false),b=pointsFor(true),shape=a.upper.concat(a.lower.reverse()).join(' ');const reference=`<polyline class="reference" points="${b.upper.join(' ')}"/><polyline class="reference" points="${b.lower.join(' ')}"/>`;
+ const svg=`<svg class="lab-plot" viewBox="0 0 700 265" role="img" aria-label="Tromboelastograma con curvas superior e inferior. Patología: ${label}"><line x1="48" y1="132" x2="667" y2="132" stroke="#6d91a4" stroke-width="2"/>${reference}<polygon class="teg-area" points="${shape}"/><text x="52" y="24">Amplitud / firmeza del coágulo</text><text x="530" y="248">Tiempo relativo →</text></svg>`;
+ $('#tg-graph').innerHTML=svg;$('#tg-params').innerHTML=`<div><strong>R: ${d==='coag'?'↑':d==='hyper'?'↓':'≈'}</strong><small>Inicio de fibrina</small></div><div><strong>K / α: ${['coag','fibrin'].includes(d)?'K ↑, α ↓':d==='hyper'?'K ↓, α ↑':'≈'}</strong><small>Velocidad de consolidación</small></div><div><strong>MA: ${['platelet','fibrin'].includes(d)?'↓':d==='hyper'?'↑':'≈'}</strong><small>Fuerza del coágulo</small></div><div><strong>LY30: ${d==='lysis'?'↑':'≈'}</strong><small>Porcentaje de lisis tras MA</small></div>`;
+ $('#lab-explain').innerHTML=`<b>Patrón:</b> ${label}. R representa inicio, K y α formación, MA fuerza de coágulo y LY30 lisis. La curva es esquemática (no representa mm ni minutos medidos). Los ensayos varían según TEG/ROTEM, reactivos y activador.`;
+}
+function updateLysisLab(){let tpa=+$('#ld-tpa').value,inh=+$('#ld-inhib').value,ratio=tpa/Math.max(20,inh),cls=ratio>1.6?'Elevada':ratio<.65?'Reducida':'En equilibrio';$('#ld-state').textContent=cls;$('#ld-lysis').textContent=ratio>1.6?'Tendencia acelerada':ratio<.65?'Tendencia lenta':'Tendencia habitual';$('#ld-dimer').textContent='Según fibrina formada';$('#ld-explain').textContent=labTest==='ddimer'?'Dímero D surge de plasmina degradando fibrina entrecruzada por XIIIa. No diagnostica por sí solo hiperfibrinólisis ni trombosis. PDF incluye otros productos de degradación, incluso fibrinógeno.':'Tiempo de lisis de euglobulinas es una prueba histórica de actividad fibrinolítica global, muy dependiente del método. Interpretar junto a TEG/ROTEM y marcadores; el control aquí no produce horas reales.';$('#lab-explain').innerHTML='<b>Principio:</b> tPA activa plasminógeno a plasmina; PAI-1 frena tPA y α₂-antiplasmina neutraliza plasmina. La degradación necesita sustrato (fibrina); un dímero D alto no permite clasificar por sí solo fibrinólisis primaria o secundaria.';}
+// El laboratorio se inicializa luego de los módulos visuales (V4).
+
+// Casos de los trabajos prácticos, en modo razonamiento por etapas.
+function cq(text,choices,correct,explain,hint){return {text,choices,correct,explain,hint};}
+const cases=[
+{tp:11,num:1,title:'Epistaxis, encías y sangrado tras extracción dental',story:'Paciente con epistaxis de repetición desde la infancia, hematomas fáciles y sangrado abundante luego de extracción dentaria. Se solicitó un laboratorio de hemostasia básico y luego tiempo de sangría.',labs:['Plaquetas 350.000/mm³','Coagulograma básico normal','Tiempo de sangría: 11 min'],preset:'vwd',test:'aggregometry',questions:[
+ cq('¿Qué componente investigarías primero?',['Alteración de la hemostasia primaria (adhesión o función plaquetaria).','Déficit aislado de factor XIII.','Hiperfibrinólisis demostrada.'],0,'Sangrado mucocutáneo con plaquetas suficientes y TP/TTPa no alterados orienta a adhesión/función plaquetaria, incluyendo vWF.','Diferenciá sangrado de mucosas del sangrado articular profundo.'),
+ cq('¿Qué dato de la historia suma valor diagnóstico?',['Antecedentes personales desde infancia, familiares y exposición a antiagregantes.','Solamente el grupo ABO.','El hematocrito sin otros antecedentes.'],0,'La historia familiar, el sangrado con procedimientos y la medicación aportan pistas sobre trastornos hereditarios o adquiridos.','La presentación comenzó en la infancia.'),
+ cq('¿Qué estudios específicos elegirías?',['Panel de vWF (antígeno/actividad), FVIII y agregometría/ristocetina según caso.','Solo repetir el INR.','Únicamente dímero D.'],0,'Con recuento normal y sospecha de defecto cualitativo, las pruebas dirigidas a vWF y función plaquetaria son más informativas.','La ristocetina explora la interacción vWF–GPIb.'),
+],solution:'Hipótesis: enfermedad de von Willebrand o disfunción plaquetaria. El tiempo de sangría de Ivy es una prueba histórica poco reproducible y no confirma un diagnóstico. Solicitar estudios específicos; los datos no alcanzan para identificar un subtipo.'},
+{tp:11,num:2,title:'Petequias, equimosis y menstruación abundante',story:'Mujer joven con petequias y equimosis recientes y sangrado menstrual muy abundante durante 7 días; sin antecedente significativo de hemorragias.',labs:['Hto 33% · Hb 8,5 g/dl','GR 4,5 millones/mm³','Leucocitos 9.500/mm³','Plaquetas 8.000/mm³','Coagulograma normal'],preset:'thrombocytopenia',test:'count',questions:[
+ cq('¿Cuál es el hallazgo central?',['Trombocitopenia grave.','Trombocitosis reactiva.','Déficit aislado de vitamina K.'],0,'Un recuento de 8.000/mm³ es marcadamente bajo y explica el patrón hemorrágico de la hemostasia primaria.','Comparalo con el intervalo habitual de recuento plaquetario.'),
+ cq('¿Cómo confirmarías que no es un artefacto?',['Revisar frotis para agregados y repetir en citrato si se sospecha pseudotrombocitopenia EDTA.','Repetir solo el TP.','Medir el dímero D como única confirmación.'],0,'La pseudotrombocitopenia por EDTA produce recuentos automatizados falsamente bajos cuando se agregan plaquetas.','¿Qué puede ver el microscopio que el contador no distingue?'),
+ cq('¿Qué dato distingue cantidad de función?',['El recuento bajo documenta déficit cuantitativo; el origen requiere evaluación específica.','Un coagulograma normal excluye cualquier sangrado.','Toda trombocitopenia corresponde a Glanzmann.'],0,'La cantidad de plaquetas está muy disminuida. La etiología no puede establecerse solo con este hemograma.','TP y TTPa evalúan otras vías en plasma.'),
+],solution:'Trombocitopenia grave y anemia asociada al sangrado. Confirmar el valor (frotis/descartar agrupamiento) y estudiar su causa. Este nivel de recuento con hemorragia exige evaluación clínica urgente; el simulador no plantea conductas de tratamiento.'},
+{tp:11,num:3,title:'Adulto mayor que comenzó a tomar aspirina',story:'Hombre de 85 años con equimosis espontáneas o ante mínimos traumatismos, sangrado gingival leve al cepillarse y algunas epistaxis. Un conocido le sugirió tomar aspirina diaria.',labs:['Uso diario de aspirina','Sangrado mucocutáneo','Sin datos de recuento ni TP/TTPa'],preset:'aspirin',test:'aggregometry',questions:[
+ cq('¿Qué mecanismo altera principalmente la aspirina?',['COX-1 plaquetaria → disminuye tromboxano A₂.','Inhibición selectiva de factor VIII.','Disolución directa de fibrina por plasmina.'],0,'La aspirina acetila irreversiblemente COX-1 de las plaquetas y reduce la formación de TXA₂, deteriorando la amplificación de la agregación.','Pensá en el ácido araquidónico.'),
+ cq('¿Qué cambio esperarías en agregometría?',['Respuesta reducida al ácido araquidónico; respuestas secundarias a agonistas débiles también pueden alterarse.','Ristocetina siempre ausente, sin excepción.','TP necesariamente muy prolongado.'],0,'La agregación inducida por ácido araquidónico suele verse muy afectada; los patrones dependen de dosis, método y reactivo.','¿Qué agonista usa la vía que bloquea COX-1?'),
+ cq('¿Cuál es una idea importante en este paciente?',['Considerar edad, riesgo de sangrado y motivo de la automedicación.','La aspirina corrige una trombocitopenia.','Un TP normal descarta acción de aspirina.'],0,'La historia farmacológica es esencial; antiagregación y riesgo hemorrágico no se evalúan con TP/TTPa rutinarios.','¿Qué estudio valora más la función de las plaquetas?'),
+],solution:'Probable alteración funcional plaquetaria inducida por aspirina. A diferencia de anticoagulantes que afectan factores, la aspirina suele dejar TP y TTPa normales. La exposición farmacológica y el contexto clínico son centrales.'},
+{tp:11,num:4,title:'Un año después de una esplenectomía',story:'Paciente con extirpación quirúrgica de bazo (esplenectomía) realizada un año antes por traumatismo. Se informa hemograma con recuento plaquetario alto.',labs:['Hto 44% · Hb 14,8 g/dl','GR 4,9 millones/mm³','Leucocitos 11.000/mm³','Plaquetas 625.000/mm³'],preset:'normal',test:'count',questions:[
+ cq('¿Cómo se denomina el hallazgo plaquetario?',['Trombocitosis.','Trombocitopenia.','Pseudotrombocitopenia por EDTA.'],0,'625.000 plaquetas/mm³ supera el rango habitual y constituye trombocitosis.','El valor supera 450.000/mm³.'),
+ cq('¿Qué hace normalmente el bazo con las plaquetas?',['Secuestra/almacena una fracción y participa en su depuración.','Sintetiza todos los factores vitamina K dependientes.','Activa el plasminógeno exclusivamente.'],0,'La ausencia de reservorio esplénico ayuda a entender el aumento pos-esplenectomía; pueden coexistir otros factores.','Pensá en distribución del pool plaquetario.'),
+ cq('¿Podés calcular un nuevo recuento universal sin bazo?',['No: la respuesta varía y debe medirse; no basta con aplicar un porcentaje fijo.','Sí: siempre se duplica.','Sí: siempre baja a menos de 100.000.'],0,'La distribución esplénica normal orienta, pero el recuento después de esplenectomía depende de tiempo, producción y contexto.','Diferenciá proporción habitual de una predicción individual.'),
+],solution:'Trombocitosis en paciente esplenectomizado: relacionar el secuestro esplénico habitual con la distribución y depuración plaquetaria. No se puede inferir un recuento exacto en esplenomegalia a partir de una regla de tres.'},
+{tp:12,num:1,title:'Cirrosis y evaluación preoperatoria',story:'Paciente con cirrosis alcohólica a quien se le plantea una cirugía. Tiene disminución del recuento plaquetario y alteraciones de pruebas de coagulación.',labs:['Hb 12 g/dl · Hto 38%','Plaquetas 100.000/mm³','Quick 40%','TTPa 50 s','TT 20 s','Fibrinógeno 200 mg/dl'],preset:'lowfibrin',test:'pt',questions:[
+ cq('¿Cómo interpretarías los hallazgos en conjunto?',['Alteración de síntesis hepática y plaquetas bajas; la hemostasia puede estar reequilibrada.','Glanzmann aislado por definición.','TP y TTPa normales.'],0,'El hígado produce numerosos factores procoagulantes y anticoagulantes; la cirrosis también afecta plaquetas. TP/INR aislado no cuantifica el riesgo de sangrado.','Incluí función del hígado y del bazo.'),
+ cq('¿La vitamina K resuelve necesariamente el problema?',['No: solo corrige la fracción atribuible a deficiencia de vitamina K si existe.','Sí: siempre normaliza todos los factores en cirrosis.','No tiene ningún vínculo con la coagulación.'],0,'Una alteración hepatocelular de síntesis no se soluciona automáticamente con vitamina K.','Diferenciá déficit de sustrato y falla de producción.'),
+ cq('¿Qué deberías evitar concluir del INR?',['Que predice por sí solo todo el riesgo hemorrágico en cirrosis.','Que el valor de Quick es bajo.','Que puede orientar sobre cambios en factores plasmáticos.'],0,'En cirrosis hay descenso de factores pro- y anticoagulantes; se requiere valoración clínica integral.','Se llama “hemostasia reequilibrada”.'),
+],solution:'Hemostasia compleja de la enfermedad hepática: plaquetas bajas y alteraciones de TP/TTPa reflejan cambios en factores, pero no bastan para estimar riesgo de sangrado. Considerar causa, medicaciones y deficiencia de vitamina K; no suponer que plasma normal o vitamina K son necesariamente necesarios.'},
+{tp:12,num:2,title:'Antibióticos prolongados, diarrea y vitamina K',story:'Paciente con diarrea persistente después de antibióticos de amplio espectro durante dos semanas. Alimentación con verduras verdes conservada. Se informa coagulograma alterado.',labs:['Quick 50%','TTPa 52 s','TT 18 s','Plaquetas 250.000/mm³','Fibrinógeno 250 mg/dl'],preset:'normal',test:'pt',questions:[
+ cq('¿Qué factores son vitamina K dependientes?',['II, VII, IX, X; proteínas C y S.','V, VIII, XI y XII.','I y XIII exclusivamente.'],0,'La vitamina K permite γ-carboxilación funcional de II, VII, IX y X, además de proteínas C/S.','Pensá en II, VII, IX y X.'),
+ cq('¿Qué prueba suele afectarse primero si baja VII?',['TP / Quick (por la vida media corta del VII).','Recuento de plaquetas.','Frotis eritrocitario.'],0,'El TP es especialmente sensible a una reducción del factor VII. En deficiencia importante pueden modificarse otras pruebas.','La vía extrínseca del laboratorio incorpora factor VII.'),
+ cq('¿Se puede afirmar que el problema es vitamina K sin más estudios?',['Es hipótesis; considerar absorción, ingesta, medicaciones y función hepática.','Sí: dos semanas de antibióticos lo confirman.','Sí: TT normal excluye cualquier otra causa.'],0,'La asociación antibióticos/diarrea sugiere posible déficit, pero el diagnóstico y la causa requieren contexto y evaluación.','Buscá otras causas de prolongación de TP/TTPa.'),
+],solution:'Hipótesis de deficiencia de vitamina K relacionada con cambios de absorción/microbiota y enfermedad. Los valores de laboratorio no son específicos; valorar causa, medicaciones y pruebas adicionales.'},
+{tp:12,num:3,title:'TTPa prolongado sin antecedentes hemorrágicos',story:'Paciente derivado por cirujano para descartar patología de coagulación antes de una operación. No se menciona sangrado previo significativo.',labs:['Quick 80%','TTPa 80 s'],preset:'normal',test:'mix',questions:[
+ cq('¿Qué prueba está predominantemente alterada?',['TTPa, que evalúa vía de contacto/intrínseca y común en el ensayo.','Recuento plaquetario (informado bajo).','Tiempo de trombina (informado prolongado).'],0,'Un TTPa de 80 s requiere estudio: considerar contaminación por heparina, inhibidores y déficit de factores.','Mirá qué dato está prolongado en el caso.'),
+ cq('¿Qué estudio funcional podría orientar la causa?',['Prueba de mezcla y, según contexto, anticoagulante lúpico / factores.','Agregometría como único estudio.','Dímero D para diagnosticar hemofilia.'],0,'La mezcla aporta orientación entre déficit e inhibidor, sin sustituir estudios de confirmación.','Se mezcla el plasma del paciente con plasma normal.'),
+ cq('¿Qué causa puede prolongar TTPa sin hemorragias?',['Déficit de XII o anticoagulante lúpico (según contexto).','Hemofilia A grave siempre sin sangrado.','Disminución aislada de plaquetas siempre prolonga TTPa.'],0,'Déficit de XII puede prolongar TTPa sin aumentar sangrado; anticoagulante lúpico también puede prolongarlo y no se asocia necesariamente a hemorragia.','No siempre prueba anormal equivale a sangrado.'),
+],solution:'No concluir hemofilia únicamente por TTPa. Ver preanalítica, medicamentos, pruebas de mezcla, anticoagulante lúpico y dosajes VIII/IX/XI/XII según resultados.'},
+{tp:12,num:4,title:'Hematomas y epistaxis desde la infancia',story:'Paciente con equimosis ante traumatismos mínimos y epistaxis habituales desde la infancia y adolescencia. Se aportan pruebas globales y mezcla.',labs:['Quick 100%','TTPa 35 s (corrige con plasma normal)','TT 20 s','TS Ivy 6 min','Plaquetas 166.000/mm³'],preset:'vwd',test:'aggregometry',questions:[
+ cq('¿Qué lectura clínica tiene el sangrado de mucosas?',['Sugiere estudiar hemostasia primaria/vWF y defectos leves, sin diagnóstico automático.','Diagnostica déficit grave de XIII.','Descarta cualquier trastorno.'],0,'Los valores globales cercanos a normales no descartan formas leves de enfermedad de vWF ni trastornos de función plaquetaria.','Los síntomas importan tanto como la prueba.'),
+ cq('¿Qué sugiere una prueba de mezcla que corrige?',['Una deficiencia puede estar presente; depende de magnitud y método.','Confirma inhibidor potente.','Demuestra trombocitosis.'],0,'La corrección suele orientar a déficit, pero en este caso TTPa 35 s puede ser limítrofe/normal según laboratorio.','La mezcla no es confirmatoria.'),
+ cq('¿Qué agregarías para investigar?',['vWF antígeno/actividad, factor VIII y pruebas de función plaquetaria según contexto.','Solo hemograma una vez más.','Únicamente dímero D.'],0,'La hipótesis debe contrastarse con estudios selectivos, medicación y antecedentes familiares.','Relacioná síntomas de mucosas y receptores.'),
+],solution:'La guía no permite un diagnóstico único. Estudiar hemostasia primaria/vWF y posibles alteraciones leves, interpretando el TTPa 35 s según rango del laboratorio y método de mezcla.'},
+{tp:12,num:5,title:'Varón con sangrado y hermano afectado',story:'Niño con hematomas ante traumatismos mínimos o espontáneos, gingivorragias y epistaxis. Refiere un hermano mayor con síntomas semejantes, pero no dos hermanas.',labs:['Plaquetas 180.000/mm³','Quick 95%','TTPa 60 s','TT 20 s','Fibrinógeno 300 mg/dl','Tras mezcla: Quick 98%, TTPa 50 s'],preset:'hemophilia',test:'mix',questions:[
+ cq('¿Qué patrón familiar plantea una hipótesis relevante?',['Trastorno ligado a X, como hemofilia A/B, entre otras posibilidades.','Herencia mitocondrial obligatoria.','Falla adquirida de médula en todos los miembros.'],0,'La afectación de varones puede sugerir herencia ligada al X, pero el patrón familiar solo no confirma hemofilia.','Pensá en hemofilia A y B.'),
+ cq('¿Cuál es la alteración analítica principal?',['TTPa prolongado con TP y TT relativamente conservados.','Plaquetas extremadamente bajas.','Quick 20% y TT 80 s.'],0,'El patrón de vía intrínseca orienta a factores VIII, IX, XI o inhibidores/otros interferentes.','El valor 60 s destaca.'),
+ cq('¿Qué cautela exige el TTPa 60 → 50 s tras mezcla?',['La corrección es incompleta; no confirma déficit puro y requiere profundizar inhibidores/método.','Demuestra hemofilia A sin necesidad de dosaje.','Indica agregometría normal como diagnóstico.'],0,'La mejoría parcial pero persistencia de un TTPa prolongado no es una corrección plena. Hay que valorar mezcla inmediata/incubada, factores específicos e inhibidores.','Compará el resultado de la mezcla con el rango normal del TTPa.'),
+],solution:'Hemofilia A/B es hipótesis por patrón de herencia y TTPa aislado, pero el dato de mezcla 60→50 s NO es corrección completa. Conviene confirmar el valor, hacer ensayos de VIII/IX y evaluar inhibidores y variables preanalíticas; no debe presentarse como hemofilia confirmada.'},
+{tp:12,num:6,title:'Sospecha de hiperfibrinólisis',story:'Se sospecha que un paciente con manifestaciones hemorrágicas presenta hiperfibrinólisis. La actividad plantea qué pruebas confirman la hipótesis, qué indica el dímero D y cómo distinguir una causa primaria de una secundaria.',labs:['Sin valores de laboratorio aportados','Sospecha clínica de degradación excesiva del coágulo'],preset:'hyperlysis',test:'teg',questions:[
+ cq('¿Qué mecanismo define hiperfibrinólisis?',['Aumento de degradación de fibrina por actividad fibrinolítica.','Ausencia absoluta de plaquetas.','Aumento aislado del factor XIII.'],0,'El eje tPA/plasminógeno/plasmina puede aumentar el desgaste del coágulo.','Pensá en equilibrio entre formar y disolver fibrina.'),
+ cq('¿Qué prueba puede mostrar una lisis acelerada del coágulo?',['Parámetros de lisis de TEG/ROTEM (p. ej., LY30), interpretados según contexto.','Solo hematocrito.','Solo grupo ABO.'],0,'Las técnicas viscoelásticas permiten visualizar la pérdida de firmeza; pueden complementarse con marcadores y pruebas específicas.','Buscá un estudio que mida el coágulo a lo largo del tiempo.'),
+ cq('¿Qué indica un dímero D aumentado?',['Degradación de fibrina entrecruzada; es inespecífico para causa y mecanismo primario/secundario.','Demuestra un trastorno único de fibrinólisis primaria.','Que TP y TTPa siempre estarán normales.'],0,'Dímero D refleja formación y degradación de fibrina entrecruzada; puede aumentar en trombosis, inflamación y otros estados.','¿Es un marcador de un proceso o una prueba etiológica definitiva?'),
+],solution:'Relacionar tPA/PAI-1/α₂-antiplasmina, productos de degradación y TEG. En fibrinólisis primaria marcada puede predominar degradación de fibrinógeno y PDF, mientras la secundaria sigue formación de fibrina entrecruzada; el dímero D aislado no clasifica el proceso.'}
+];
+
+// Navegación accesible por los casos sin revelar de entrada la solución.
+let caseIndex=0,caseQuestion=0,caseSelections={},caseRevealed=false;
+const caseSel=$('#case-select');const caseList=$('#case-list');
+for(let i=0;i<cases.length;i++){
+ const c=cases[i],caption=`Caso ${i+1} · ${c.title}`;caseSel.add(new Option(caption,String(i)));const b=document.createElement('button');b.textContent=caption;b.dataset.index=String(i);b.addEventListener('click',()=>loadCase(i));caseList.append(b);
+}
+function loadCase(idx){caseIndex=Number(idx)||0;caseQuestion=0;caseSelections={};caseRevealed=false;const c=cases[caseIndex];caseSel.value=String(caseIndex);caseList.querySelectorAll('button').forEach(b=>b.classList.toggle('active',+b.dataset.index===caseIndex));
+ $('#case-source').textContent=`Caso clínico ${caseIndex+1} de ${cases.length}`;$('#case-title').textContent=c.title;$('#case-story').textContent=c.story;$('#case-labs').replaceChildren(...c.labs.map(t=>{const sp=document.createElement('span');sp.textContent=t;return sp;}));
+ $('#case-solution').hidden=true;renderCaseQuestion();}
+function renderCaseQuestion(){const c=cases[caseIndex],q=c.questions[caseQuestion],choice=caseSelections[caseQuestion];$('#case-progress').textContent=`Paso ${caseQuestion+1} de ${c.questions.length}`;$('#case-score').textContent=`${Object.keys(caseSelections).length}/${c.questions.length} decisiones respondidas`;$('#case-question').textContent=q.text;$('#case-choices').replaceChildren();
+ q.choices.forEach((answer,idx)=>{const b=document.createElement('button');b.textContent=String.fromCharCode(65+idx)+'. '+answer;b.addEventListener('click',()=>chooseCase(idx));if(choice!==undefined){b.disabled=true;if(idx===q.correct)b.classList.add('correct');else if(idx===choice)b.classList.add('incorrect');}$('#case-choices').append(b);});
+ $('#case-feedback').textContent=choice===undefined?'':(choice===q.correct?'✓ Bien encaminado. ':'↗ Revisá este aspecto. ')+q.explain;
+ $('#case-next').disabled=choice===undefined;$('#case-next').textContent=caseQuestion===c.questions.length-1?'Ver síntesis →':'Siguiente pregunta →';$('#case-hintbox').hidden=true;
+}
+function chooseCase(idx){if(caseSelections[caseQuestion]!==undefined)return;caseSelections[caseQuestion]=idx;renderCaseQuestion();}
+$('#case-next').addEventListener('click',()=>{const c=cases[caseIndex];if(caseQuestion<c.questions.length-1){caseQuestion++;renderCaseQuestion();}else{revealCase();}});
+$('#case-hint').addEventListener('click',()=>{$('#case-hintbox').hidden=false;$('#case-hintbox').textContent='Pista: '+cases[caseIndex].questions[caseQuestion].hint;});
+function revealCase(){$('#case-solution').hidden=false;$('#case-solution-text').textContent=cases[caseIndex].solution;$('#case-solution').scrollIntoView({block:'nearest',behavior:'smooth'});}
+$('#case-explanation').addEventListener('click',revealCase);
+$('#case-select').addEventListener('change',e=>loadCase(e.target.value));
+$('#cases-reset').addEventListener('click',()=>loadCase(caseIndex));
+$('#case-open-lab').addEventListener('click',()=>{
+ const c=cases[caseIndex];openLab(c.test);
+ if(c.tp===11&&c.test==='count'){$('#lb-count').value=c.num===2?8000:625000;$('#lb-count').dispatchEvent(new Event('input'));}
+ if(c.tp===11&&c.num===1){$('#agg-a').value='risto';$('#agg-d').value='vwd';drawAgg();}
+ if(c.tp===11&&c.num===3){$('#agg-a').value='aa';$('#agg-d').value='aspirin';drawAgg();}
+ if(c.tp===12&&c.num===1){$('#cl-defect').value='liver';updateClotLabs();}
+ if(c.tp===12&&c.num===2){$('#cl-defect').value='vitk';updateClotLabs();}
+ if(c.tp===12&&c.num===5){$('#mx-cause').value='partial';updateMix();}
+ if(c.tp===12&&c.num===6){$('#tg-defect').value='lysis';drawTeg();}
+ activateTab('laboratory');
+});
+$('#case-load-vaso').addEventListener('click',()=>{const c=cases[caseIndex];applyPreset(c.preset);
+ if(c.tp===11&&c.num===4){vals.platelets=100;$('#platelets').value=100;refreshLabels();$('#scenario-desc').textContent='Posesplenectomía con trombocitosis: la escala de plaquetas del motor se limita al 100% y no reproduce el aumento cuantitativo. Usá el recuento del laboratorio para explorar trombocitosis.';}
+ if(c.tp===12&&c.num===2){regulation.vitk=false;updateEndothelium();markCustom('Déficit experimental de vitamina K como hipótesis del caso: no confirma la causa.');}
+ if(c.tp===12&&c.num===1){vals.platelets=40;$('#platelets').value=40;vals.factor8=55;$('#factor8').value=55;refreshLabels();markCustom('Modelo didáctico multifactorial: enfermedad hepática, no patrón de coagulación cuantitativamente calibrado.');}
+ if(c.tp===12&&c.num===3){factorLevels.XII=5;markCustom('Una de varias hipótesis: déficit XII puede elevar TTPa sin hemorragia. La causa no está demostrada.');}
+ activateTab('general');});
+loadCase(0);
+
+// ===== V4: animaciones visibles, propias de cada ensayo, y fibrinólisis dinámica =====
+const experimentDescriptions={
+ count:'Las plaquetas pasan al recuento automatizado. Los agregados pueden producir una cifra falsamente baja.',
+ smear:'El frotis permite ver plaquetas aisladas, agregadas o asociadas a eritrocitos.',
+ bleeding:'Las plaquetas llegan a la lesión y forman el tapón. La persistencia del sangrado depende de la función y la cantidad.',
+ adhesion:'Las plaquetas circulan por una superficie de adhesión. La fracción retenida cambia con vWF y la función plaquetaria.',
+ aggregometry:'El agonista activa plaquetas, se agregan y aumenta la luz transmitida. Ristocetina evalúa aglutinación vWF–GPIb.',
+ pt:'Se añade factor tisular y calcio al plasma citratado; se observa la formación de fibrina.',
+ aptt:'Se añade activador de contacto, fosfolípidos y calcio al plasma; se observa el tiempo hasta formar fibrina.',
+ tt:'Se añade trombina al plasma para examinar la conversión de fibrinógeno en fibrina.',
+ factor:'El ensayo específico estudia la actividad de un factor en plasma deficitario en ese factor.',
+ fibrinogen:'El método de Clauss usa trombina en exceso para estudiar el fibrinógeno funcional.',
+ mix:'El plasma del paciente se mezcla 1:1 con plasma normal y se vuelve a medir el tiempo de coagulación.',
+ teg:'La representación viscoelástica se abre durante la formación del coágulo y se estrecha si hay lisis significativa.',
+ ddimer:'La plasmina corta fibrina entrecruzada, liberando fragmentos que pueden incluir dímero D.',
+ lysis:'La lisis de euglobulinas explora globalmente la capacidad fibrinolítica en un sistema experimental.',
+ inhibitors:'Los frenos fisiológicos limitan la formación de trombina o inactivan los cofactores, según el mecanismo elegido.'
+};
+const labSceneStyle=`<defs><linearGradient id="ls-bg" x2="0" y2="1"><stop stop-color="#17374a"/><stop offset="1" stop-color="#0a2030"/></linearGradient><clipPath id="ls-clip"><rect x="0" y="0" width="760" height="220" rx="10"/></clipPath></defs><rect width="760" height="220" rx="10" fill="url(#ls-bg)"/><path d="M15 188H745" stroke="#50758a" opacity=".6"/><text x="19" y="22" font-size="13" fill="#a3c9db">ANIMACIÓN DIDÁCTICA · NO A ESCALA</text>`;
+const lvText=(x,y,t,color='#dbeef7',size=16)=>`<text x="${x}" y="${y}" fill="${color}" font-size="${size}" font-family="system-ui" font-weight="650">${t}</text>`;
+const lvDot=(x,y,r=6,cls='lv-arrival',style='')=>`<circle cx="${x}" cy="${y}" r="${r}" class="${cls}" style="${style}" fill="#f4d17a" stroke="#ffedb0" stroke-width="1.3"/>`;
+const lvTube=(x,color='#edcad2')=>`<path d="M${x} 50V148Q${x} 171 ${x+34} 171Q${x+68} 171 ${x+68} 148V50" fill="none" stroke="#8fbbcc" stroke-width="4" stroke-linecap="round"/><path d="M${x+5} 103V148Q${x+5} 166 ${x+34} 166Q${x+63} 166 ${x+63} 148V103Z" fill="${color}" opacity=".55"/>`;
+const lvMesh=(x,y,thickness=1)=>Array.from({length:7},(_,i)=>`<path class="lv-grow" style="animation-delay:${(i*.12).toFixed(2)}s" d="M${x+i*16} ${y}L${x+i*11-27} ${y+65} M${x-12} ${y+i*9}L${x+105} ${y+65-i*5}" stroke="#90e3ed" stroke-width="${thickness*2.3}" stroke-linecap="round" fill="none"/>`).join('');
+const lvRbc=(x,y)=>`<ellipse cx="${x}" cy="${y}" rx="20" ry="13" fill="#c95d70" stroke="#f0a2aa" stroke-width="2"/><ellipse cx="${x}" cy="${y}" rx="8" ry="5" fill="#923448"/>`;
+const lvDefectValue=()=>$('#cl-defect')?.value||'normal';
+function labScene(name){let art='',desc=experimentDescriptions[name]||'';
+ const p=Number($('#lb-p')?.value||vals.platelets),v=Number($('#lb-v')?.value||vals.vwf),f=Number($('#lb-f')?.value||vals.function);
+ const efficacy=Math.max(0,Math.min(1,p*v*f/1000000));
+ if(name==='count'||name==='smear'){
+  const n=Number($('#lb-count')?.value||250000),sample=$('#lb-sample')?.value||'ok',num=Math.max(1,Math.min(18,Math.round(n/27000)));
+  art+=lvText(34,49,'Frotis de sangre periférica')+lvText(505,49,'Contador automático');
+  art+=`<rect x="20" y="60" width="444" height="116" rx="10" fill="#3e465a" opacity=".5"/>`;
+  for(let i=0;i<12;i++)art+=lvRbc(61+(i%6)*69,91+Math.floor(i/6)*57);
+  for(let i=0;i<num;i++){let x=40+(i*43)%397,y=80+(i*31)%83;
+   if(sample==='edta'&&i>3){x=360+(i%4)*5;y=134+(i%3)*6;}
+   if(sample==='sat'&&i>4){x=129+(i%5)*65;y=105+(i%2)*33;}
+   art+=lvDot(x,y,4,'lv-appear',`animation-delay:${(i*.09).toFixed(2)}s`);
+  }
+  art+=`<path d="M484 110H530" stroke="#93d0df" stroke-width="3" stroke-dasharray="5 6"/>`+lvTube(549,'#8bbbd0')+lvText(514,203,sample==='ok'?'Recuento concordante':'¡Verificar frotis!',sample==='ok'?'#8ae2ad':'#ffb4b8',15);
+  desc=sample==='ok'?desc:'Se muestran agregados/satelitismo: el contador puede subestimar las plaquetas. Confirmar con frotis y muestra apropiada.';
+ }else if(name==='bleeding'){
+  art+=lvText(38,52,'Lesión superficial')+lvText(467,52,efficacy<.35?'Tapón insuficiente':'Tapón plaquetario en formación');
+  art+=`<path d="M24 120H329L365 150L403 120H735" stroke="#ec949f" stroke-width="17" fill="none"/><path d="M329 120L365 150L403 120" stroke="#eac7ab" stroke-width="9" fill="none"/>`;
+  let count=2+Math.round(14*efficacy);
+  for(let i=0;i<count;i++){art+=lvDot(335+i*5,131+(i%3)*6,7,'lv-plate-settle',`animation-delay:${(i*.13).toFixed(2)}s`);}
+  for(let i=0;i<Math.max(1,6-Math.round(5*efficacy));i++)art+=`<ellipse class="lv-bleed" cx="${355+(i%3)*14}" cy="${169+(i%2)*13}" rx="4" ry="7" fill="#f08090" style="animation-delay:${i*.3}s"/>`;
+  desc=efficacy<.35?'Con pocos elementos funcionales el tapón resulta limitado. La simulación no calcula minutos de Ivy.':'Las plaquetas se reclutan y cierran progresivamente la pequeña lesión (modelo conceptual).';
+ }else if(name==='adhesion'){
+  art+=lvText(26,55,'Plaquetas en suspensión')+lvText(387,55,'Columna / superficie de adhesión');
+  art+=`<path d="M365 70V171 M665 70V171" stroke="#98cbd9" stroke-width="5"/><g stroke="#79b3c4" opacity=".8">${Array.from({length:8},(_,i)=>`<line x1="${378+i*38}" y1="70" x2="${378+i*38}" y2="171"/>`).join('')}</g>`;
+  const retained=Math.round(12*Math.min(1,v*f/10000));for(let i=0;i<12;i++)art+=lvDot(i<retained?402+(i*22)%240:520, i<retained?83+(i*19)%69:189,5,i<retained?'lv-plate-settle':'lv-passage',`animation-delay:${i*.12}s`);
+  desc=retained<5?'Disminuye la retención plaquetaria, compatible con un defecto de adhesión en este experimento.':'Mayor retención plaquetaria sobre la superficie de prueba. Este valor no equivale a una medición clínica.';
+ }else if(name==='aggregometry'){
+  const agonist=$('#agg-a')?.selectedOptions[0].textContent||'ADP',disorder=$('#agg-d')?.value||'normal',risto=$('#agg-a')?.value==='risto';
+  const weak=disorder==='glanzmann'&&!risto||disorder==='bernard'&&risto||disorder==='vwd'&&risto||disorder==='aspirin'&&$('#agg-a').value==='aa'||disorder==='p2y12'&&$('#agg-a').value==='adp';
+  art+=lvText(24,50,'Reactivo: '+agonist)+lvText(481,50,'Transmisión luminosa');
+  art+=`<rect x="35" y="65" width="395" height="113" rx="10" fill="#547088" opacity=".22"/><path d="M473 115H729" stroke="#ffdc93" stroke-width="6" opacity="${weak?.22:.80}" stroke-dasharray="10 6"/>`;
+  for(let i=0;i<12;i++){const x=78+(i%4)*85,y=86+Math.floor(i/4)*32;art+=lvDot(weak?x:215+(i%4)*11,weak?y:106+Math.floor(i/4)*11,7,weak?'lv-plate-scatter':'lv-plate-settle',`animation-delay:${i*.085}s`);}
+  desc=weak?'Patrón con respuesta escasa al agonista seleccionado. Las curvas muestran la interpretación completa.':'Las plaquetas se aproximan o aglutinan según el agonista; la luz atraviesa con mayor facilidad la suspensión.';
+ }else if(['pt','aptt','tt','factor','fibrinogen'].includes(name)){
+  const pat=coagPattern(lvDefectValue()),idx=name==='pt'?0:name==='aptt'?1:2,flag=pat[idx];
+  const abnormal=flag.includes('↑')||flag.includes('Prolongación')||flag.includes('Puede')&&name==='pt',weak=name==='fibrinogen'&&lvDefectValue()==='lowf'||abnormal;
+  const tag={pt:'FT + Ca²⁺',aptt:'Activador + PL + Ca²⁺',tt:'Trombina',factor:'Plasma de ensayo',fibrinogen:'Trombina en exceso'}[name];
+  art+=lvText(29,50,'Plasma citratado')+lvText(280,50,'Agregar '+tag)+lvText(528,50,weak?'Coágulo retrasado / menor':'Formación de fibrina',weak?'#ffb9af':'#9debd4',15);
+  art+=lvTube(35)+lvTube(330,'#8ed7d8')+lvTube(599,'#edcad2')+`<path class="lv-flow" d="M132 109H294 M416 109H563" stroke="#99e3e8" stroke-width="4" fill="none" stroke-dasharray="9 9"/>`;
+  art+=lvMesh(610,83,weak?.42:1);
+  desc=weak?'La reacción puede demorarse o formar una red insuficiente; el dibujo no traduce segundos de TP/TTPa/TT.':'La adición de reactivos permite observar el punto final: formación de fibrina en el ensayo.';
+  if(name==='factor')desc+=' El resultado específico depende del factor '+($('#cl-factor')?.value||'VIII')+' y del ensayo elegido.';
+ }else if(name==='mix'){
+  const cause=$('#mx-cause')?.value,inc=$('#mx-time')?.value==='incubated',corrected=cause==='deficiency'||(cause==='fviii'&&!inc);
+  art+=lvText(19,53,'Plasma del paciente')+lvText(276,53,'Plasma normal')+lvText(551,53,'Mezcla 1:1');
+  art+=lvTube(49)+lvTube(290,'#9ab7c8')+lvTube(581,'#d9b5ca');
+  art+=`<path class="lv-flow" d="M134 116L558 116 M375 137L558 125" stroke="#a1dbe4" stroke-width="4" stroke-dasharray="8 12" fill="none"/>`;
+  if(corrected)art+=lvMesh(593,100,.9);else art+=`<path d="M602 125H642" stroke="#ffb0ad" stroke-width="4" stroke-dasharray="7 6"/>`;
+  desc=cause==='partial'?'El resultado parcialmente corregido requiere evaluación adicional; no confirma déficit puro.':corrected?'La corrección orienta a deficiencia de factor, pero no basta para diagnosticarla.':'La falta de corrección orienta a inhibidor o interferente, no a un diagnóstico único.';
+ }else if(name==='teg'){
+  const d=$('#tg-defect')?.value||'normal',narrow=['platelet','fibrin','coag'].includes(d),lysis=d==='lysis';
+  art+=lvText(25,48,'Formación y resistencia del coágulo')+lvText(537,48,lysis?'Lisis marcada':narrow?'Menor firmeza':'Curva viscoelástica');
+  art+=`<line x1="28" y1="120" x2="728" y2="120" stroke="#779aae" stroke-dasharray="5 6"/><path class="lv-teg-open" d="M50 120C230 120 268 120 355 ${narrow?89:60}S600 ${lysis?112:narrow?79:50} 730 ${lysis?115:narrow?82:54} M50 120C230 120 268 120 355 ${narrow?151:180}S600 ${lysis?128:narrow?161:190} 730 ${lysis?125:narrow?158:186}" fill="none" stroke="#f5d084" stroke-width="5"/>`;
+  desc=lysis?'La curva se estrecha al degradarse el coágulo. Compará especialmente LY30.':narrow?'La forma orienta a menor formación o firmeza del coágulo. Observá R, K, alfa y MA.':'El ancho aumenta al formarse el coágulo. Los parámetros completos se consultan en el trazado superior.';
+ }else if(name==='ddimer'||name==='lysis'){
+  const tp=Number($('#ld-tpa')?.value||100),inhi=Number($('#ld-inhib')?.value||100),speed=tp/Math.max(inhi,20);
+  art+=lvText(28,49,'Red de fibrina entrecruzada')+lvText(526,49,speed>1.6?'Lisis aumentada':speed<.65?'Lisis reducida':'Degradación regulada');
+  art+=`<g transform="translate(5 -25) scale(2.05 1.60)">${lvMesh(45,82,1.1)}</g>`;art+=`<path class="lv-flow" d="M299 127H501" stroke="#89d9ae" stroke-width="5" stroke-dasharray="10 9"/>`;
+  for(let i=0;i<(speed>1.6?10:speed<.65?2:6);i++){const x=530+(i*37)%180,y=82+(i*21)%86;art+=`<path class="lv-frag" style="animation-delay:${(i*.1).toFixed(2)}s" d="M${x} ${y}l13 -7m-13 7l14 5" stroke="#8be0e9" stroke-width="3" fill="none"/>`;}
+  desc=speed>1.6?'La degradación está favorecida por tPA y/o menor inhibición; esto no determina un valor de dímero D.':speed<.65?'La degradación está frenada; los resultados reales requieren un ensayo validado.':'Hay degradación regulada de la fibrina, con producción potencial de PDF y dímero D si hubo fibrina entrecruzada.';
+ }else if(name==='inhibitors'){
+  const mode=$('#lv-inhib-scenario')?.value||'antithrombin';const texts={antithrombin:['Antitrombina','Trombina (IIa) + Xa','Inhibición de proteasas'],proteinc:['Proteína C activada + S','Va + VIIIa','Inactivación de cofactores'],tfpi:['TFPI','FT–VIIa / Xa','Freno de iniciación']};const xs=texts[mode];
+  art+=lvText(40,58,xs[0],'#9ce9bc',19)+lvText(412,58,xs[1],'#ffb9a7',19);
+  art+=`<rect x="49" y="91" width="183" height="67" rx="24" fill="#2d6656" stroke="#a2e7bd" stroke-width="3"/><rect x="452" y="91" width="236" height="67" rx="24" fill="#754755" stroke="#ffa8a9" stroke-width="3"/>`;
+  art+=`<path class="lv-flow" d="M246 125H428" stroke="#9de8bc" stroke-width="5" stroke-dasharray="9 8"/>`+lvText(255,199,xs[2],'#c2f6d2',17);
+  desc=xs[0]+' actúa sobre '+xs[1]+'. Seleccioná otro regulador para comparar mecanismos.';
+ }
+ return {svg:`<svg class="lab-demo-svg" viewBox="0 0 760 220" role="img" aria-label="${experimentDescriptions[name]}">${labSceneStyle}<g clip-path="url(#ls-clip)">${art}</g></svg>`,desc};
+}
+function installLabAnimation(name){const host=$('#lab-widget');if(!host)return;
+ const demo=document.createElement('div');demo.className='lab-animation';demo.innerHTML=`<div class="lab-anim-title"><strong>🔬 Así funciona la prueba</strong><button type="button" class="lab-replay">▶ Repetir animación</button></div>${name==='inhibitors'?'<label for="lv-inhib-scenario">Mecanismo a observar</label><select id="lv-inhib-scenario"><option value="antithrombin">Antitrombina</option><option value="proteinc">Proteína C activada + S</option><option value="tfpi">TFPI</option></select>':''}<div class="lab-scene" aria-label="Simulación visual de la prueba"></div><p class="lab-anim-caption" aria-live="polite"></p>`;
+ const field=host.querySelector('.fieldrow');if(field)field.insertAdjacentElement('afterend',demo);else host.prepend(demo);
+ const render=()=>{if(labTest!==name||!demo.isConnected)return;let sc=labScene(name);demo.querySelector('.lab-scene').innerHTML=sc.svg;demo.querySelector('.lab-anim-caption').textContent=sc.desc;};
+ demo.querySelector('.lab-replay').addEventListener('click',render);
+ demo.querySelector('#lv-inhib-scenario')?.addEventListener('change',render);
+ host.addEventListener('input',()=>requestAnimationFrame(render));host.addEventListener('change',()=>requestAnimationFrame(render));
+ render();
+}
+// Controles de fibrinólisis visibles y conectados con tPA, PAI-1 y antiplasmina.
+let lysisProgress=0,lysisRunning=false,lysisLast=0,lysisRaf=0;
+function lysisEffectiveRate(){return (regulation.tpa/100)*(100/Math.max(20,regulation.pai))*(100/Math.max(20,regulation.a2));}
+const lysisSvg=`<svg id="lysis-animation-svg" viewBox="0 0 850 290" role="img" aria-label="La plasmina activa fragmenta la red de fibrina, liberando productos de degradación"><defs><linearGradient id="lysis-bg" x2="0" y2="1"><stop stop-color="#14374a"/><stop offset="1" stop-color="#0b2131"/></linearGradient></defs><rect width="850" height="290" fill="url(#lysis-bg)"/><text x="25" y="31" fill="#c0dce8" font-size="16">Red de fibrina estabilizada</text><text x="575" y="31" fill="#b4ead0" font-size="16">PDF · dímero D*</text><g id="lysis-net" stroke="#87dfeb" stroke-linecap="round" fill="none">${Array.from({length:13},(_,i)=>`<path class="lysis-thread" d="M${80+(i%7)*62} 70L${100+((i*3)%7)*58} 224" stroke-width="${2.5+i%2}"/>`).join('')}${Array.from({length:5},(_,i)=>`<path class="lysis-thread" d="M75 ${84+i*30}Q285 ${130-i*13} 514 ${94+i*26}" stroke-width="3"/>`).join('')}</g><g id="lysis-plasmin" fill="#86e4aa" stroke="#e4ffda">${Array.from({length:6},(_,i)=>`<circle class="plasmin-agent" cx="${67+i*78}" cy="${92+i%3*45}" r="${8+i%2*3}"/>`).join('')}</g><g id="lysis-fragments" stroke="#b7f0ed" stroke-width="3" stroke-linecap="round">${Array.from({length:16},(_,i)=>`<path class="lysis-fragment" d="M0 0l12 -7 5 10" fill="none"/>`).join('')}</g><path d="M542 66V242" stroke="#446679" stroke-dasharray="4 7"/><text x="25" y="271" fill="#a0bfce" font-size="13">* Dímero D: solo si la fibrina estaba entrecruzada por XIIIa</text></svg>`;
+function addLysisStage(){const zone=$('#lysis-steps')?.parentElement;if(!zone)return;
+ const widget=document.createElement('div');widget.className='lysis-experiment';widget.innerHTML=`<div class="lysis-demo-top"><strong>🎬 Animación de la fibrinólisis</strong><span id="lysis-speed" class="soft">Actividad basal</span></div><div class="lysis-animation">${lysisSvg}</div><div class="lysis-progress" aria-hidden="true"><div id="lysis-progress-fill"></div></div><div class="controls"><button id="lysis-play" class="primary">▶ Iniciar / repetir</button><button id="lysis-pause">Ⅱ Pausar</button><button id="lysis-restart">↻ Reiniciar</button></div><p id="lysis-live-caption" class="lab-anim-caption" aria-live="polite">Presioná iniciar para observar cómo se degrada la fibrina.</p><p class="soft">Los tiempos son relativos: no representan segundos reales de fibrinólisis.</p>`;
+ zone.insertBefore(widget,$('#lysis-steps'));
+ $('#lysis-play').addEventListener('click',()=>{lysisProgress=0;lysisRunning=true;lysisLast=0;$('#lysis-pause').textContent='Ⅱ Pausar';drawLysisStage();if(!lysisRaf)lysisRaf=requestAnimationFrame(lysisTick);});
+ $('#lysis-pause').addEventListener('click',()=>{lysisRunning=!lysisRunning;lysisLast=0;$('#lysis-pause').textContent=lysisRunning?'Ⅱ Pausar':'▶ Continuar';if(lysisRunning&&!lysisRaf)lysisRaf=requestAnimationFrame(lysisTick);});
+ $('#lysis-restart').addEventListener('click',()=>{lysisProgress=0;lysisRunning=false;lysisLast=0;$('#lysis-pause').textContent='▶ Continuar';drawLysisStage();});
+ drawLysisStage();
+}
+function drawLysisStage(){if(!$('#lysis-animation-svg'))return;
+ const z=lysisProgress,rate=lysisEffectiveRate();$('#lysis-speed').textContent=rate>1.5?'Actividad fibrinolítica aumentada':rate<.65?'Actividad fibrinolítica reducida':'Actividad fibrinolítica basal';$('#lysis-progress-fill').style.width=Math.round(z*100)+'%';
+ document.querySelectorAll('.lysis-thread').forEach((el,i)=>{const onset=(i%6)*.065+.12;const cut=Math.max(0,Math.min(1,(z-onset)*2.3));el.style.opacity=String(1-.9*cut);el.style.strokeDasharray=cut>.05?`${Math.max(2,29-cut*26)} ${Math.round(cut*22+2)}`:'none';});
+ document.querySelectorAll('.plasmin-agent').forEach((el,i)=>{el.setAttribute('transform',`translate(${Math.sin(z*9+i)*16},${Math.cos(z*7+i)*10})`);el.style.opacity=String(z>.09?.95:.2);});
+ document.querySelectorAll('.lysis-fragment').forEach((el,i)=>{const onset=.22+(i%5)*.07,visible=Math.max(0,Math.min(1,(z-onset)*4));el.style.opacity=String(visible*(1-z*.4));el.setAttribute('transform',`translate(${565+(i*47)%257+z*20} ${74+(i*31)%145+z*28}) rotate(${i*39+z*35})`);});
+ const caption=z<.13?'1. Fibrina entrecruzada y plasminógeno disponibles.':z<.31?'2. tPA/uPA favorecen la activación de plasminógeno a plasmina.':z<.68?'3. La plasmina degrada la red de fibrina: las hebras se fragmentan.':'4. Se liberan productos de degradación; el dímero D proviene de fibrina entrecruzada.';
+ $('#lysis-live-caption').textContent=caption+(rate<.65?' La degradación está frenada por los controles actuales.':rate>1.5?' La degradación está facilitada por los controles actuales.':'');
+}
+function lysisTick(now){lysisRaf=0;if(!lysisRunning)return;if(!lysisLast)lysisLast=now;const dt=Math.min(.10,(now-lysisLast)/1000);lysisLast=now;
+ // La velocidad de la escena responde cualitativamente a los inhibidores.
+ const rate=lysisEffectiveRate();lysisProgress=Math.min(1,lysisProgress+dt*(.12*Math.max(.35,Math.min(2.4,rate))));drawLysisStage();if(lysisProgress<1)lysisRaf=requestAnimationFrame(lysisTick);else{lysisRunning=false;lysisLast=0;$('#lysis-pause').textContent='▶ Continuar';}
+}
+addLysisStage();
+$('#tab-endothelium').addEventListener('click',()=>{if(lysisProgress>=1||lysisProgress===0){lysisProgress=0;lysisRunning=true;lysisLast=0;$('#lysis-pause').textContent='Ⅱ Pausar';drawLysisStage();if(!lysisRaf)lysisRaf=requestAnimationFrame(lysisTick);}});
+for(const id of ['r-tpa','r-pai','r-a2'])$('#'+id).addEventListener('input',drawLysisStage);
+$('#reg-normal').addEventListener('click',drawLysisStage);
+
+// Si un caso selecciona una condición de laboratorio mediante código, actualizar la animación correspondiente.
+$('#case-open-lab').addEventListener('click',()=>requestAnimationFrame(()=>$('#lab-widget .lab-replay')?.click()));
+
+openLab('aggregometry');
+
+</script>
+</body>
+</html>
