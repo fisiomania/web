@@ -2,32 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://fisiomania.com.ar/</loc>
+        <lastmod>2026-11-06</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
         <loc>https://fisiomania.com.ar/renal.html</loc>
+        <lastmod>2026-11-06</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://fisiomania.com.ar/medio-interno.html</loc>
+        <lastmod>2026-11-06</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://fisiomania.com.ar/regulacion-ph.html</loc>
+        <lastmod>2026-11-06</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://fisiomania.com.ar/sangre.html</loc>
+        <lastmod>2026-11-06</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://fisiomania.com.ar/respiratorio.html</loc>
+        <lastmod>2026-11-06</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://fisiomania.com.ar/simulaciones.html</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://fisiomania.com.ar/sobre-fisiomania.html</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://fisiomania.com.ar/simulaciones/difusion_concentracion_cinetica.html</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://fisiomania.com.ar/simulaciones/difusion_gases_vs_liquidos_temperatura.html</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://fisiomania.com.ar/simulaciones/ley_de_fick_primera_segunda.html</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://fisiomania.com.ar/simulaciones/simulacion_hemodinamia_glomerular.html</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://fisiomania.com.ar/simulaciones/vasa_recta_medullary_gradient_simulation.html</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://fisiomania.com.ar/simulaciones/simulador_hemostasia_fisiologia_v4.html</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
     </url>
 </urlset>

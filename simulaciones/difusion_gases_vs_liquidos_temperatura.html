@@ -1,4 +1,124 @@
-
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X6X1NQJZHP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X6X1NQJZHP');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Difusión en gases vs. líquidos según la temperatura | Fisio Manía</title>
+<meta name="description" content="Comparador interactivo del coeficiente de difusión en gases y líquidos al variar la temperatura (Chapman-Enskog y Stokes-Einstein).">
+<meta name="author" content="Dra. Valeria Rivarola">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://fisiomania.com.ar/simulaciones/difusion_gases_vs_liquidos_temperatura.html">
+<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_AR">
+<meta property="og:site_name" content="Fisio Manía">
+<meta property="og:title" content="Difusión en gases vs. líquidos según la temperatura | Fisio Manía">
+<meta property="og:description" content="Comparador interactivo del coeficiente de difusión en gases y líquidos al variar la temperatura (Chapman-Enskog y Stokes-Einstein).">
+<meta property="og:url" content="https://fisiomania.com.ar/simulaciones/difusion_gases_vs_liquidos_temperatura.html">
+<meta property="og:image" content="https://fisiomania.com.ar/assets/img/simulaciones/Fick%202.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Difusión en gases vs. líquidos según la temperatura | Fisio Manía">
+<meta name="twitter:description" content="Comparador interactivo del coeficiente de difusión en gases y líquidos al variar la temperatura (Chapman-Enskog y Stokes-Einstein).">
+<meta name="twitter:image" content="https://fisiomania.com.ar/assets/img/simulaciones/Fick%202.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LearningResource",
+  "name": "Difusión en gases vs. líquidos según la temperatura",
+  "description": "Comparador interactivo del coeficiente de difusión en gases y líquidos al variar la temperatura (Chapman-Enskog y Stokes-Einstein).",
+  "url": "https://fisiomania.com.ar/simulaciones/difusion_gases_vs_liquidos_temperatura.html",
+  "inLanguage": "es-AR",
+  "learningResourceType": "Simulación interactiva",
+  "educationalLevel": "Universitario",
+  "author": {
+    "@type": "Person",
+    "name": "Dra. Valeria Rivarola"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Fisio Manía",
+    "url": "https://fisiomania.com.ar/"
+  }
+}
+</script>
+<style>
+:root{
+  color-scheme: light;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --border-radius-md: 8px;
+  --border-radius-lg: 14px;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f1f6f6;
+  --color-background-info: #e3f1f2;
+  --color-text-primary: #173238;
+  --color-text-secondary: #526669;
+  --color-text-info: #10434b;
+  --color-border-secondary: rgba(23,50,56,.32);
+  --color-border-tertiary: rgba(23,50,56,.16);
+  --color-border-info: #17616a;
+  --teal-900:#0a2e35; --teal-700:#17616a; --accent:#d8a83e; --cream:#f7f8f5;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--color-text-primary);font-family:var(--font-sans);line-height:1.55}
+a{color:inherit}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.fm-bar{background:var(--teal-900);color:#fff}
+.fm-bar-in{width:min(1040px,calc(100% - 32px));margin:0 auto;min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.fm-brand{font-weight:800;letter-spacing:-.02em;text-decoration:none}
+.fm-brand span{color:var(--accent)}
+.fm-nav{display:flex;gap:18px;font-size:.9rem;font-weight:600;flex-wrap:wrap}
+.fm-nav a{text-decoration:none;color:rgba(255,255,255,.85)}
+.fm-nav a:hover{color:#fff}
+.fm-main{width:min(1040px,calc(100% - 32px));margin:0 auto;padding:34px 0 48px}
+.fm-main h1{margin:0 0 8px;font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.12;letter-spacing:-.03em;color:var(--teal-900)}
+.fm-intro{margin:0 0 22px;max-width:720px;color:var(--color-text-secondary)}
+.fm-sim{background:#fff;border:1px solid var(--color-border-tertiary);border-radius:18px;padding:18px 20px;box-shadow:0 10px 30px rgba(6,31,36,.06)}
+.fm-more{margin-top:26px;padding:20px 22px;border-radius:16px;background:#f3e8e5;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.fm-more p{margin:0;max-width:600px}
+.fm-btn{display:inline-block;padding:11px 18px;border-radius:10px;background:#b51f24;color:#fff;font-weight:800;text-decoration:none}
+.fm-foot{background:#04181c;color:rgba(255,255,255,.65);font-size:.86rem;padding:22px 0}
+.fm-foot-in{width:min(1040px,calc(100% - 32px));margin:0 auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.fm-foot a{text-decoration:none}.fm-foot a:hover{color:#fff}
+#fm-think{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(560px,calc(100% - 28px));background:#0a2e35;color:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 14px 40px rgba(0,0,0,.3);display:none;z-index:50;font-size:.95rem}
+#fm-think strong{color:#f4d98f;display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+#fm-think a{color:#f4d98f}
+#fm-think button{position:absolute;top:8px;right:10px;background:none;border:0;color:#fff;font-size:1.2rem;cursor:pointer}
+</style>
+<script>
+// Las preguntas de los botones "↗" se muestran como consigna para pensar y discutir.
+window.sendPrompt = function (text) {
+  var box = document.getElementById('fm-think');
+  if (!box) return;
+  box.querySelector('p').textContent = text;
+  box.style.display = 'block';
+};
+</script>
+</head>
+<body>
+<header class="fm-bar">
+  <div class="fm-bar-in">
+    <a class="fm-brand" href="../index.html">Fisio<span>Manía</span></a>
+    <nav class="fm-nav" aria-label="Navegación">
+      <a href="../simulaciones.html">← Todas las simulaciones</a>
+      <a href="../index.html#temas">Temas</a>
+      <a href="https://www.youtube.com/@fisiomania1" target="_blank" rel="noopener">YouTube ↗</a>
+    </nav>
+  </div>
+</header>
+<main class="fm-main">
+  <h1>Difusión en gases y en líquidos: efecto de la temperatura</h1>
+  <p class="fm-intro">Movés la temperatura y comparás cuánto cambia el coeficiente de difusión de un gas y de un soluto en agua.</p>
+  <div class="fm-sim">
 <style>
 * { box-sizing: border-box; }
 .wrap { font-family: var(--font-sans); padding: 1rem 0; }
@@ -259,3 +379,23 @@ function update() {
 update();
 window.addEventListener('resize', update);
 </script>
+  </div>
+  <div class="fm-more">
+    <p><strong>¿Querés entender el mecanismo paso a paso?</strong> Mirá las clases de fisiología en el canal de Fisio Manía.</p>
+    <a class="fm-btn" href="https://www.youtube.com/@fisiomania1?sub_confirmation=1" target="_blank" rel="noopener">Ver y suscribirme ↗</a>
+  </div>
+</main>
+<footer class="fm-foot">
+  <div class="fm-foot-in">
+    <div>© Fisio Manía 2026 · Dra. Valeria Rivarola</div>
+    <div><a href="../simulaciones.html">Simulaciones</a> · <a href="../sobre-fisiomania.html">Sobre Fisio Manía</a> · <a href="mailto:mariv@fmed.uba.ar">Contacto</a></div>
+  </div>
+</footer>
+<div id="fm-think" role="status" aria-live="polite">
+  <button type="button" aria-label="Cerrar" onclick="this.parentNode.style.display='none'">×</button>
+  <strong>Para pensar y discutir</strong>
+  <p></p>
+  <a href="https://www.youtube.com/@fisiomania1" target="_blank" rel="noopener">Buscá la explicación en el canal de YouTube →</a>
+</div>
+</body>
+</html>

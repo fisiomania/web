@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fisiomania.github.io/web/sitemap.xml
+Sitemap: https://fisiomania.com.ar/sitemap.xml
